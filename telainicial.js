@@ -20,60 +20,49 @@
     tick(); setInterval(tick, 1000);
   })();
   
-  /* Partículas de giz na lousa */
-  (function chalkParticles(){
-    const board = document.querySelector('.blackboard');
-    const layer = document.querySelector('.chalk-layer');
-    if (!board || !layer) return;
-  
-    let last = 0;
-    const RATE = 1000/60;   // ~60 fps
-    const PARTICLES = 4;
-  
-    const spawn = (x, y) => {
-      for (let i = 0; i < PARTICLES; i++) {
-        const p = document.createElement('span');
-        p.className = 'chalk';
-        p.style.left = x + 'px';
-        p.style.top  = y + 'px';
-        const dx = (Math.random() - .5) * 36;
-        const dy = - (Math.random() * 28 + 8);
-        p.style.setProperty('--dx', dx + 'px');
-        p.style.setProperty('--dy', dy + 'px');
-        p.style.setProperty('--life', (600 + Math.random()*700) + 'ms');
-        const s = 0.7 + Math.random()*0.6;
-        p.style.transform = `translate(-50%,-50%) scale(${s})`;
-        layer.appendChild(p);
-        p.addEventListener('animationend', () => p.remove(), { once:true });
-      }
-    };
-  
-    const pointOnBoard = (clientX, clientY) => {
-      const rect = board.getBoundingClientRect();
-      const x = clientX - rect.left;
-      const y = clientY - rect.top;
-      if (x < 0 || y < 0 || x > rect.width || y > rect.height) return null;
-      return { x, y };
-    };
-  
-    const move = (clientX, clientY) => {
-      const now = performance.now();
-      if (now - last < RATE) return;
-      last = now;
-      const pt = pointOnBoard(clientX, clientY);
-      if (!pt) return;
-      spawn(pt.x, pt.y);
-    };
-  
-    board.addEventListener('pointermove', (e) => move(e.clientX, e.clientY));
-    board.addEventListener('pointerdown', (e) => move(e.clientX, e.clientY));
-    board.addEventListener('touchmove', (e) => {
-      if (e.touches && e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive:true });
-    board.addEventListener('touchstart', (e) => {
-      if (e.touches && e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive:true });
-  })();
+  /* Linha de giz acompanhando o mouse */
+(function chalkLine(){
+  const board = document.querySelector('.blackboard');
+  const svg = document.querySelector('.chalk-path');
+  if (!board || !svg) return;
+
+  const path = document.createElementNS("http://www.w3.org/2000/svg","path");
+  svg.appendChild(path);
+
+  let d = ""; // caminho da linha
+  let last = 0;
+  const RATE = 1000/60; // ~60 fps
+
+  const pointOnBoard = (clientX, clientY) => {
+    const rect = board.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    if (x < 0 || y < 0 || x > rect.width || y > rect.height) return null;
+    return { x, y };
+  };
+
+  const move = (clientX, clientY) => {
+    const now = performance.now();
+    if (now - last < RATE) return;
+    last = now;
+
+    const pt = pointOnBoard(clientX, clientY);
+    if (!pt) return;
+
+    if (d === "") {
+      d = `M ${pt.x} ${pt.y}`;
+    } else {
+      d += ` L ${pt.x} ${pt.y}`;
+    }
+    path.setAttribute("d", d);
+  };
+
+  board.addEventListener('pointermove', e => move(e.clientX, e.clientY));
+  board.addEventListener('touchmove', e => {
+    if (e.touches && e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive:true });
+})();
+
 
   // Pôster: esconde a dica quando a imagem existir
 (function posterAutoDetect(){
