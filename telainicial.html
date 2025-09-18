@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sala de Aula • Tela Inicial</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Short+Stack&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="telainicial.css" />
+</head>
+<body>
+  <!-- Bandeirinhas penduradas com a palavra NOTA DEZ -->
+  <div class="bunting" aria-hidden="true">
+    <div class="rope"></div>
+    <span>N</span><span>O</span><span>T</span><span>A</span>
+    <i class="gap" aria-hidden="true"></i>
+    <span>D</span><span>E</span><span>Z</span>
+  </div>
+
+  <main class="classroom">
+    <!-- Janela -->
+    <div class="window" aria-hidden="true">
+      <div class="sun"></div>
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+    </div>
+
+    <!-- Estante (apenas livros) -->
+    <aside class="shelf" aria-hidden="true">
+      <div class="books"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </aside>
+
+    <!-- Relógio -->
+    <div class="clock" role="img" aria-label="Relógio analógico">
+      <div class="ticks"></div>
+      <div class="hand hour"></div>
+      <div class="hand minute"></div>
+      <div class="hand second"></div>
+      <div class="pin"></div>
+    </div>
+
+    <!-- Armário -->
+    <div class="cabinet" aria-hidden="true">
+      <div class="door left"></div>
+      <div class="door right"></div>
+    </div>
+
+    <!-- Mesas e cadeiras (na frente) -->
+    <div class="desks" aria-hidden="true">
+      <div class="desk"><span class="chair"></span></div>
+      <div class="desk"><span class="chair"></span></div>
+      <div class="desk"><span class="chair"></span></div>
+    </div>
+
+    <!-- Lousa (sem formulário): só título e botões -->
+    <section class="blackboard" aria-labelledby="titulo-inicio">
+      <div class="chalk-layer" aria-hidden="true"></div>
+
+      <h1 id="titulo-inicio" class="chalk-title">BEM VINDO</h1>
+
+      <div class="board-actions" role="group" aria-label="Ações principais">
+        <a class="chalk-btn" href="login.html">Login</a>
+        <a class="chalk-btn" href="cadastro.html">Cadastro</a>
+      </div>
+    </section>
+
+    <div class="floor" aria-hidden="true"></div>
+  </main>
+
+  <p class="sr-only">Tela inicial temática de sala de aula com dois botões na lousa.</p>
+  <script src="telainicial.js"></script>
+</body>
+</html>
