@@ -74,4 +74,18 @@
       if (e.touches && e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
     }, { passive:true });
   })();
-  
+
+  // Pôster: esconde a dica quando a imagem existir
+(function posterAutoDetect(){
+  const img = document.getElementById('posterImg');
+  const hint = document.getElementById('posterHint');
+  if (!img || !hint) return;
+
+  img.addEventListener('load', () => { hint.style.display = 'none'; });
+  img.addEventListener('error', () => { hint.style.display = 'flex'; });
+
+  // Se já estiver em cache e carregada:
+  if (img.complete && img.naturalWidth > 0) {
+    hint.style.display = 'none';
+  }
+})();
