@@ -1,37 +1,64 @@
-// —————————————————————————————————————
-// Relógio e partículas de giz sob o cursor
-// —————————————————————————————————————
+/* feito pela aly */
 
-/* Relógio analógico */
+/* Relógio  */
 (function startClock(){
-    const hour = document.querySelector('.hand.hour');
-    const minute = document.querySelector('.hand.minute');
-    const second = document.querySelector('.hand.second');
-    if (!hour || !minute || !second) return;
-    const tick = () => {
-      const now = new Date();
-      const s = now.getSeconds();
-      const m = now.getMinutes() + s/60;
-      const h = (now.getHours()%12) + m/60;
-      second.style.transform = `translate(-50%,-90%) rotate(${s*6}deg)`;
-      minute.style.transform = `translate(-50%,-90%) rotate(${m*6}deg)`;
-      hour.style.transform   = `translate(-50%,-90%) rotate(${h*30}deg)`;
-    };
-    tick(); setInterval(tick, 1000);
-  })();
-  
-  /* Linha de giz acompanhando o mouse */
-(function chalkLine(){
+  const hour = document.querySelector('.hand.hour');
+  const minute = document.querySelector('.hand.minute');
+  const second = document.querySelector('.hand.second');
+  if (!hour || !minute || !second) return;
+  const tick = () => {
+    const now = new Date();
+    const s = now.getSeconds();
+    const m = now.getMinutes() + s/60;
+    const h = (now.getHours()%12) + m/60;
+    second.style.transform = `translate(-50%,-90%) rotate(${s*6}deg)`;
+    minute.style.transform = `translate(-50%,-90%) rotate(${m*6}deg)`;
+    hour.style.transform   = `translate(-50%,-90%) rotate(${h*30}deg)`;
+  };
+  tick(); setInterval(tick, 1000);
+})();
+
+/* Pôster: mostra msg se a imagem não existir, esconde se existir */
+(function posterAutoDetect(){
+  const img = document.getElementById('posterImg');
+  const hint = document.getElementById('posterHint');
+  if (!img || !hint) return;
+
+  img.addEventListener('load', () => { hint.style.display = 'none'; });
+  img.addEventListener('error', () => { hint.style.display = 'flex'; });
+
+  if (img.complete && img.naturalWidth > 0) {
+    hint.style.display = 'none';
+  }
+})();
+
+/* Partículas de giz */
+(function chalkParticles(){
   const board = document.querySelector('.blackboard');
-  const svg = document.querySelector('.chalk-path');
-  if (!board || !svg) return;
+  const layer = document.querySelector('.chalk-layer');
+  if (!board || !layer) return;
 
-  const path = document.createElementNS("http://www.w3.org/2000/svg","path");
-  svg.appendChild(path);
-
-  let d = ""; // caminho da linha
   let last = 0;
-  const RATE = 1000/60; // ~60 fps
+  const RATE = 1000/60;
+  const PARTICLES = 4;
+
+  const spawn = (x, y) => {
+    for (let i = 0; i < PARTICLES; i++) {
+      const p = document.createElement('span');
+      p.className = 'chalk';
+      p.style.left = x + 'px';
+      p.style.top  = y + 'px';
+      const dx = (Math.random() - .5) * 36;
+      const dy = - (Math.random() * 28 + 8);
+      p.style.setProperty('--dx', dx + 'px');
+      p.style.setProperty('--dy', dy + 'px');
+      p.style.setProperty('--life', (600 + Math.random()*700) + 'ms');
+      const s = 0.7 + Math.random()*0.6;
+      p.style.transform = `translate(-50%,-50%) scale(${s})`;
+      layer.appendChild(p);
+      p.addEventListener('animationend', () => p.remove(), { once:true });
+    }
+  };
 
   const pointOnBoard = (clientX, clientY) => {
     const rect = board.getBoundingClientRect();
@@ -45,36 +72,17 @@
     const now = performance.now();
     if (now - last < RATE) return;
     last = now;
-
     const pt = pointOnBoard(clientX, clientY);
     if (!pt) return;
-
-    if (d === "") {
-      d = `M ${pt.x} ${pt.y}`;
-    } else {
-      d += ` L ${pt.x} ${pt.y}`;
-    }
-    path.setAttribute("d", d);
+    spawn(pt.x, pt.y);
   };
 
-  board.addEventListener('pointermove', e => move(e.clientX, e.clientY));
-  board.addEventListener('touchmove', e => {
+  board.addEventListener('pointermove', (e) => move(e.clientX, e.clientY));
+  board.addEventListener('pointerdown', (e) => move(e.clientX, e.clientY));
+  board.addEventListener('touchmove', (e) => {
     if (e.touches && e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive:true });
-})();
-
-
-  // Pôster: esconde a dica quando a imagem existir
-(function posterAutoDetect(){
-  const img = document.getElementById('posterImg');
-  const hint = document.getElementById('posterHint');
-  if (!img || !hint) return;
-
-  img.addEventListener('load', () => { hint.style.display = 'none'; });
-  img.addEventListener('error', () => { hint.style.display = 'flex'; });
-
-  // Se já estiver em cache e carregada:
-  if (img.complete && img.naturalWidth > 0) {
-    hint.style.display = 'none';
-  }
+  board.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive:true });
 })();
