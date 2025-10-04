@@ -1,59 +1,93 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NotaDez - Dashboard</title>
-<link rel="stylesheet" href="dashboard.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NotaDez - Dashboard</title>
+
+  <!-- Ícones Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-<header class="header">
-<h1 class="logo">NotaDez</h1>
-<nav>
-<ul class="menu">
-<li><a href="#">Instituições</a></li>
-<li><a href="#">Disciplinas</a></li>
-<li><a href="#">Turmas</a></li>
-<li><a href="#">Alunos</a></li>
-<li><a href="#">Notas</a></li>
-<li><a href="#">Auditoria</a></li>
-<li><a href="#">Exportar</a></li>
-</ul>
-</nav>
-<div class="user-info">
-<span>Olá, Professor!</span>
-<a href="login.html" class="logout">Sair</a>
-</div>
-</header>
+  <div class="sidebar">
+    <h2><i class="fa-solid fa-square-check"></i> NotaDez</h2>
+    <ul>
+      <li><i class="fa-solid fa-building-columns"></i> Instituições</li>
+      <li><i class="fa-solid fa-book"></i> Disciplinas</li>
+      <li><i class="fa-solid fa-users"></i> Turmas</li>
+      <li><i class="fa-solid fa-user-graduate"></i> Alunos</li>
+    </ul>
+  </div>
 
-<main class="content">
-<section class="card">
-<h2>Instituições</h2>
-<p>Gerencie as instituições e cursos cadastrados.</p>
-<button>Gerenciar</button>
-</section>
+  <div class="main-content">
+    <h1>Olá, Professor</h1>
+    
+    <div class="cards-container">
+      <!-- Instituições -->
+      <div class="card">
+        <h3>2<br>Instituições</h3>
+        <button>+ Nova Instituição</button>
+        <table>
+          <tr><th>Nome</th></tr>
+          <tr><td>Colégio São José</td></tr>
+          <tr><td>Escola Modelo</td></tr>
+        </table>
+      </div>
 
-<section class="card">
-<h2>Turmas</h2>
-<p>Crie, edite e exclua turmas vinculadas às disciplinas.</p>
-<button>Gerenciar</button>
-</section>
+      <!-- Cursos -->
+      <div class="card">
+        <h3>3<br>Cursos</h3>
+        <button>+ Novo Curso</button>
+        <table>
+          <tr><th>Nome</th></tr>
+          <tr><td>Informática</td></tr>
+          <tr><td>Administração</td></tr>
+          <tr><td>Contabilidade</td></tr>
+        </table>
+      </div>
 
-<section class="card">
-<h2>Notas</h2>
-<p>Lance notas das avaliações e acompanhe os cálculos finais.</p>
-<button>Acessar</button>
-</section>
+      <!-- Disciplinas -->
+      <div class="card">
+        <h3>4<br>Disciplinas</h3>
+        <button>+ Nova Disciplina</button>
+        <table>
+          <tr><th>Nome</th></tr>
+          <tr><td>Matemática</td></tr>
+          <tr><td>Português</td></tr>
+          <tr><td>História</td></tr>
+          <tr><td>Geografia</td></tr>
+        </table>
+      </div>
 
-<section class="card">
-<h2>Auditoria</h2>
-<p>Visualize o histórico de alterações realizadas nas notas.</p>
-<button>Ver Log</button>
-</section>
-</main>
+      <!-- Turmas -->
+      <div class="card">
+        <h3>3<br>Turmas</h3>
+        <button>+ Nova Turma</button>
+        <table>
+          <tr><th>Nome</th></tr>
+          <tr><td>1°A</td></tr>
+          <tr><td>2°B</td></tr>
+          <tr><td>3°C</td></tr>
+        </table>
+      </div>
 
-<footer class="footer">
-<p>© 2025 NotaDez - PUC-Campinas</p>
-</footer>
+      <!-- Alunos -->
+      <div class="card">
+        <h3>3<br>Alunos</h3>
+        <button>+ Novo Aluno</button>
+        <table>
+          <tr><th>Nome</th></tr>
+          <tr><td>Maria Lima</td></tr>
+          <tr><td>João Silva</td></tr>
+          <tr><td>Ana Costa</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
