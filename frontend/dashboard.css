@@ -1,0 +1,111 @@
+/* Reset */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins', sans-serif;
+}
+
+body {
+background-color: #e8f1ea;
+color: #333;
+display: flex;
+flex-direction: column;
+min-height: 100vh;
+}
+
+.header {
+background: #5a7c64;
+color: white;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 1rem 2rem;
+}
+
+.logo {
+font-size: 1.8rem;
+font-weight: bold;
+}
+
+.menu {
+list-style: none;
+display: flex;
+gap: 1rem;
+}
+
+.menu li a {
+color: white;
+text-decoration: none;
+padding: 0.5rem;
+transition: 0.3s;
+}
+
+.menu li a:hover {
+background: #44604b;
+border-radius: 6px;
+}
+
+.user-info {
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+
+.logout {
+background: #c94f4f;
+color: white;
+padding: 0.4rem 0.8rem;
+border-radius: 6px;
+text-decoration: none;
+}
+
+.logout:hover {
+background: #a63d3d;
+}
+
+.content {
+flex: 1;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 2rem;
+padding: 2rem;
+}
+
+.card {
+background: white;
+border-radius: 10px;
+padding: 1.5rem;
+box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+text-align: center;
+}
+
+.card h2 {
+margin-bottom: 1rem;
+color: #5a7c64;
+}
+
+.card p {
+margin-bottom: 1.5rem;
+}
+
+.card button {
+background: #5a7c64;
+color: white;
+border: none;
+padding: 0.6rem 1.2rem;
+border-radius: 6px;
+cursor: pointer;
+transition: 0.3s;
+}
+
+.card button:hover {
+background: #44604b;
+}
+
+.footer {
+text-align: center;
+padding: 1rem;
+background: #5a7c64;
+color: white;
+}
