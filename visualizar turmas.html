@@ -17,20 +17,24 @@
 </head>
 
 <body>
-    <div class="sidebar">
-    <h2><i class="fa-solid fa-square-check"></i> NotaDez</h2>
-    <ul>
-      <li><i class="fa-solid fa-building-columns"></i> Instituições</li>
-      <li><i class="fa-solid fa-book"></i> Disciplinas</li>
-      <li><i class="fa-solid fa-users"></i> Turmas</li>
-      <li><i class="fa-solid fa-user-graduate"></i> Alunos</li>
-    </ul>
-  </div>
+  <!--Ícones da barra usando a biblioteca Font Awesome-->
+
+   <nav class="topbar">
+      <h2>NotaDez</h2>
+      <ul class="menu-horizontal">
+        <li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+        <li><a href="disciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
+        <li><a href="visualizar turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
+        <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+      </ul>
+    </nav>
 
   <div class="main-content">
     <!--Botão de adicionar mais turmas-->
     <button type="button" class="btn-turma" id="btnIrTurma" onclick="window.location.href='cadastrar turma.html'">+ Adicionar Turma</button>
-    
+    <button type="button" class="btn-remover" id="btnIrRemover">Remover Turma</button>
+    <button type="button" class="btn-editar" id="btnIrEditar">Editar Turma</button>
+
     <div class="cards-container">
       <!-- Turmas -->
       <div class="card" onclick="alert('Você clicou no card!')">

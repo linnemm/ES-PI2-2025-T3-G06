@@ -1,145 +1,176 @@
-/*Autoria: Miriã*/
-
+/* ===== Autoria = Miria ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
 html, body {
-  overflow-x: hidden; 
+  overflow-x: hidden;
+  background-color: #f4f5fb; /* fundo suave */
 }
 
-body {
-  background-color: #f5f6fa;
-}
-
-/* MENU LATERAL */
-.sidebar {
-  width: 260px;
-  background: linear-gradient(to right, #6ca98c, #5c8c75);
+/* ===== TOPO ===== */
+.topbar {
+  background-color: #6ca98c; /* verde suave */
   color: white;
-  padding: 25px 20px;
+  padding: 18px 40px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   position: fixed;
   top: 0;
-  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.sidebar h2 {
-  font-size: 22px;
+.topbar h2 {
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 40px;
 }
 
-.main-content button {
+.menu-horizontal {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.menu-horizontal li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.menu-horizontal li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== CONTEÚDO PRINCIPAL ===== */
+.main-content {
+  padding: 40px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* ===== BOTÃO ADICIONAR TURMA ===== */
+.btn-turma {
   background-color: #6ca98c;
-  font-size: 20px;
-  color: rgb(249, 248, 248);
-  padding: 20px 30px;
+  font-size: 18px;
+  color: #fff;
+  padding: 14px 26px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
+  margin-bottom: 35px;
+  transition: background-color 0.3s;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-right: 120px;
 }
 
-.sidebar ul {
-  list-style: none;
-}
-
-.sidebar li {
-  font-size: 16px;
-  margin: 18px 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: 0.3s;
-}
-
-.sidebar li:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 8px 10px;
-  border-radius: 6px;
-}
-
-/* CONTEÚDO PRINCIPAL */
-.main-content {
-  margin-left: 260px;
-  padding: 40px;
-}
-
-.main-content h1 {
-  font-size: 26px;
-  margin-bottom: 30px;
-}
-
-/* CONTAINER DOS CARDS */
-.cards-container {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  width: 100%;
-  flex-wrap: wrap;      
-  height: 300px;        /* define uma altura fixa */
-  overflow-y: auto;     
-  padding-bottom: 10px;
-}
-
-/* Card das turmas */
-.card {
-  flex: 1;
-  min-width: 220px;
-  max-width: 100%;
-  background: white;
-  border-radius: 10px;
-  padding: 50px;
-  width: 50px; 
-  height: 50px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  text-align: center;
-  transition: 0.3s;
-  cursor: pointer;
-  display: flex;
-  justify-content: center; 
-  align-items: center;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-}
-
-.card h3 {
-  font-size: 22px;
-  color: #0f422a;
-  margin-bottom: 15px;
-  margin: 0;
-}
-
-/*.card p {
-  font-size: 16px; 
-  font-family: Arial, sans-serif; 
-  color: #070707;
-}*/
-
-/* Botão add turma*/
-.card button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  background-color: #6ca98c;
-  color: white;
-  border-radius: 8px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.card button:hover {
+.btn-turma:hover {
   background-color: #5c8c75;
 }
 
+/* ===== BOTÃO remover TURMA ===== */
+.btn-remover {
+  background-color: #6ca98c;
+  font-size: 18px;
+  color: #fff;
+  padding: 14px 26px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 35px;
+  transition: background-color 0.3s;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+.btn-remover:hover {
+  background-color: #5c8c75;
+}
+
+/* ===== BOTÃO Editar TURMA ===== */
+.btn-editar {
+  background-color: #6ca98c;
+  font-size: 18px;
+  color: #fff;
+  padding: 14px 26px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 35px;
+  transition: background-color 0.3s;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-left: 150px;
+}
+
+.btn-editar:hover {
+  background-color: #5c8c75;
+}
+
+/* ===== CONTAINER DOS CARDS ===== */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ===== CARDS ===== */
+.card {
+  flex: 1 1 250px;
+  background: white;
+  border-radius: 15px;
+  padding: 40px 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 260px;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.card h3 {
+  font-size: 20px;
+  color: #2b5d47;
+  font-weight: 600;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .menu-horizontal {
+    gap: 15px;
+    font-size: 14px;
+  }
+
+  .btn-turma {
+    width: 90%;
+  }
+
+  .card {
+    min-width: 200px;
+    padding: 30px 15px;
+  }
+}
