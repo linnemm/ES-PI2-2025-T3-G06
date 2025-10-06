@@ -3,20 +3,20 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-}
-
-body {
+  }
+  
+  body {
   background-color: #f5f6fa;
   overflow-x: hidden;
-}
-
-.dashboard {
+  }
+  
+  .dashboard {
   display: flex;
   height: 100vh;
-}
-
-/* --- MENU LATERAL --- */
-.sidebar {
+  }
+  
+  /* --- MENU LATERAL --- */
+  .sidebar {
   width: 260px;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
   color: white;
@@ -26,145 +26,155 @@ body {
   position: fixed;
   top: 0;
   bottom: 0;
-}
-
-.sidebar h2 {
+  }
+  
+  .sidebar h2 {
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 40px;
-}
-
-.sidebar ul {
+  }
+  
+  .sidebar ul {
   list-style: none;
-}
-
-.sidebar li {
+  }
+  
+  .sidebar li {
   font-size: 16px;
   margin: 18px 0;
-  cursor: pointer;
+  }
+  
+  /* torna o item do menu clicável */
+  .sidebar li a {
+  color: white;
+  text-decoration: none;
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: 0.3s;
-}
-
-.sidebar li:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  width: 100%;
   padding: 8px 10px;
   border-radius: 6px;
-}
-
-/* --- CONTEÚDO PRINCIPAL --- */
-.content {
+  transition: background-color 0.3s;
+  }
+  
+  .sidebar li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* --- CONTEÚDO PRINCIPAL --- */
+  .content {
   flex: 1;
   padding: 30px 50px;
   margin-left: 260px; /* compensa a largura da sidebar */
-}
-
-/* --- CABEÇALHO --- */
-.header {
+  }
+  
+  /* --- CABEÇALHO --- */
+  .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
-}
-
-.header h1 {
+  }
+  
+  .header h1 {
   font-size: 28px;
   font-weight: 600;
-}
-
-.perfil-btn {
+  }
+  
+  .perfil-btn {
   border: none;
   background: #f2f3f5;
   padding: 8px 18px;
   border-radius: 20px;
   cursor: pointer;
   font-weight: 500;
-}
-
-/* --- CARDS --- */
-.cards {
+  }
+  
+  /* --- CARDS --- */
+  .cards {
   display: flex;
   justify-content: center;
-  gap: 30px; /* espaço entre os cards */
   flex-wrap: wrap;
-}
-
-.card {
+  gap: 40px; /* espaçamento maior */
+  max-width: 1100px; /* cabe 3 cards por linha */
+  margin: 0 auto; /* centraliza o grupo */
+  }
+  
+  .card {
   background: white;
-  border-radius: 10px;
-  padding: 25px 0;
-  width: 220px; /*  largura maior */
-  height: 130px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 40px 0;
+  width: 300px; /* largura maior */
+  height: 180px; /* altura maior */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.card h2 {
-  font-size: 32px;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+  background-color: #f2f2f2;
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card:active {
+  transform: scale(0.97);
+  }
+  
+  .card h2 {
+  font-size: 38px;
   color: #6ca98c;
-  margin-bottom: 8px;
-}
-
-.card p {
-  font-size: 16px;
+  margin-bottom: 10px;
+  }
+  
+  .card p {
+  font-size: 18px;
   font-weight: 500;
-}
-
-/* --- BOTÕES DE AÇÃO --- */
-.actions {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.actions button {
-  background: white;
-  border: 1px solid #dcdcdc;
-  padding: 22px 0;
-  width: 220px; /*  igual aos cards */
-  height: 65px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-weight: 500;
-  white-space: nowrap;
-  text-align: center;
-}
-
-.actions button:hover {
-  background-color: #f2f2f2;
-}
-
-.card-wrapper {
+  }
+  
+  /* --- LINKS DOS CARDS --- */
+  .card-link {
+  text-decoration: none;
+  color: inherit;
+  }
+  
+  /* --- BOTÕES DE AÇÃO --- */
+  .card-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-}
-
-.card-wrapper button {
+  gap: 14px;
+  }
+  
+  .card-wrapper button {
   background: white;
   border: 1px solid #dcdcdc;
-  padding: 12px 0;
-  width: 220px;  /* mesmo tamanho do card */
+  padding: 14px 0;
+  width: 300px;
   border-radius: 10px;
   cursor: pointer;
   transition: 0.3s;
   font-weight: 500;
   text-align: center;
-}
-
-.card-wrapper button:hover {
+  }
+  
+  .card-wrapper button:hover {
   background-color: #f2f2f2;
-}
+  }
+  
+  /* --- RESPONSIVIDADE --- */
+  @media (max-width: 950px) {
+  .cards {
+  max-width: 700px;
+  }
+  }
+  
+  @media (max-width: 700px) {
+  .cards {
+  flex-direction: column;
+  align-items: center;
+  }
+  }

@@ -1,82 +1,93 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NotaDez - Dashboard</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NotaDez - Dashboard</title>
 
-  <!-- Importar ícones Font Awesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+<!-- Importar ícones Font Awesome -->
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
 
-  <link rel="stylesheet" href="dashboard.css" />
+<link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-  <div class="dashboard">
-    <!-- MENU LATERAL -->
-    <div class="sidebar"> 
-    <h2><i class="fa-solid fa-square-check"></i> NotaDez</h2>
-    <ul>
-      <li><i class="fa-solid fa-building-columns"></i> Instituições</li>
-      <li><i class="fa-solid fa-book"></i> Disciplinas</li>
-      <li><i class="fa-solid fa-users"></i> Turmas</li>
-      <li><i class="fa-solid fa-user-graduate"></i> Alunos</li>
-    </ul>
-  </div>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main class="content">
-      <header class="header">
-        <h1>Olá, Professor</h1>
-        <button class="perfil-btn">Perfil <i class="fa-solid fa-chevron-down"></i></button>
-      </header>
-
-      <!-- CARDS SUPERIORES -->
-<div class="cards">
-  <div class="card-wrapper">
-    <div class="card">
-      <h2>2</h2>
-      <p>Instituições</p>
-    </div>
-    <button onclick="window.location.href='cadastro_instituicao.html'">+ Cadastrar nova instituição</button>
-  </div>
-
-  <div class="card-wrapper">
-    <div class="card">
-      <h2>3</h2>
-      <p>Cursos</p>
-    </div>
-    <button onclick="window.location.href='cadastro_curso.html'">+ Cadastrar novo curso</button>
-  </div>
-
-  <div class="card-wrapper">
-    <div class="card">
-      <h2>4</h2>
-      <p>Disciplinas</p>
-    </div>
-    <button>+ Cadastrar nova disciplina</button>
-  </div>
-
-  <div class="card-wrapper">
-    <div class="card">
-      <h2>3</h2>
-      <p>Turmas</p>
-    </div>
-    <button>+ Cadastrar nova turma</button>
-  </div>
-
-  <div class="card-wrapper">
-    <div class="card">
-      <h2>3</h2>
-      <p>Alunos</p>
-    </div>
-    <button>+ Cadastrar novos alunos</button>
-  </div>
+<div class="dashboard">
+<!-- MENU LATERAL -->
+<div class="sidebar">
+<h2><i class="fa-solid fa-square-check"></i> NotaDez</h2>
+<ul>
+<li><a href="instituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+<li><a href="disciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
+<li><a href="turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
+<li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+</ul>
 </div>
 
-    </main>
-  </div>
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="content">
+<header class="header">
+<h1>Olá, Professor</h1>
+<button class="perfil-btn">Perfil <i class="fa-solid fa-chevron-down"></i></button>
+</header>
+
+<!-- CARDS SUPERIORES -->
+<div class="cards">
+
+<div class="card-wrapper">
+<a href="instituicoes.html" class="card-link">
+<div class="card">
+<h2>2</h2>
+<p>Instituições</p>
+</div>
+</a>
+<button onclick="window.location.href='cadastro_instituicao.html'">+ Cadastrar nova instituição</button>
+</div>
+
+<div class="card-wrapper">
+<a href="cursos.html" class="card-link">
+<div class="card">
+<h2>3</h2>
+<p>Cursos</p>
+</div>
+</a>
+<button onclick="window.location.href='cadastro_curso.html'">+ Cadastrar novo curso</button>
+</div>
+
+<div class="card-wrapper">
+<a href="disciplinas.html" class="card-link">
+<div class="card">
+<h2>4</h2>
+<p>Disciplinas</p>
+</div>
+</a>
+<button onclick="window.location.href='cadastro_disciplina.html'">+ Cadastrar nova disciplina</button>
+</div>
+
+<div class="card-wrapper">
+<a href="turmas.html" class="card-link">
+<div class="card">
+<h2>3</h2>
+<p>Turmas</p>
+</div>
+</a>
+<button onclick="window.location.href='cadastro_turma.html'">+ Cadastrar nova turma</button>
+</div>
+
+<div class="card-wrapper">
+<a href="alunos.html" class="card-link">
+<div class="card">
+<h2>3</h2>
+<p>Alunos</p>
+</div>
+</a>
+<button onclick="window.location.href='cadastro_aluno.html'">+ Cadastrar novos alunos</button>
+</div>
+
+</div>
+</main>
+</div>
 </body>
 </html>
