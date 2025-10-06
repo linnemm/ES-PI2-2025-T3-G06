@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
     <link rel="stylesheet" href="cadastro.css" />
+
 </head>
 <body>
 
@@ -34,15 +35,23 @@
       <!--Caixas de entradas-->
     <form>
         <input type="text" placeholder="Nome" required />
+        <input type="text" placeholder="Sobrenome" required />
         <input type="email" placeholder="E-mail" required />
-        <input type="password" placeholder="Senha" required />
-        <input type="password" placeholder="Confirme sua senha" required />
-        <input type="number" placeholder="Telefone" required />
+        <input type="tel" placeholder="Telefone" required />
+        
+        <div class="password-container">
+            <input type="password" placeholder="Senha" id="password" name="senha">
+        </div>
+
+    <div class="password-container">
+            <input type="password" placeholder="Confirme a nova senha" id="password" name="senha">
+        </div>
+
         <button type="button" onclick="window.location.href='login.html'">
-        Entrar
+        Cadastrar
         </button>
+
         <a href="login.html">Já tem uma conta? Entre aqui</a></p>
     </form>
-    
 </body>
 </html>
