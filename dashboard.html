@@ -1,92 +1,100 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NotaDez - Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NotaDez - Dashboard</title>
 
-<!-- Importar ícones Font Awesome -->
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-/>
+  <!-- Font Awesome para ícones -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 
-<link rel="stylesheet" href="dashboard.css" />
+  <!-- Link para CSS externo -->
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-<div class="dashboard">
-<!-- MENU LATERAL -->
-<div class="sidebar">
-<h2>NotaDez</h2>
-<ul>
-<li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-<li><a href="disciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
-<li><a href="visualizar turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
-<li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
-</ul>
-</div>
+  <div class="dashboard">
+    <!-- Menu horizontal fixo no topo -->
+    <nav class="topbar">
+      <h2>NotaDez</h2>
+      <ul class="menu-horizontal">
+        <li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+        <li><a href="disciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
+        <li><a href="visualizar turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
+        <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+      </ul>
+    </nav>
 
-<!-- CONTEÚDO PRINCIPAL -->
-<main class="content">
-<header class="header">
-<h1>Olá!</h1>
-</header>
+    <!-- Bandeirinhas "NOTADEZ" abaixo do menu -->
+    <div class="bandeirinhas">
+      <div class="flamula">N</div>
+      <div class="flamula">O</div>
+      <div class="flamula">T</div>
+      <div class="flamula">A</div>
+      <div class="flamula">D</div>
+      <div class="flamula">E</div>
+      <div class="flamula">Z</div>
+    </div>
 
-<!-- CARDS SUPERIORES -->
-<div class="cards">
+    <!-- Conteúdo principal -->
+    <main class="content">
+      <header class="header">
+      </header>
 
-<div class="card-wrapper">
-<a href="listaInstituicoes.html" class="card-link">
-<div class="card">
-<h2>2</h2>
-<p>Instituições</p>
-</div>
-</a>
-<button onclick="window.location.href='cadastro_instituicao.html'">+ Cadastrar nova instituição</button>
-</div>
+      <div class="cards">
+        <div class="card-wrapper">
+          <a href="listaInstituicoes.html" class="card-link">
+            <div class="card">
+              <h2>2</h2>
+              <p>Instituições</p>
+            </div>
+          </a>
+          <button onclick="window.location.href='cadastro_instituicao.html'">+ Cadastrar nova instituição</button>
+        </div>
 
-<div class="card-wrapper">
-<a href="cursos.html" class="card-link">
-<div class="card">
-<h2>3</h2>
-<p>Cursos</p>
-</div>
-</a>
-<button onclick="window.location.href='cadastro_curso.html'">+ Cadastrar novo curso</button>
-</div>
+        <div class="card-wrapper">
+          <a href="cursos.html" class="card-link">
+            <div class="card">
+              <h2>3</h2>
+              <p>Cursos</p>
+            </div>
+          </a>
+          <button onclick="window.location.href='cadastro_curso.html'">+ Cadastrar novo curso</button>
+        </div>
 
-<div class="card-wrapper">
-<a href="disciplinas.html" class="card-link">
-<div class="card">
-<h2>4</h2>
-<p>Disciplinas</p>
-</div>
-</a>
-<button onclick="window.location.href='cadastro_disciplina.html'">+ Cadastrar nova disciplina</button>
-</div>
+        <div class="card-wrapper">
+          <a href="disciplinas.html" class="card-link">
+            <div class="card">
+              <h2>4</h2>
+              <p>Disciplinas</p>
+            </div>
+          </a>
+          <button onclick="window.location.href='cadastro_disciplina.html'">+ Cadastrar nova disciplina</button>
+        </div>
 
-<div class="card-wrapper">
-<a href="visualizar turmas.html" class="card-link">
-<div class="card">
-<h2>3</h2>
-<p>Turmas</p>
-</div>
-</a>
-<button onclick="window.location.href='cadastro_turma.html'">+ Cadastrar nova turma</button>
-</div>
+        <div class="card-wrapper">
+          <a href="visualizar turmas.html" class="card-link">
+            <div class="card">
+              <h2>3</h2>
+              <p>Turmas</p>
+            </div>
+          </a>
+          <button onclick="window.location.href='cadastro_turma.html'">+ Cadastrar nova turma</button>
+        </div>
 
-<div class="card-wrapper">
-<a href="alunos.html" class="card-link">
-<div class="card">
-<h2>3</h2>
-<p>Alunos</p>
-</div>
-</a>
-<button onclick="window.location.href='cadastro_aluno.html'">+ Cadastrar novos alunos</button>
-</div>
-
-</div>
-</main>
-</div>
+        <div class="card-wrapper">
+          <a href="alunos.html" class="card-link">
+            <div class="card">
+              <h2>5</h2>
+              <p>Alunos</p>
+            </div>
+          </a>
+          <button onclick="window.location.href='cadastro_aluno.html'">+ Cadastrar novo aluno</button>
+        </div>
+      </div>
+    </main>
+  </div>
 </body>
 </html>

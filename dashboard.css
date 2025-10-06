@@ -1,110 +1,180 @@
+/* Reset básico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-  }
-  
-  body {
+}
+
+body {
   background-color: #f5f6fa;
   overflow-x: hidden;
-  }
-  
-  .dashboard {
-  display: flex;
-  height: 100vh;
-  }
-  
-  /* --- MENU LATERAL --- */
-  .sidebar {
-  width: 260px;
-  background: linear-gradient(to right, #6ca98c, #5c8c75);
-  color: white;
-  padding: 25px 20px;
+}
+
+/* Container geral */
+.dashboard {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Menu horizontal fixo no topo */
+.topbar {
+  width: 100%;
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  color: white;
+  padding: 15px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: fixed;
   top: 0;
-  bottom: 0;
-  }
-  
-  .sidebar h2 {
+  left: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgb(236, 232, 232);
+}
+
+.topbar h2 {
   font-size: 22px;
   font-weight: 700;
-  margin-bottom: 40px;
-  }
-  
-  .sidebar ul {
+}
+
+/* Menu horizontal */
+.menu-horizontal {
   list-style: none;
-  }
-  
-  .sidebar li {
-  font-size: 16px;
-  margin: 18px 0;
-  }
-  
-  /* torna o item do menu clicável */
-  .sidebar li a {
+  display: flex;
+  gap: 30px;
+}
+
+.menu-horizontal li a {
   color: white;
   text-decoration: none;
+  font-size: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 8px 10px;
+  gap: 8px;
+  padding: 8px 12px;
   border-radius: 6px;
   transition: background-color 0.3s;
-  }
-  
-  .sidebar li a:hover {
+}
+
+.menu-horizontal li a:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  }
-  
-  /* --- CONTEÚDO PRINCIPAL --- */
-  .content {
-  flex: 1;
-  padding: 30px 50px;
-  margin-left: 260px; /* compensa a largura da sidebar */
-  }
-  
-  /* --- CABEÇALHO --- */
-  .header {
+}
+
+/* Bandeirinhas */
+.bandeirinhas {
+  margin-top: 70px; /* Espaço abaixo do menu fixo */
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 12px;
+  padding: 30px 0;
+  background: transparent;
+  position: relative;
+  z-index: 9;
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bandeirinhas::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: #6b6b6b;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.flamula {
+  width: 48px;
+  height: 60px;
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+  display: flex;
   align-items: center;
-  margin-bottom: 40px;
-  }
-  
-  .header h1 {
-  font-size: 28px;
-  font-weight: 600;
-  }
-  
-  .perfil-btn {
-  border: none;
-  background: #f2f3f5;
-  padding: 8px 18px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 500;
-  }
-  
-  /* --- CARDS --- */
-  .cards {
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+  text-shadow: 1px 1px 2px #0006, 0 0 2px #0003;
+  box-shadow: 0 2px 3px #0001;
+  transform-origin: top center;
+}
+
+.flamula:nth-child(1) {
+  background: #f44336;
+  transform: rotate(15deg) translateY(-1px);
+}
+
+.flamula:nth-child(2) {
+  background: #2196f3;
+  transform: rotate(10deg) translateY(11px);
+}
+
+.flamula:nth-child(3) {
+  background: #ffc107;
+  transform: rotate(5deg) translateY(17px);
+}
+
+.flamula:nth-child(4) {
+  background: #4caf50;
+  transform: rotate(0deg) translateY(20px);
+}
+
+.flamula:nth-child(5) {
+  background: #9c27b0;
+  transform: rotate(-5deg) translateY(17px);
+}
+
+.flamula:nth-child(6) {
+  background: #ff5722;
+  transform: rotate(-10deg) translateY(11px);
+}
+
+.flamula:nth-child(7) {
+  background: #26c6da;
+  transform: rotate(-15deg) translateY(-1px);
+}
+
+/* Conteúdo principal */
+.content {
+  flex: 1;
+  padding: 70px 50px 50px; /* compensa menu fixo e bandeirinhas */
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Cards */
+.cards {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 40px; /* espaçamento maior */
-  max-width: 1100px; /* cabe 3 cards por linha */
-  margin: 0 auto; /* centraliza o grupo */
-  }
-  
-  .card {
+  gap: 40px;
+}
+
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
   background: white;
   border-radius: 12px;
   padding: 40px 0;
-  width: 300px; /* largura maior */
-  height: 180px; /* altura maior */
+  width: 300px;
+  height: 180px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
   text-align: center;
   display: flex;
@@ -112,45 +182,31 @@
   justify-content: center;
   align-items: center;
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .card:hover {
+}
+
+.card:hover {
   background-color: #f2f2f2;
   transform: scale(1.03);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  .card:active {
+}
+
+.card:active {
   transform: scale(0.97);
-  }
-  
-  .card h2 {
+}
+
+.card h2 {
   font-size: 38px;
   color: #6ca98c;
   margin-bottom: 10px;
-  }
-  
-  .card p {
+}
+
+.card p {
   font-size: 18px;
   font-weight: 500;
-  }
-  
-  /* --- LINKS DOS CARDS --- */
-  .card-link {
-  text-decoration: none;
-  color: inherit;
-  }
-  
-  /* --- BOTÕES DE AÇÃO --- */
-  .card-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  }
-  
-  .card-wrapper button {
-  background: white;
+}
+
+.card-wrapper button {
+  background:   #6ca98c;
   border: 1px solid #dcdcdc;
   padding: 14px 0;
   width: 300px;
@@ -159,22 +215,28 @@
   transition: 0.3s;
   font-weight: 500;
   text-align: center;
-  }
-  
-  .card-wrapper button:hover {
+}
+
+.card-wrapper button:hover {
   background-color: #f2f2f2;
+}
+
+/* Responsividade */
+@media (max-width: 700px) {
+  .menu-horizontal {
+    flex-direction: column;
+    gap: 15px;
   }
-  
-  /* --- RESPONSIVIDADE --- */
-  @media (max-width: 950px) {
-  .cards {
-  max-width: 700px;
+
+  .content {
+    padding: 160px 20px 50px;
   }
+  .card {
+    width: 100%;
+    max-width: 350px;
   }
-  
-  @media (max-width: 700px) {
-  .cards {
-  flex-direction: column;
-  align-items: center;
+  .card-wrapper button {
+    width: 100%;
+    max-width: 350px;
   }
-  }
+}
