@@ -16,16 +16,15 @@
 <body>
   <div class="dashboard">
     <!-- MENU LATERAL -->
-    <aside class="sidebar">
-      <div class="logo"><i class="fa-solid fa-square-check"></i> NotaDez</div>
-
-      <nav class="menu">
-        <a href="#"><i class="fa-solid fa-building-columns"></i> Instituições</a>
-        <a href="#"><i class="fa-solid fa-book"></i> Disciplinas</a>
-        <a href="#"><i class="fa-solid fa-users"></i> Turmas</a>
-        <a href="#"><i class="fa-solid fa-user-graduate"></i> Alunos</a>
-      </nav>
-    </aside>
+    <div class="sidebar"> 
+    <h2><i class="fa-solid fa-square-check"></i> NotaDez</h2>
+    <ul>
+      <li><i class="fa-solid fa-building-columns"></i> Instituições</li>
+      <li><i class="fa-solid fa-book"></i> Disciplinas</li>
+      <li><i class="fa-solid fa-users"></i> Turmas</li>
+      <li><i class="fa-solid fa-user-graduate"></i> Alunos</li>
+    </ul>
+  </div>
 
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="content">
@@ -35,37 +34,48 @@
       </header>
 
       <!-- CARDS SUPERIORES -->
-      <section class="cards">
-        <div class="card">
-          <h2>2</h2>
-          <p>Instituições</p>
-        </div>
-        <div class="card">
-          <h2>3</h2>
-          <p>Cursos</p>
-        </div>
-        <div class="card">
-          <h2>4</h2>
-          <p>Disciplinas</p>
-        </div>
-        <div class="card">
-          <h2>3</h2>
-          <p>Turmas</p>
-        </div>
-        <div class="card">
-          <h2>3</h2>
-          <p>Alunos</p>
-        </div>
-      </section>
+<div class="cards">
+  <div class="card-wrapper">
+    <div class="card">
+      <h2>2</h2>
+      <p>Instituições</p>
+    </div>
+    <button>+ Cadastrar nova instituição</button>
+  </div>
 
-      <!-- BOTÕES DE AÇÃO -->
-      <section class="actions">
-        <button><i class="fa-solid fa-plus"></i> Cadastrar nova instituição</button>
-        <button><i class="fa-solid fa-plus"></i> Cadastrar novo curso</button>
-        <button><i class="fa-solid fa-plus"></i> Cadastrar nova disciplina</button>
-        <button><i class="fa-solid fa-plus"></i> Cadastrar nova turma</button>
-        <button><i class="fa-solid fa-plus"></i> Cadastrar novos alunos</button>
-      </section>
+  <div class="card-wrapper">
+    <div class="card">
+      <h2>3</h2>
+      <p>Cursos</p>
+    </div>
+    <button>+ Cadastrar novo curso</button>
+  </div>
+
+  <div class="card-wrapper">
+    <div class="card">
+      <h2>4</h2>
+      <p>Disciplinas</p>
+    </div>
+    <button>+ Cadastrar nova disciplina</button>
+  </div>
+
+  <div class="card-wrapper">
+    <div class="card">
+      <h2>3</h2>
+      <p>Turmas</p>
+    </div>
+    <button>+ Cadastrar nova turma</button>
+  </div>
+
+  <div class="card-wrapper">
+    <div class="card">
+      <h2>3</h2>
+      <p>Alunos</p>
+    </div>
+    <button>+ Cadastrar novos alunos</button>
+  </div>
+</div>
+
     </main>
   </div>
 </body>
