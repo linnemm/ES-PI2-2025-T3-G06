@@ -1,5 +1,3 @@
-/*Autoria: Alinne */
-
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -47,8 +45,9 @@ body {
   border-radius: 6px;
 }
 
-/* Conteúdo principal */
-.main-content {
+/* Lista de instituições cadastradas */
+
+.lista-container {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -58,46 +57,39 @@ body {
   height: 100vh;            
 }
 
-h1 {
-  color: #5c8c75;
-  margin-bottom: 30px;
+.lista-container ul {
+  list-style: none;
+  padding: 0;
 }
 
-form {
-  background-color: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  width: 400px;
-  text-align: left;
-}
-
-label {
-  display: block;
-  margin-top: 15px;
-  font-weight: 600;
-}
-
-/*Caixa de texto */
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
-  box-sizing: border-box;
-  height: 42px; 
-  background-color: #fff;
-}
-
-.botoes {
+.lista-container li {
   display: flex;
   justify-content: space-between;
-  margin-top: 25px;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px 20px;
+  margin-bottom: 12px;
+  background-color: #f9f9f9;
 }
 
-.btn-salvar {
+.lista-container .acoes {
+  display: flex;
+  gap: 10px; 
+  margin-left: 20px;
+}
+
+.lista-container li .info strong {
+  color: #3B6B55;
+  flex: 1;
+}
+
+.lista-container button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+.editar {
   background-color: #6ca98c;
   color: white;
   padding: 10px 20px;
@@ -107,12 +99,8 @@ input {
   font-weight: bold;
 }
 
-.btn-salvar:hover {
-  background-color: #5c8c75;
-}
-
-.btn-curso {
-  background-color: #6ca98c;
+.remover {
+  background-color: #c46b6b;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -121,28 +109,11 @@ input {
   font-weight: bold;
 }
 
-.btn-curso:hover {
-  background-color: #5c8c75;
+.lista-container h3 {
+  
+    text-align: center;
+  font-weight: 700;
+  margin-top: 30px;    
+  margin-bottom: 10px; 
+  color: #5c8c75;
 }
-
-.btn-cancelar {
-  background-color: #ccc;
-  color: black;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.btn-cancelar:hover {
-  background-color: #aaa;
-}
-
-/*Brilho ao selecionar caixa de texto */
-input:focus, select:focus {
-  outline: none;
-  border-color: #6ca98c;
-  box-shadow: 0 0 5px rgba(108, 169, 140, 0.6);
-  transition: 0.2s ease-in-out;
-}
-

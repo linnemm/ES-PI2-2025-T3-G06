@@ -43,4 +43,3 @@ document.getElementById("formCurso").addEventListener("submit", (e) => {
   alert(`Curso "${nome}" vinculado à instituição "${instituicao}" cadastrado com sucesso!`);
   window.location.href = "dashboard.html";
 });
-
