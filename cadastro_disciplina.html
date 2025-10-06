@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cadastro de Disciplina</title>
+<link rel="stylesheet" href="cadastro_disciplina.css" />
+</head>
+<body>
+<aside class="sidebar">
+<h2>Nota Dez</h2>
+<ul>
+<li onclick="location.href='dashboard.html'">Dashboard</li>
+<li onclick="location.href='listaDisciplinas.html'"><strong>Disciplinas</strong></li>
+<li onclick="location.href='turmas.html'">Turmas</li>
+<li onclick="location.href='alunos.html'">Alunos</li>
+</ul>
+</aside>
+
+<main class="main-content">
+<h1 id="titulo">Cadastro de Disciplina</h1>
+
+<form id="formDisciplina">
+<label for="instituicao">Instituição:</label>
+<select id="instituicao">
+<option value="">Selecione uma instituição</option>
+</select>
+
+<label for="curso">Curso:</label>
+<select id="curso">
+<option value="">Selecione um curso</option>
+</select>
+
+<label for="nome">Nome da Disciplina:</label>
+<input id="nome" placeholder="Ex: Banco de Dados I" />
+
+<label for="sigla">Sigla:</label>
+<input id="sigla" placeholder="Ex: BDI" />
+
+<label for="codigo">Código:</label>
+<input id="codigo" placeholder="Ex: ES123" />
+
+<label for="periodo">Período:</label>
+<input id="periodo" placeholder="Ex: 3º semestre" />
+
+<div class="botoes">
+<button class="btn-cancelar" type="button" id="btnCancelar">Cancelar</button>
+<button class="btn-salvar" type="submit" id="btnSalvar">Salvar</button>
+</div>
+</form>
+</main>
+
+<script src="cadastro_disciplina.js"></script>
+</body>
+</html>

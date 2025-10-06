@@ -1,0 +1,59 @@
+/* Base padronizada (igual ao exemplo) */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6f5;
+    display: flex;
+    color: #333;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+    width: 260px;
+    background: linear-gradient(to right, #6ca98c, #5c8c75);
+    color: white;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; bottom: 0;
+    }
+    .sidebar h2 { font-size: 22px; font-weight: 700; margin-bottom: 40px; }
+    .sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar li {
+    font-size: 16px; margin: 18px 0; cursor: pointer;
+    display:flex; align-items:center; gap:12px; transition:.3s;
+    }
+    .sidebar li:hover { background:rgba(255,255,255,.2); padding:8px 10px; border-radius:6px; }
+    
+    /* Conteúdo */
+    .main-content {
+    flex: 1; display:flex; flex-direction:column; justify-content:center; align-items:center;
+    background-color:#f4f6f5; height:100vh; margin-left:260px; padding: 24px;
+    }
+    h1 { color:#5c8c75; margin-bottom:30px; }
+    
+    /* Form padrão do projeto */
+    form {
+    background-color:#fff; padding:30px; border-radius:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1); width:400px; text-align:left;
+    }
+    label { display:block; margin-top:15px; font-weight:600; }
+    input, select {
+    width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:8px;
+    font-size:15px; box-sizing:border-box; height:42px; background:#fff;
+    }
+    .botoes { display:flex; justify-content:space-between; margin-top:25px; }
+    .btn-salvar, .btn-curso, .btn-cancelar {
+    padding:10px 20px; border:none; border-radius:10px; cursor:pointer; font-weight:bold;
+    }
+    .btn-salvar, .btn-curso { background:#6ca98c; color:#fff; }
+    .btn-salvar:hover, .btn-curso:hover { background:#5c8c75; }
+    .btn-cancelar { background:#ccc; color:#000; }
+    .btn-cancelar:hover { background:#aaa; }
+    
+    /* Foco */
+    input:focus, select:focus {
+    outline:none; border-color:#6ca98c; box-shadow:0 0 5px rgba(108,169,140,0.6); transition:.2s ease-in-out;
+    }
+    
