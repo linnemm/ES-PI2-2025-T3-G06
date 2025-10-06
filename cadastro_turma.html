@@ -1,0 +1,54 @@
+<!--Autoria: Miriã-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Turmas - NotaDez</title>
+  <link rel="stylesheet" href="cadastro_turma.css" />
+  <!-- Importando Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+<body>
+
+  <div class="dashboard">
+    <!-- Menu fixo no topo -->
+    <nav class="topbar">
+      <h2>NotaDez</h2>
+      <ul class="menu-horizontal">
+        <li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+        <li><a href="disciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
+        <li><a href="visualizar turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
+        <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+      </ul>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+      <h1>Cadastro de Turmas</h1>
+      <form id="formTurma">
+        
+        <label for="nomeTurma">Digite a Turma:</label>
+        <input type="text" id="nomeTurma" name="nomeTurma" placeholder="Ex: Turma 001" required />
+        
+        <label for="disciplina">Digite para qual disciplina:</label>
+        <input type="text" id="disciplina" name="disciplina" placeholder="Ex: Banco de Dados I" required />
+        
+        <div class="botoes">
+          <button type="submit" class="btn-salvar">Adicionar Turma</button>
+          <button type="reset" class="btn-cancelar" onclick="window.location.href='dashboard.html'">Cancelar</button>
+        </div>
+        
+      </form>
+    </div>
+  </div>
+
+  <script src="cadastro_turma.js"></script>
+</body>
+</html>
+
+
