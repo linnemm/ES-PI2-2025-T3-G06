@@ -3,58 +3,66 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Disciplinas Cadastradas</title>
+<title>Disciplinas Cadastradas - NotaDez</title>
 <link rel="stylesheet" href="listaDisciplinas.css" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
 </head>
 <body>
-<!-- Sidebar padrão do projeto -->
-<aside class="sidebar">
-<h2>Nota Dez</h2>
-<ul>
-<li onclick="location.href='dashboard.html'">Dashboard</li>
-<li onclick="location.href='listaDisciplinas.html'"><strong>Disciplinas</strong></li>
-<li onclick="location.href='turmas.html'">Turmas</li>
-<li onclick="location.href='alunos.html'">Alunos</li>
-</ul>
-</aside>
 
+<!-- Topbar -->
+<nav class="topbar">
+  <h2>NotaDez</h2>
+  <ul class="menu-horizontal">
+    <li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+    <li><a href="listaDisciplinas.html"><i class="fa-solid fa-book"></i> <strong>Disciplinas</strong></a></li>
+    <li><a href="turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
+    <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+  </ul>
+</nav>
+
+<!-- Conteúdo principal -->
 <main class="main-content">
-<h1>Disciplinas Cadastradas</h1>
+  <h1>Disciplinas Cadastradas</h1>
 
-<!-- Filtros no padrão do formulário -->
-<form class="filtro-card" onsubmit="return false;">
-<div class="linha">
-<select id="fInstituicao">
-<option value="">Todas as instituições</option>
-</select>
-<select id="fCurso">
-<option value="">Todos os cursos</option>
-</select>
-</div>
-<label for="fBusca">Busca</label>
-<input id="fBusca" type="text" placeholder="Buscar por nome, sigla ou código" />
-<div class="botoes">
-<button class="btn-curso" id="btnBuscar" type="button">Buscar</button>
-<div style="display:flex; gap:10px; margin-left:auto;">
-<button class="btn-curso" id="btnNova" type="button">+ Nova Disciplina</button>
-</div>
-</div>
-</form>
+  <!-- Filtros -->
+  <form class="filtro-card" onsubmit="return false;">
+    <div class="linha">
+      <select id="fInstituicao">
+        <option value="">Todas as instituições</option>
+      </select>
+      <select id="fCurso">
+        <option value="">Todos os cursos</option>
+      </select>
+    </div>
 
-<!-- Lista -->
-<div class="lista-card">
-<div class="tabela-head">
-<span>Instituição</span>
-<span>Disciplina</span>
-<span>Sigla</span>
-<span>Período</span>
-<span style="text-align:right;">Ações</span>
-</div>
-<div id="corpoTabela"></div>
-<div id="vazio" class="vazio">Nenhuma disciplina encontrada.</div>
-</div>
+    <label for="fBusca">Busca</label>
+    <input id="fBusca" type="text" placeholder="Buscar por nome, sigla ou código" />
 
-<p class="nota">* Para excluir, a disciplina não pode ter turmas vinculadas.</p>
+    <div class="botoes">
+      <button class="btn-curso" id="btnBuscar" type="button">Buscar</button>
+      <div style="display:flex; gap:10px; margin-left:auto;">
+        <button class="btn-curso" id="btnNova" type="button">+ Nova Disciplina</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Lista -->
+  <div class="lista-card">
+    <div class="tabela-head">
+      <span>Instituição</span>
+      <span>Disciplina</span>
+      <span>Sigla</span>
+      <span>Período</span>
+      <span style="text-align:right;">Ações</span>
+    </div>
+    <div id="corpoTabela"></div>
+    <div id="vazio" class="vazio">Nenhuma disciplina encontrada.</div>
+  </div>
+
+  <p class="nota">* Para excluir, a disciplina não pode ter turmas vinculadas.</p>
 </main>
 
 <script src="listaDisciplinas.js"></script>

@@ -1,55 +1,63 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Cadastro de Disciplina</title>
-<link rel="stylesheet" href="cadastro_disciplina.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Disciplina - NotaDez</title>
+  <link rel="stylesheet" href="cadastro_disciplina.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 </head>
 <body>
-<aside class="sidebar">
-<h2>Nota Dez</h2>
-<ul>
-<li onclick="location.href='dashboard.html'">Dashboard</li>
-<li onclick="location.href='listaDisciplinas.html'"><strong>Disciplinas</strong></li>
-<li onclick="location.href='turmas.html'">Turmas</li>
-<li onclick="location.href='alunos.html'">Alunos</li>
-</ul>
-</aside>
+  <div class="dashboard">
+    <!-- Menu horizontal fixo no topo -->
+    <nav class="topbar">
+      <h2>NotaDez</h2>
+      <ul class="menu-horizontal">
+        <li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+        <li><a href="listaCursos.html"><i class="fa-solid fa-graduation-cap"></i> Cursos</a></li>
+        <li><a href="listaDisciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
+        <li><a href="turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
+        <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+      </ul>
+    </nav>
 
-<main class="main-content">
-<h1 id="titulo">Cadastro de Disciplina</h1>
+    <div class="main-content">
+      <h1 id="titulo">Cadastro de Disciplina</h1>
 
-<form id="formDisciplina">
-<label for="instituicao">Instituição:</label>
-<select id="instituicao">
-<option value="">Selecione uma instituição</option>
-</select>
+      <form id="formDisciplina">
+        <label for="instituicao">Instituição:</label>
+        <select id="instituicao" required>
+          <option value="">Selecione uma instituição</option>
+        </select>
 
-<label for="curso">Curso:</label>
-<select id="curso">
-<option value="">Selecione um curso</option>
-</select>
+        <label for="curso">Curso:</label>
+        <select id="curso" required>
+          <option value="">Selecione um curso</option>
+        </select>
 
-<label for="nome">Nome da Disciplina:</label>
-<input id="nome" placeholder="Ex: Banco de Dados I" />
+        <label for="nome">Nome da Disciplina:</label>
+        <input id="nome" placeholder="Ex: Banco de Dados I" required />
 
-<label for="sigla">Sigla:</label>
-<input id="sigla" placeholder="Ex: BDI" />
+        <label for="sigla">Sigla:</label>
+        <input id="sigla" placeholder="Ex: BDI" required />
 
-<label for="codigo">Código:</label>
-<input id="codigo" placeholder="Ex: ES123" />
+        <label for="codigo">Código:</label>
+        <input id="codigo" placeholder="Ex: ES123" required />
 
-<label for="periodo">Período:</label>
-<input id="periodo" placeholder="Ex: 3º semestre" />
+        <label for="periodo">Período:</label>
+        <input id="periodo" placeholder="Ex: 3º semestre" required />
 
-<div class="botoes">
-<button class="btn-cancelar" type="button" id="btnCancelar">Cancelar</button>
-<button class="btn-salvar" type="submit" id="btnSalvar">Salvar</button>
-</div>
-</form>
-</main>
+        <div class="botoes">
+          <button type="button" class="btn-cancelar" id="btnCancelar">Cancelar</button>
+          <button type="submit" class="btn-salvar" id="btnSalvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-<script src="cadastro_disciplina.js"></script>
+  <script src="cadastro_disciplina.js"></script>
 </body>
 </html>
