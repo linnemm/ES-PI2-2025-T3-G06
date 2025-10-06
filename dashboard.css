@@ -7,132 +7,142 @@
 
 body {
   background-color: #f5f6fa;
+  overflow-x: hidden;
 }
 
-/* MENU LATERAL */
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+/* --- MENU LATERAL --- */
 .sidebar {
-  width: 260px;
-  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  width: 250px;
+  background: #6ca98c;
   color: white;
   padding: 25px 20px;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  bottom: 0;
 }
 
-.sidebar h2 {
+.logo {
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.sidebar ul {
-  list-style: none;
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.sidebar li {
-  font-size: 16px;
-  margin: 18px 0;
-  cursor: pointer;
+.menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: 0.3s;
-}
-
-.sidebar li:hover {
-  background-color: rgba(255, 255, 255, 0.2);
   padding: 8px 10px;
   border-radius: 6px;
+  transition: 0.3s;
 }
 
-/* CONTEÚDO PRINCIPAL */
-.main-content {
-  margin-left: 260px;
-  padding: 40px;
+.menu a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-.main-content h1 {
-  font-size: 26px;
-  margin-bottom: 30px;
+/* --- CONTEÚDO PRINCIPAL --- */
+.content {
+  flex: 1;
+  padding: 30px 50px;
 }
 
-/* CONTAINER DOS CARDS */
-.cards-container {
+/* --- CABEÇALHO --- */
+.header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  width: 100%;
-  flex-wrap: nowrap;       /* ✅ mantém todos lado a lado */
-  overflow-x: auto;        /* ✅ rolagem horizontal se não couberem */
-  padding-bottom: 10px;
+  align-items: center;
+  margin-bottom: 40px;
 }
 
-/* CARD */
-.card {
-  flex: 1;
-  min-width: 220px;
-  max-width: 100%;
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  text-align: center;
-  transition: 0.3s;
+.header h1 {
+  font-size: 28px;
+  font-weight: 600;
 }
 
-.card:hover {
-  transform: translateY(-3px);
-}
-
-.card h3 {
-  font-size: 24px;
-  color: #6ca98c;
-  margin-bottom: 15px;
-}
-
-/* BOTÃO */
-.card button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
+.perfil-btn {
   border: none;
-  background-color: #6ca98c;
-  color: white;
-  border-radius: 8px;
-  font-size: 15px;
+  background: #f2f3f5;
+  padding: 8px 18px;
+  border-radius: 20px;
   cursor: pointer;
-  transition: 0.3s;
-}
-
-.card button:hover {
-  background-color: #5c8c75;
-}
-
-/* TABELA */
-.card table {
-  width: 100%;
-  margin-top: 15px;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.card th, 
-.card td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: center;
-}
-
-.card th {
-  background-color: #6ca98c;
-  color: white;
   font-weight: 500;
 }
 
-.card tr:hover td {
-  background-color: #f7f7f7;
+/* --- CARDS --- */
+.cards {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px; /* espaço entre os cards */
+  margin-bottom: 25px;
+  flex-wrap: nowrap;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 25px 0;
+  width: 220px; /*  largura maior */
+  height: 130px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card h2 {
+  font-size: 32px;
+  color: #6ca98c;
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* --- BOTÕES DE AÇÃO --- */
+.actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.actions button {
+  background: white;
+  border: 1px solid #dcdcdc;
+  padding: 22px 0;
+  width: 220px; /*  igual aos cards */
+  height: 65px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.actions button:hover {
+  background-color: #f2f2f2;
 }

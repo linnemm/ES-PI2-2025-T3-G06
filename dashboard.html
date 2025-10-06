@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NotaDez - Dashboard</title>
 
-  <!-- Ícones Font Awesome -->
+  <!-- Importar ícones Font Awesome -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -14,80 +14,59 @@
   <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-  <div class="sidebar">
-    <h2><i class="fa-solid fa-square-check"></i> NotaDez</h2>
-    <ul>
-      <li><i class="fa-solid fa-building-columns"></i> Instituições</li>
-      <li><i class="fa-solid fa-book"></i> Disciplinas</li>
-      <li><i class="fa-solid fa-users"></i> Turmas</li>
-      <li><i class="fa-solid fa-user-graduate"></i> Alunos</li>
-    </ul>
-  </div>
+  <div class="dashboard">
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
+      <div class="logo"><i class="fa-solid fa-square-check"></i> NotaDez</div>
 
-  <div class="main-content">
-    <h1>Olá, Professor</h1>
-    
-    <div class="cards-container">
-      <!-- Instituições -->
-      <div class="card">
-        <h3>2<br>Instituições</h3>
-        <button>+ Nova Instituição</button>
-        <table>
-          <tr><th>Nome</th></tr>
-          <tr><td>Colégio São José</td></tr>
-          <tr><td>Escola Modelo</td></tr>
-        </table>
-      </div>
+      <nav class="menu">
+        <a href="#"><i class="fa-solid fa-building-columns"></i> Instituições</a>
+        <a href="#"><i class="fa-solid fa-book"></i> Disciplinas</a>
+        <a href="#"><i class="fa-solid fa-users"></i> Turmas</a>
+        <a href="#"><i class="fa-solid fa-user-graduate"></i> Alunos</a>
+      </nav>
+    </aside>
 
-      <!-- Cursos -->
-      <div class="card">
-        <h3>3<br>Cursos</h3>
-        <button>+ Novo Curso</button>
-        <table>
-          <tr><th>Nome</th></tr>
-          <tr><td>Informática</td></tr>
-          <tr><td>Administração</td></tr>
-          <tr><td>Contabilidade</td></tr>
-        </table>
-      </div>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="content">
+      <header class="header">
+        <h1>Olá, Professor</h1>
+        <button class="perfil-btn">Perfil <i class="fa-solid fa-chevron-down"></i></button>
+      </header>
 
-      <!-- Disciplinas -->
-      <div class="card">
-        <h3>4<br>Disciplinas</h3>
-        <button>+ Nova Disciplina</button>
-        <table>
-          <tr><th>Nome</th></tr>
-          <tr><td>Matemática</td></tr>
-          <tr><td>Português</td></tr>
-          <tr><td>História</td></tr>
-          <tr><td>Geografia</td></tr>
-        </table>
-      </div>
+      <!-- CARDS SUPERIORES -->
+      <section class="cards">
+        <div class="card">
+          <h2>2</h2>
+          <p>Instituições</p>
+        </div>
+        <div class="card">
+          <h2>3</h2>
+          <p>Cursos</p>
+        </div>
+        <div class="card">
+          <h2>4</h2>
+          <p>Disciplinas</p>
+        </div>
+        <div class="card">
+          <h2>3</h2>
+          <p>Turmas</p>
+        </div>
+        <div class="card">
+          <h2>3</h2>
+          <p>Alunos</p>
+        </div>
+      </section>
 
-      <!-- Turmas -->
-      <div class="card">
-        <h3>3<br>Turmas</h3>
-        <button>+ Nova Turma</button>
-        <table>
-          <tr><th>Nome</th></tr>
-          <tr><td>1°A</td></tr>
-          <tr><td>2°B</td></tr>
-          <tr><td>3°C</td></tr>
-        </table>
-      </div>
-
-      <!-- Alunos -->
-      <div class="card">
-        <h3>3<br>Alunos</h3>
-        <button>+ Novo Aluno</button>
-        <table>
-          <tr><th>Nome</th></tr>
-          <tr><td>Maria Lima</td></tr>
-          <tr><td>João Silva</td></tr>
-          <tr><td>Ana Costa</td></tr>
-        </table>
-      </div>
-    </div>
+      <!-- BOTÕES DE AÇÃO -->
+      <section class="actions">
+        <button><i class="fa-solid fa-plus"></i> Cadastrar nova instituição</button>
+        <button><i class="fa-solid fa-plus"></i> Cadastrar novo curso</button>
+        <button><i class="fa-solid fa-plus"></i> Cadastrar nova disciplina</button>
+        <button><i class="fa-solid fa-plus"></i> Cadastrar nova turma</button>
+        <button><i class="fa-solid fa-plus"></i> Cadastrar novos alunos</button>
+      </section>
+    </main>
   </div>
 </body>
 </html>
