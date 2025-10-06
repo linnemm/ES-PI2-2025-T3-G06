@@ -75,7 +75,7 @@ html, body {
   transition: background-color 0.3s;
   justify-content: flex-end;
   gap: 10px;
-  margin-right: 120px;
+  margin-right: 10px;
 }
 
 .btn-turma:hover {
@@ -84,7 +84,7 @@ html, body {
 
 /* ===== BOTÃO remover TURMA ===== */
 .btn-remover {
-  background-color: #f72d23;
+  background-color: #6ca98c;
   font-size: 18px;
   color: #fff;
   padding: 14px 26px;
