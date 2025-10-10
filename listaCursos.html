@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cursos Cadastrados - NotaDez</title>
+  <link rel="stylesheet" href="listaCursos.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+<body>
+
+  <!-- Topbar -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+    <ul class="menu-horizontal">
+      <li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+      <li><a href="listaCursos.html"><i class="fa-solid fa-graduation-cap"></i> <strong>Cursos</strong></a></li>
+      <li><a href="listaDisciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
+      <li><a href="turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
+    </ul>
+  </nav>
+
+  <!-- Conteúdo principal -->
+  <main class="main-content">
+    <h1>Cursos Cadastrados</h1>
+
+    <!-- Barra de busca -->
+    <form class="filtro-card" onsubmit="return false;">
+      <label for="fBusca">Busca</label>
+      <input id="fBusca" type="text" placeholder="Buscar por nome, sigla ou coordenador" />
+
+      <div class="botoes">
+        <button class="btn-curso" id="btnBuscar" type="button">Buscar</button>
+        <div style="display:flex; gap:10px; margin-left:auto;">
+          <button class="btn-curso" id="btnNovo" type="button">+ Novo Curso</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Lista -->
+    <div class="lista-card">
+      <div class="tabela-head">
+        <span>Curso</span>
+        <span>Sigla</span>
+        <span>Coordenador</span>
+        <span style="text-align:right;">Ações</span>
+      </div>
+      <div id="corpoTabela"></div>
+      <div id="vazio" class="vazio">Nenhum curso encontrado.</div>
+    </div>
+
+    <p class="nota">* Para excluir, o curso não pode ter disciplinas vinculadas.</p>
+  </main>
+
+  <script src="listaCursos.js"></script>
+</body>
+</html>
