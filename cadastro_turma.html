@@ -35,8 +35,24 @@
         <label for="nomeTurma">Digite a Turma:</label>
         <input type="text" id="nomeTurma" name="nomeTurma" placeholder="Ex: Turma 001" required />
         
+        <label for="instituicao">Instituição:</label>
+        <select id="instituicao" required>
+          <option value="">Selecione uma instituição</option>
+        </select>
+
+        <label for="curso">Curso:</label>
+        <select id="curso" required>
+          <option value="">Selecione um curso</option>
+        </select>
+
         <label for="disciplina">Digite para qual disciplina:</label>
         <input type="text" id="disciplina" name="disciplina" placeholder="Ex: Banco de Dados I" required />
+        
+        <label for="codigo">Código:</label>
+        <input id="codigo" placeholder="Ex: AS521" required />
+
+        <label for="periodo">Período:</label>
+        <input id="periodo" placeholder="Ex: 3º semestre" required />
         
         <div class="botoes">
           <button type="submit" class="btn-salvar">Adicionar Turma</button>

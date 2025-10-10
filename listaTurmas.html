@@ -1,0 +1,65 @@
+<!--Autoria: Miriã-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turmas</title>
+
+  <!-- Ícones Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!--link que ligqa html com o css-->
+  <link rel="stylesheet" href="listaTurmas.css" />
+</head>
+
+<body>
+  <!--Ícones da barra usando a biblioteca Font Awesome-->
+
+   <nav class="topbar">
+      <h2>NotaDez</h2>
+      <ul class="menu-horizontal">
+        <li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+        <li><a href="disciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
+        <li><a href="visualizar turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
+        <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+      </ul>
+    </nav>
+
+  <!-- Conteúdo principal -->
+  <main class="main-content">
+    <h1>Turmas Cadastradas</h1>
+
+    <!-- Barra de busca -->
+    <form class="filtro-card" onsubmit="return false;">
+      <label for="fBusca">Busca</label>
+      <input id="fBusca" type="text" placeholder="Buscar por turma, código ou discplina" />
+
+      <div class="botoes">
+        <button class="btn-curso" id="btnBuscar" type="button">Buscar</button>
+        <div style="display:flex; gap:10px; margin-left:auto;">
+          <button class="btn-curso" id="btnNovo" type="button" onclick="window.location.href='cadastro_turma.html'">+ Cadastrar Nova Turma</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Lista -->
+    <div class="lista-card">
+      <div class="tabela-head">
+        <span>Turma</span>
+        <span>Código</span>
+        <span>Disciplina</span>
+        <span style="text-align:right;">Ações</span></div>
+      <div id="corpoTabela"></div>
+      <div id="vazio" class="vazio">Nenhuma turma encontrada.</div>
+    </div>
+
+  </main>
+
+  <script src="listaTurmas.js"></script>
+  
+</body>
+</html>
