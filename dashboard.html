@@ -1,100 +1,90 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NotaDez - Dashboard</title>
-
-  <!-- Font Awesome para ícones -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
-
-  <!-- Link para CSS externo -->
+  <title>Instituições - NotaDez</title>
   <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="dashboard">
-    <!-- Menu horizontal fixo no topo -->
-    <nav class="topbar">
-      <h2>NotaDez</h2>
-      <ul class="menu-horizontal">
-        <li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-        <li><a href="disciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
-        <li><a href="visualizar turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
-        <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
-      </ul>
-    </nav>
+<div class="dashboard">
+  <!-- Menu superior -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+    <ul class="menu-horizontal">
+      <li><a href="#"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+      <li><a href="#"><i class="fa-solid fa-book"></i> Cursos</a></li>
+      <li><a href="#"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+      <li><a href="#"><i class="fa-solid fa-users"></i> Turmas</a></li>
+      <li><a href="#"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+      <li><a href="#"><i class="fa-solid fa-user"></i> Perfil</a></li>
+      <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+    </ul>
+  </nav>
 
-    <!-- Bandeirinhas "NOTADEZ" abaixo do menu -->
-    <div class="bandeirinhas">
-      <div class="flamula">N</div>
-      <div class="flamula">O</div>
-      <div class="flamula">T</div>
-      <div class="flamula">A</div>
-      <div class="flamula">D</div>
-      <div class="flamula">E</div>
-      <div class="flamula">Z</div>
-    </div>
+  <!-- Conteúdo principal -->
+  <main class="container">
+    <h1 class="titulo-verde">Instituições Cadastradas</h1>
 
-    <!-- Conteúdo principal -->
-    <main class="content">
-      <header class="header">
-      </header>
+    <!-- Barra de busca do código 1 -->
+    <form class="filtro-card" onsubmit="return false;">
+      <label for="buscaInstituicao">Busca</label>
+      <input
+        id="buscaInstituicao"
+        type="text"
+        placeholder="Buscar por nome ou sigla da instituição"
+      />
+      <div class="botoes">
+        <button class="btn-curso" id="btnBuscarInstituicao" type="button">
+          <i class="fa-solid fa-magnifying-glass"></i> Buscar
+        </button>
+        <button class="btn-curso" id="addInstituicao" type="button">+ Nova Instituição</button>
+      </div>
+    </form>
 
-      <div class="cards">
-        <div class="card-wrapper">
-          <a href="listaInstituicoes.html" class="card-link">
-            <div class="card">
-              <h2>2</h2>
-              <p>Instituições</p>
-            </div>
-          </a>
-          <button onclick="window.location.href='cadastro_instituicao.html'">+ Cadastrar nova instituição</button>
+    <!-- Lista de instituições (cards do código 2) -->
+    <div class="cards" id="listaInstituicoes">
+      <div class="card">
+        <div class="card-content" onclick="window.location.href='detalhesInstituicao.html'">
+          <h2>PUCCAMP</h2>
+          <p><strong>Nome:</strong> Pontifícia Universidade Católica de Campinas</p>
         </div>
-
-        <div class="card-wrapper">
-          <a href="cursos.html" class="card-link">
-            <div class="card">
-              <h2>3</h2>
-              <p>Cursos</p>
-            </div>
-          </a>
-          <button onclick="window.location.href='cadastro_curso.html'">+ Cadastrar novo curso</button>
-        </div>
-
-        <div class="card-wrapper">
-          <a href="disciplinas.html" class="card-link">
-            <div class="card">
-              <h2>4</h2>
-              <p>Disciplinas</p>
-            </div>
-          </a>
-          <button onclick="window.location.href='cadastro_disciplina.html'">+ Cadastrar nova disciplina</button>
-        </div>
-
-        <div class="card-wrapper">
-          <a href="visualizar turmas.html" class="card-link">
-            <div class="card">
-              <h2>3</h2>
-              <p>Turmas</p>
-            </div>
-          </a>
-          <button onclick="window.location.href='cadastro_turma.html'">+ Cadastrar nova turma</button>
-        </div>
-
-        <div class="card-wrapper">
-          <a href="alunos.html" class="card-link">
-            <div class="card">
-              <h2>5</h2>
-              <p>Alunos</p>
-            </div>
-          </a>
-          <button onclick="window.location.href='cadastro_aluno.html'">+ Cadastrar novo aluno</button>
+        <div class="card-actions">
+          <button class="edit-btn"><i class="fa-solid fa-pen"></i> Editar</button>
+          <button class="remove-btn"><i class="fa-solid fa-trash"></i> Remover</button>
         </div>
       </div>
-    </main>
-  </div>
+
+      <div class="card">
+        <div class="card-content" onclick="window.location.href='detalhesInstituicao.html'">
+          <h2>USP</h2>
+          <p><strong>Nome:</strong> Universidade de São Paulo</p>
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn"><i class="fa-solid fa-pen"></i> Editar</button>
+          <button class="remove-btn"><i class="fa-solid fa-trash"></i> Remover</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content" onclick="window.location.href='detalhesInstituicao.html'">
+          <h2>UNICAMP</h2>
+          <p><strong>Nome:</strong> Universidade Estadual de Campinas</p>
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn"><i class="fa-solid fa-pen"></i> Editar</button>
+          <button class="remove-btn"><i class="fa-solid fa-trash"></i> Remover</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="mensagem-vazia" style="display:none;">Nenhuma instituição encontrada.</p>
+  </main>
+</div>
+
+<!-- JS -->
+<script src="dashboard.js"></script>
 </body>
 </html>
