@@ -1,68 +1,59 @@
-// Chaves
-const LS_KEY = 'pi.disciplinas';
-const LS_INST = 'pi.instituicoes';
-const LS_CURSO = 'pi.cursos';
-
+// Chaves de armazenamento (segue padrão dos seus arquivos)
+const LS_DISC = 'pi.disciplinas'; // [{ id, cursoId?, nome }]
 const $ = (id) => document.getElementById(id);
 
-// Seeds (remova se vier do back-end)
-if(!localStorage.getItem(LS_INST)) localStorage.setItem(LS_INST, JSON.stringify(['PUC-Campinas','UNICAMP','FATEC']));
-if(!localStorage.getItem(LS_CURSO)) localStorage.setItem(LS_CURSO, JSON.stringify(['Engenharia de Software','Sistemas de Informação','Ciência da Computação']));
-if(!localStorage.getItem(LS_KEY)) localStorage.setItem(LS_KEY, JSON.stringify([]));
-
-function carregarCombos(){
-JSON.parse(localStorage.getItem(LS_INST) || '[]').forEach(i => $('fInstituicao').append(new Option(i,i)));
-JSON.parse(localStorage.getItem(LS_CURSO) || '[]').forEach(c => $('fCurso').append(new Option(c,c)));
+// Seeds para testes (remova ao integrar com back-end)
+if (!localStorage.getItem(LS_DISC)) {
+  localStorage.setItem(LS_DISC, JSON.stringify([
+    { id: 'd1', cursoId: '1', nome: 'Algoritmos e Programação' },
+    { id: 'd2', cursoId: '1', nome: 'Banco de Dados I' },
+    { id: 'd3', cursoId: '2', nome: 'Engenharia de Requisitos' },
+    { id: 'd4', cursoId: '3', nome: 'Estruturas de Dados' }
+  ]));
 }
 
+function getParam(name){ return new URLSearchParams(window.location.search).get(name); }
+
 function linhaHTML(d){
-return `
-<div class="tabela-row">
-<span><span class="tag">${d.instituicao || '-'}</span></span>
-<span><strong>${d.nome}</strong><br><small>${d.curso || '-'} • código ${d.codigo || '-'}</small></span>
-<span>${d.sigla || '-'}</span>
-<span>${d.periodo || '-'}</span>
-<span class="acoes">
-<a class="link" href="cadastro_disciplina.html?id=${encodeURIComponent(d.id)}">Editar</a>
-<button class="btn-excluir" onclick="excluirDisciplina('${d.id}')">Excluir</button>
-</span>
-</div>`;
+  return `
+    <div class="tabela-row">
+      <span><strong>${d.nome}</strong></span>
+      <span class="acoes">
+        <a class="link" href="turmas.html?disciplinaId=${encodeURIComponent(d.id)}">Turmas</a>
+        <button class="btn-excluir" onclick="excluirDisciplina('${d.id}')">Excluir</button>
+      </span>
+    </div>
+  `;
 }
 
 function renderLista(){
-const lista = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
-const fI = $('fInstituicao').value.trim().toLowerCase();
-const fC = $('fCurso').value.trim().toLowerCase();
-const q = $('fBusca').value.trim().toLowerCase();
+  const cursoId = getParam('cursoId'); // se vier do fluxo Cursos→Disciplinas
+  const lista = JSON.parse(localStorage.getItem(LS_DISC) || '[]');
 
-const filtrados = lista.filter(d => {
-const passI = !fI || (d.instituicao||'').toLowerCase() === fI;
-const passC = !fC || (d.curso||'').toLowerCase() === fC;
-const txt = `${d.nome||''} ${d.sigla||''} ${d.codigo||''}`.toLowerCase();
-const passQ = !q || txt.includes(q);
-return passI && passC && passQ;
-});
+  // Filtra por cursoId quando informado; senão, mostra todas
+  const base = cursoId ? lista.filter(d => d.cursoId === cursoId) : lista;
 
-$('corpoTabela').innerHTML = filtrados.map(linhaHTML).join('');
-$('vazio').style.display = filtrados.length ? 'none' : 'block';
+  const q = $('fBuscaDisc').value.trim().toLowerCase();
+  const filtradas = base.filter(d => !q || d.nome.toLowerCase().includes(q));
+
+  $('corpoTabelaDisc').innerHTML = filtradas.map(linhaHTML).join('');
+  $('vazioDisc').style.display = filtradas.length ? 'none' : 'block';
 }
 
 function excluirDisciplina(id){
-if(!confirm('Confirmar exclusão desta disciplina?')) return;
-const list = JSON.parse(localStorage.getItem(LS_KEY) || '[]').filter(x=>x.id!==id);
-localStorage.setItem(LS_KEY, JSON.stringify(list));
-renderLista();
+  if(!confirm('Confirmar exclusão desta disciplina?')) return;
+
+  // (Opcional) validar se há turmas vinculadas ao id antes de excluir.
+  const lista = JSON.parse(localStorage.getItem(LS_DISC) || '[]').filter(x => x.id !== id);
+  localStorage.setItem(LS_DISC, JSON.stringify(lista));
+  renderLista();
 }
 
 // Eventos
-$('btnNova').addEventListener('click', ()=> location.href='cadastro_disciplina.html');
-$('btnBuscar').addEventListener('click', renderLista);
-$('fInstituicao').addEventListener('change', renderLista);
-$('fCurso').addEventListener('change', renderLista);
-$('fBusca').addEventListener('keyup', e => { if(e.key==='Enter') renderLista(); });
+$('btnBuscarDisc').addEventListener('click', renderLista);
+$('fBuscaDisc').addEventListener('keyup', e => { if(e.key === 'Enter') renderLista(); });
 
-// Init
-carregarCombos();
+// Inicialização
 renderLista();
 
 // Expor para botão inline
