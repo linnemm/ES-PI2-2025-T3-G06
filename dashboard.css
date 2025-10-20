@@ -1,4 +1,3 @@
-/* Reset e fonte */
 * {
   margin: 0;
   padding: 0;
@@ -60,14 +59,72 @@ body {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Container principal */
+/* Aba flutuante */
+.menu-flutuante {
+  position: absolute;
+  top: 75px;
+  right: 40px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  padding: 20px;
+  width: 280px;
+  z-index: 50;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {opacity: 0; transform: translateY(-10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.menu-conteudo h3 {
+  color: #6ca98c;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.campo-selecao {
+  margin-bottom: 12px;
+}
+
+.campo-selecao label {
+  font-size: 14px;
+  color: #444;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.campo-selecao select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Botão Ir */
+.menu-flutuante .btn-curso {
+  width: 100%;
+  background-color: #6ca98c;
+  color: white;
+  border: none;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.menu-flutuante .btn-curso:hover {
+  background-color: #5c8c75;
+}
+
+/* Conteúdo principal */
 .container {
   width: 90%;
   max-width: 1000px;
   margin: 100px auto 40px;
 }
 
-/* Título */
 .titulo-verde {
   text-align: center;
   color: #6ca98c;
@@ -76,7 +133,7 @@ body {
   margin-bottom: 30px;
 }
 
-/* Barra de busca (estilo baseado no código 1) */
+/* Barra de busca */
 form.filtro-card {
   background-color: #fff;
   padding: 20px;
@@ -89,21 +146,24 @@ form.filtro-card {
 
 form.filtro-card label {
   display: block;
-  margin-top: 10px;
   font-weight: 600;
   font-size: 16px;
   color: #333;
 }
 
+.busca-linha {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 form.filtro-card input {
-  width: 100%;
+  flex: 1;
   padding: 10px;
-  margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 15px;
   height: 42px;
-  background-color: #fff;
 }
 
 form.filtro-card input:focus {
@@ -111,12 +171,6 @@ form.filtro-card input:focus {
   border-color: #6ca98c;
   box-shadow: 0 0 5px rgba(108, 169, 140, 0.6);
   transition: 0.2s ease-in-out;
-}
-
-.botoes {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 18px;
 }
 
 .btn-curso {
@@ -165,7 +219,6 @@ form.filtro-card input:focus {
   color: #6ca98c;
   margin-bottom: 10px;
   font-weight: 700;
-  letter-spacing: 1px;
 }
 
 .card-content p {
@@ -173,7 +226,6 @@ form.filtro-card input:focus {
   color: #555;
 }
 
-/* Ações do card */
 .card-actions {
   display: flex;
   justify-content: space-around;
@@ -211,43 +263,4 @@ form.filtro-card input:focus {
 
 .remove-btn:hover {
   background-color: #e03131;
-}
-
-/* Mensagem de vazio */
-.mensagem-vazia {
-  text-align: center;
-  color: #777;
-  margin-top: 20px;
-  font-size: 14px;
-}
-
-/* Responsivo */
-@media (max-width: 720px) {
-  .menu-horizontal {
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-  }
-
-  .container {
-    margin-top: 160px;
-  }
-
-  .card {
-    width: 100%;
-  }
-
-  form.filtro-card {
-    width: 100%;
-    margin: 0 16px 30px 16px;
-  }
-
-  .botoes {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .botoes button {
-    width: 100%;
-  }
 }
