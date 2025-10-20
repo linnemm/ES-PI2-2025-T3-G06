@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Turma - NotaDez</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="detalhesTurma.css" />
+
+  <!-- Ícones e Fonte -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+<div class="dashboard">
+
+  <!-- Topbar -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+    <ul class="menu-horizontal">
+      <li><a href="disciplinas.html"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+      <li><a href="turmas.html" class="ativo"><i class="fa-solid fa-users"></i> Turmas</a></li>
+      <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+      <li><a href="#"><i class="fa-solid fa-user"></i> Perfil</a></li>
+      <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+    </ul>
+  </nav>
+
+  <!-- Conteúdo principal -->
+  <main class="container">
+    <div class="turma-header">
+      <h1>Turma A - Engenharia de Software</h1>
+      <p>Disciplina: Cálculo I | Instituição: PUCCAMP | Período: 1º Semestre</p>
+    </div>
+
+    <!-- Botões principais -->
+    <div class="turma-acoes">
+      <button id="btnAddAluno"><i class="fa-solid fa-user-plus"></i> Adicionar Aluno</button>
+      <button id="btnImportar"><i class="fa-solid fa-file-import"></i> Importar CSV</button>
+      <button id="btnExportar"><i class="fa-solid fa-file-export"></i> Exportar Notas</button>
+      <button id="btnAddComponente"><i class="fa-solid fa-plus"></i> Novo Componente</button>
+    </div>
+
+    <!-- Tabela 1: Lista de Alunos -->
+    <div class="tabela-notas" style="margin-bottom: 30px;">
+      <h2 style="color:#6ca98c; margin-bottom:10px;">Alunos da Turma</h2>
+      <table id="tabelaAlunos">
+        <thead>
+          <tr>
+            <th>Matrícula</th>
+            <th>Aluno</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>11111</td>
+            <td>João Silva</td>
+            <td><button title="Remover"><i class="fa-solid fa-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td>11112</td>
+            <td>Maria Souza</td>
+            <td><button title="Remover"><i class="fa-solid fa-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td>11113</td>
+            <td>Pedro Santos</td>
+            <td><button title="Remover"><i class="fa-solid fa-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td>11114</td>
+            <td>Ana Lima</td>
+            <td><button title="Remover"><i class="fa-solid fa-trash"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tabela 2: Notas -->
+    <div class="tabela-notas">
+      <h2 style="color:#6ca98c; margin-bottom:10px;">Notas da Turma</h2>
+      <table id="tabelaNotas">
+        <thead>
+          <tr>
+            <th>Matrícula</th>
+            <th>Aluno</th>
+            <th>P1</th>
+            <th>P2</th>
+            <th>P3</th>
+            <th>Nota Final</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>11111</td>
+            <td>João Silva</td>
+            <td>8.0</td>
+            <td>7.5</td>
+            <td>9.0</td>
+            <td>8.2</td>
+            <td><button title="Editar"><i class="fa-solid fa-pen"></i></button></td>
+          </tr>
+          <tr>
+            <td>11112</td>
+            <td>Maria Souza</td>
+            <td>9.0</td>
+            <td>8.5</td>
+            <td>9.5</td>
+            <td>9.0</td>
+            <td><button title="Editar"><i class="fa-solid fa-pen"></i></button></td>
+          </tr>
+          <tr>
+            <td>11113</td>
+            <td>Pedro Santos</td>
+            <td>7.0</td>
+            <td>6.5</td>
+            <td>8.0</td>
+            <td>7.2</td>
+            <td><button title="Editar"><i class="fa-solid fa-pen"></i></button></td>
+          </tr>
+          <tr>
+            <td>11114</td>
+            <td>Ana Lima</td>
+            <td>8.5</td>
+            <td>8.0</td>
+            <td>8.5</td>
+            <td>8.3</td>
+            <td><button title="Editar"><i class="fa-solid fa-pen"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Botões inferiores -->
+    <div class="footer-acoes">
+      <button id="btnAtualizar"><i class="fa-solid fa-rotate-right"></i> Atualizar</button>
+      <button id="btnVoltar"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+    </div>
+  </main>
+</div>
+
+<!-- JavaScript -->
+<script src="detalhesTurma.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+/* =======================
+   ESTILO DETALHES DA TURMA
+======================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f5f6fa;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* =======================
+   TOPO
+======================= */
+.topbar {
+  width: 100%;
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  color: white;
+  padding: 15px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.topbar h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.menu-horizontal {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.menu-horizontal li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.menu-horizontal li a:hover,
+.menu-horizontal li a.ativo {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* =======================
+   CONTAINER E TÍTULO
+======================= */
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 100px auto 40px;
+}
+
+.turma-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.turma-header h1 {
+  color: #6ca98c;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.turma-header p {
+  color: #555;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+/* =======================
+   BOTÕES SUPERIORES
+======================= */
+.turma-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.turma-acoes button {
+  background-color: #6ca98c;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s, transform 0.1s ease-in-out;
+}
+
+.turma-acoes button:hover {
+  background-color: #5c8c75;
+  transform: scale(1.03);
+}
+
+/* =======================
+   TABELA DE NOTAS
+======================= */
+.tabela-notas {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  overflow-x: auto;
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  min-width: 700px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #6ca98c;
+  color: white;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+tr:hover {
+  background-color: #f2f7f4;
+}
+
+td button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6ca98c;
+  font-size: 16px;
+}
+
+td button:hover {
+  color: #4b7d64;
+}
+
+/* =======================
+   BOTÕES INFERIORES
+======================= */
+.footer-acoes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer-acoes button {
+  background-color: #6ca98c;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.3s, transform 0.1s ease-in-out;
+}
+
+.footer-acoes button:hover {
+  background-color: #5c8c75;
+  transform: scale(1.03);
+}
+
+/* =======================
+   RESPONSIVIDADE
+======================= */
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .menu-horizontal {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .container {
+    width: 95%;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  .footer-acoes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .turma-acoes {
+    flex-direction: column;
+    align-items: center;
+  }
+}
