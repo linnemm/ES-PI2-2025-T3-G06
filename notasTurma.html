@@ -3,13 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alunos da Turma - NotaDez</title>
-
-  <link rel="stylesheet" href="detalhesTurma.css" />
+  <title>Notas da Turma - NotaDez</title>
+  <link rel="stylesheet" href="notasTurma.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
-
 <body>
 <div class="dashboard">
   <!-- Topbar -->
@@ -19,14 +17,14 @@
       <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
       <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
       <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
-      <li><a href="#" id="btnTurmas" class="ativo"><i class="fa-solid fa-users"></i> Turmas</a></li>
+      <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
       <li><a href="#"><i class="fa-solid fa-user"></i> Perfil</a></li>
       <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
     </ul>
   </nav>
 
   <!-- Aba flutuante -->
-  <div id="menuFlutuante" class="menu-flutuante">
+  <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
     <div class="menu-conteudo">
       <h3 id="tituloAba">Selecionar</h3>
       <div id="selectContainer"></div>
@@ -43,38 +41,43 @@
 
     <!-- Botões principais -->
     <div class="turma-acoes">
-      <button id="btnAddAluno"><i class="fa-solid fa-user-plus"></i> Adicionar Aluno</button>
-      <button id="btnImportar"><i class="fa-solid fa-file-import"></i> Importar Alunos</button>
+      <button id="btnAddComponente"><i class="fa-solid fa-plus"></i> Novo Componente</button>
+      <button id="btnExportar"><i class="fa-solid fa-file-export"></i> Exportar Notas</button>
       <button id="btnExcluirSelecionados"><i class="fa-solid fa-trash"></i> Excluir Selecionados</button>
-      <button id="btnNotasTurma"><i class="fa-solid fa-clipboard-list"></i> Notas da Turma</button>
     </div>
 
-    <!-- Tabela: Lista de Alunos -->
+    <!-- Tabela de notas -->
     <div class="tabela-notas">
-      <h2 style="color:#6ca98c; margin-bottom:10px;">Alunos da Turma</h2>
-      <table id="tabelaAlunos">
+      <h2 style="color:#6ca98c; margin-bottom:10px;">Notas da Turma</h2>
+      <table id="tabelaNotas">
         <thead>
           <tr>
             <th><input type="checkbox" id="selecionarTodos"></th>
             <th>Matrícula</th>
             <th>Aluno</th>
+            <th>Componente</th>
+            <th>Nota</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><input type="checkbox" class="chkAluno"></td>
+            <td><input type="checkbox" class="chkNota"></td>
             <td>11111</td>
-            <td contenteditable="true">João Silva</td>
+            <td>João Silva</td>
+            <td contenteditable="true">Prova 1</td>
+            <td contenteditable="true">9.5</td>
             <td>
               <button class="btnEditar" title="Editar"><i class="fa-solid fa-pen"></i></button>
               <button class="btnExcluir" title="Excluir"><i class="fa-solid fa-trash"></i></button>
             </td>
           </tr>
           <tr>
-            <td><input type="checkbox" class="chkAluno"></td>
+            <td><input type="checkbox" class="chkNota"></td>
             <td>11112</td>
-            <td contenteditable="true">Maria Souza</td>
+            <td>Maria Souza</td>
+            <td contenteditable="true">Prova 1</td>
+            <td contenteditable="true">8.0</td>
             <td>
               <button class="btnEditar" title="Editar"><i class="fa-solid fa-pen"></i></button>
               <button class="btnExcluir" title="Excluir"><i class="fa-solid fa-trash"></i></button>
@@ -92,6 +95,6 @@
   </main>
 </div>
 
-<script src="detalhesTurma.js"></script>
+<script src="notasTurma.js"></script>
 </body>
 </html>
