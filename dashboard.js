@@ -1,4 +1,5 @@
-// 
+// ==========================
+// Elementos do DOM
 // ==========================
 const inputBusca = document.getElementById("buscaInstituicao");
 const btnBusca = document.getElementById("btnBuscarInstituicao");
@@ -9,6 +10,7 @@ const menuFlutuante = document.getElementById("menuFlutuante");
 const selectContainer = document.getElementById("selectContainer");
 const tituloAba = document.getElementById("tituloAba");
 const btnIr = document.getElementById("btnIr");
+const btnAddInstituicao = document.getElementById("addInstituicao");
 
 // ==========================
 // Mensagem caso nada seja encontrado
@@ -23,7 +25,7 @@ mensagemVazia.style.marginTop = "20px";
 lista.parentNode.insertBefore(mensagemVazia, lista.nextSibling);
 
 // ==========================
-// Função de busca
+// Função de busca de instituições
 // ==========================
 function filtrarInstituicoes() {
   const termo = inputBusca.value.toLowerCase().trim();
@@ -39,41 +41,66 @@ function filtrarInstituicoes() {
   mensagemVazia.style.display = resultados === 0 ? "block" : "none";
 }
 
-// ==========================
-// Evento busca
-// ==========================
 btnBusca.addEventListener("click", filtrarInstituicoes);
 inputBusca.addEventListener("keyup", filtrarInstituicoes);
 
 // ==========================
-// Menu flutuante
+// Dados simulados
 // ==========================
 const instituicoes = ["PUCCAMP", "USP", "UNICAMP"];
 const cursos = ["Engenharia", "Direito", "Administração"];
 const disciplinas = ["Cálculo I", "Física", "Lógica"];
 const turmas = ["Turma A", "Turma B", "Turma C"];
-const alunos = ["João Silva", "Maria Souza", "Pedro Santos"];
 
+// ==========================
+// Função auxiliar para criar selects
+// ==========================
 function criarSelect(id, label, opcoes) {
   const div = document.createElement("div");
   div.classList.add("campo-selecao");
+
   const lbl = document.createElement("label");
   lbl.textContent = label;
   lbl.htmlFor = id;
+
   const select = document.createElement("select");
   select.id = id;
   select.innerHTML =
     `<option value="">Selecione...</option>` +
     opcoes.map(o => `<option>${o}</option>`).join("");
+
   div.appendChild(lbl);
   div.appendChild(select);
   return div;
 }
 
+// ==========================
+// Abrir menu flutuante
+// ==========================
 function abrirMenu(tipo) {
   selectContainer.innerHTML = "";
   btnIr.style.display = "none";
   menuFlutuante.style.display = "block";
+
+  if (tipo === "instituicao") {
+    tituloAba.textContent = "Instituições";
+    
+    // Botão Ver todas acima do select
+    const btnVerTodas = document.createElement("button");
+    btnVerTodas.textContent = "Ver todas as instituições";
+    btnVerTodas.classList.add("btn-curso");
+    btnVerTodas.style.marginBottom = "10px";
+    btnVerTodas.onclick = () => window.location.href = "instituicoes.html";
+    selectContainer.appendChild(btnVerTodas);
+
+    selectContainer.appendChild(criarSelect("selInstituicao", "Selecionar Instituição:", instituicoes));
+    btnIr.style.display = "block";
+    btnIr.onclick = () => {
+      const sel = document.getElementById("selInstituicao");
+      if(sel.value) window.location.href = "listaCursos.html";
+      else alert("Selecione uma instituição!");
+    };
+  }
 
   if (tipo === "curso") {
     tituloAba.textContent = "Selecionar Curso";
@@ -81,7 +108,7 @@ function abrirMenu(tipo) {
     document.getElementById("selInstituicao").addEventListener("change", () => {
       selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
       btnIr.style.display = "block";
-      btnIr.onclick = () => window.location.href = "curso.html";
+      btnIr.onclick = () => window.location.href = "listaDisciplinas.html";
     });
   }
 
@@ -93,7 +120,7 @@ function abrirMenu(tipo) {
       document.getElementById("selCurso").addEventListener("change", () => {
         selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
         btnIr.style.display = "block";
-        btnIr.onclick = () => window.location.href = "disciplina.html";
+        btnIr.onclick = () => window.location.href = "listaTurmas.html";
       });
     });
   }
@@ -108,41 +135,33 @@ function abrirMenu(tipo) {
         document.getElementById("selDisciplina").addEventListener("change", () => {
           selectContainer.appendChild(criarSelect("selTurma", "Turma:", turmas));
           btnIr.style.display = "block";
-          btnIr.onclick = () => window.location.href = "turma.html";
-        });
-      });
-    });
-  }
-
-  if (tipo === "aluno") {
-    tituloAba.textContent = "Selecionar Aluno";
-    selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
-    document.getElementById("selInstituicao").addEventListener("change", () => {
-      selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
-      document.getElementById("selCurso").addEventListener("change", () => {
-        selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
-        document.getElementById("selDisciplina").addEventListener("change", () => {
-          selectContainer.appendChild(criarSelect("selTurma", "Turma:", turmas));
-          document.getElementById("selTurma").addEventListener("change", () => {
-            selectContainer.appendChild(criarSelect("selAluno", "Aluno:", alunos));
-            btnIr.style.display = "block";
-            btnIr.onclick = () => window.location.href = "aluno.html";
-          });
+          btnIr.onclick = () => window.location.href = "detalhesTurma.html";
         });
       });
     });
   }
 }
 
-// Fechar ao clicar fora
+// ==========================
+// Eventos do menu
+// ==========================
+document.getElementById("btnCursos").addEventListener("click", () => abrirMenu("curso"));
+document.getElementById("btnDisciplinas").addEventListener("click", () => abrirMenu("disciplina"));
+document.getElementById("btnTurmas").addEventListener("click", () => abrirMenu("turma"));
+document.getElementById("btnInstituicoes").addEventListener("click", () => abrirMenu("instituicao"));
+
+// ==========================
+// Botão Nova Instituição
+// ==========================
+btnAddInstituicao.addEventListener("click", () => {
+  window.location.href = "cadastro_instituicao.html";
+});
+
+// ==========================
+// Fechar menu ao clicar fora
+// ==========================
 document.addEventListener("click", (e) => {
   if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
     menuFlutuante.style.display = "none";
   }
 });
-
-// Eventos do menu
-document.getElementById("btnCursos").addEventListener("click", () => abrirMenu("curso"));
-document.getElementById("btnDisciplinas").addEventListener("click", () => abrirMenu("disciplina"));
-document.getElementById("btnTurmas").addEventListener("click", () => abrirMenu("turma"));
-document.getElementById("btnAlunos").addEventListener("click", () => abrirMenu("aluno"));
