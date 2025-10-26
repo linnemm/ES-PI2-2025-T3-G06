@@ -1,4 +1,4 @@
-<!--Autoria: Livia-->
+<!-- Autoria: Livia -->
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -6,17 +6,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - NotaDez</title>
-  <link rel="stylesheet" href="../css/login.css">
 
+  <!-- Link para o CSS na pasta correta -->
+  <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
 
-  <!-- Retângulo verde com tarja -->
+  <!-- Caixa de fundo verde arredondada -->
   <div class="background-box">
-
-    <!-- Quadrado branco dentro do fundo verde -->
+    <!-- Caixa branca onde fica o formulário -->
     <div class="login-container">
-      <!-- Bandeirinhas -->
+
+      <!-- Bandeirinhas decorativas com as letras -->
       <div class="bandeirinhas">
         <div class="flamula">N</div>
         <div class="flamula">O</div>
@@ -28,17 +29,38 @@
       </div>
 
       <h1>Login</h1>
+
       <form>
         <input type="email" placeholder="E-mail" required />
-        <input type="password" placeholder="Senha" required />
+        <div class="campo-obrigatorio">*Este campo é obrigatório</div>
+
+        <div class="password-wrapper">
+          <input type="password" id="senha" placeholder="Senha" required />
+          <span class="toggle-password" id="togglePassword"></span>
+        </div>
+
+        <div class="campo-obrigatorio">*Este campo é obrigatório</div>
+
         <button type="submit">Entrar</button>
-        <a href="Esqueceu a senha.html">Esqueci minha senha</a>
+
+        <a href="EsqueceuSenha.html">Esqueci minha senha</a>
         <a href="cadastro.html">Não possui cadastro? Cadastre-se aqui</a>
       </form>
+
     </div>
   </div>
 
+  <!-- Script para mostrar/ocultar senha -->
+  <script>
+    const senha = document.getElementById("senha");
+    const toggle = document.getElementById("togglePassword");
+
+    toggle.addEventListener("click", () => {
+      const isPassword = senha.type === "password";
+      senha.type = isPassword ? "text" : "password";
+      toggle.classList.toggle("visible", isPassword);
+    });
+  </script>
+
 </body>
 </html>
-
-
