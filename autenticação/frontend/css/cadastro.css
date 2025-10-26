@@ -9,12 +9,15 @@ body {
   align-items: center;
   height: 100vh;
   position: relative;
+  overflow: hidden;
+  min-height: 100vh;
 }
 
 /* Retângulo de fundo */
 .background-box {
   position: absolute;
   width: 560px;
+  max-width: 560px;
   height: 660px;
   background: linear-gradient(to right, #b5dcc6, #a7d5bb);
   border-radius: 16px;
@@ -51,7 +54,6 @@ body {
   border: 2px solid #b5dcc6;
   text-align: center;
   z-index: 2;
-  margin-top: 100px;
 }
 
 .cadastro-container h1 {
@@ -167,4 +169,48 @@ body {
 .flamula:nth-child(7) {
   background: #26c6da;
   transform: rotate(-15deg) translateY(-1px);
+}
+
+/* RESPONSIVIDADE */
+
+/* telas médias (tablets) */
+@media (max-width: 768px) {
+  .background-box {
+    width: 95%;
+    padding: 20px 0;
+  }
+
+  .cadastro-container {
+    width: 95%;
+    padding: 30px 20px;
+  }
+}
+
+/* telas pequenas (celulares) */
+
+@media (max-width: 480px) {
+  body {
+    padding: 20px 0;
+  }
+
+  .background-box {
+    width: 95%;
+    padding: 20px 0;
+    box-shadow: none;
+  }
+
+  .cadastro-container {
+    width: 90%;
+    padding: 25px 15px;
+    box-shadow: 0 4px 10px #9dccb2;
+  }
+
+  .cadastro-container input,
+  .cadastro-container button {
+    width: 100%;
+  }
+
+  .bandeirinhas {
+    transform: translateX(-50%) scale(0.9);
+  }
 }

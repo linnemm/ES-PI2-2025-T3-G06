@@ -9,6 +9,8 @@ body {
   align-items: center;
   height: 100vh;
   display: flex;
+  overflow: hidden;
+  min-height: 100vh;
 }
 
 /* Caixa branca */
@@ -26,6 +28,7 @@ form {
 .background-box {
   position: absolute;
   width: 560px;
+  max-width: 560px;
   height: 660px;
   background: linear-gradient(to right, #b5dcc6, #a7d5bb);
   border-radius: 16px;
@@ -36,7 +39,7 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center; 
-  justify-content: center; 
+  justify-content: center;
 }
 
 /* Redefinir senha */
@@ -173,4 +176,47 @@ form button:hover {
 .flamula:nth-child(7) {
   background: #26c6da;
   transform: rotate(-15deg) translateY(-1px);
+}
+
+/* RESPONSIVIDADE */
+
+/* telas médias (tablets) */
+@media (max-width: 768px) {
+  .background-box {
+    width: 95%;
+    padding: 20px 0;
+  }
+
+  .cadastro-container {
+    width: 95%;
+    padding: 30px 20px;
+  }
+}
+
+/* telas pequenas (celulares) */
+@media (max-width: 480px) {
+  body {
+    padding: 20px 0;
+  }
+
+  .background-box {
+    width: 95%;
+    padding: 20px 0;
+    box-shadow: none;
+  }
+
+  .cadastro-container {
+    width: 90%;
+    padding: 25px 15px;
+    box-shadow: 0 4px 10px #9dccb2;
+  }
+
+  .cadastro-container input,
+  .cadastro-container button {
+    width: 100%;
+  }
+
+  .bandeirinhas {
+    transform: translateX(-50%) scale(0.9);
+  }
 }
