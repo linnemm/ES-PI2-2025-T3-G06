@@ -7,10 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redefinir a senha</title>
     <link rel="stylesheet" href="../css/RedefinirSenha.css">
-
-</head>
-<!--link para o botão de alternância de senha "<i>"-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!--Biblioteca para o ícono do olho de senha-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  </head>
 
 <body>
 
@@ -38,19 +37,35 @@
       <!--Digitar nova senha-->
     <div class="password-container">
             <label for="nova senha">Nova senha:</label>
-            <input type="password" placeholder="Digite a nova senha" id="password" name="senha">
-            <i class="fas fa-eye" id="togglePassword"></i>
+            <input type="password" placeholder="Digite a nova senha" id="password1" name="senha">
+            <i class="fas fa-eye toggle-password"></i>
         </div>
 
       <!--Confirmar a senha-->
     <div class="password-container">
             <label for="confirmar senha">Confirmar senha:</label>
-            <input type="password" placeholder="Confirme a nova senha" id="password" name="senha">
-            <i class="fas fa-eye" id="togglePassword"></i>
+            <input type="password" placeholder="Confirme a nova senha" id="password2" name="senha">
+            <i class="fas fa-eye toggle-password"></i>
         </div>
     <br><button type="submit">Redefinir senha</button>
 </form>
 </div>
 </div>
+      
+
+<!-- Script para mostrar/ocultar senha -->
+   <script>
+    const toggleIcons = document.querySelectorAll(".toggle-password");
+
+    toggleIcons.forEach((icon, index) => {
+      const input = document.getElementById(`password${index + 1}`);
+      icon.addEventListener("click", () => {
+        const isPassword = input.type === "password";
+        input.type = isPassword ? "text" : "password";
+        icon.classList.toggle("fa-eye-slash", isPassword);
+      });
+    });
+  </script>
+
 </body>
 </html>
