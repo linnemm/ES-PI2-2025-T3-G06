@@ -19,6 +19,7 @@ form {
   width: 360px;
   padding: 70px;
   border-radius: 12px;
+  padding: 120px 50px 50px 50px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.1);
   text-align: center;
   position: relative;
@@ -122,7 +123,7 @@ form button {
   font-size: 16px;
   cursor: pointer;
   transition: background 0.3s;
-  margin-top: 10px;
+  margin-top: 1px;
 }
 
 form button:hover {
@@ -133,7 +134,7 @@ form button:hover {
 .bandeirinhas {
   position: absolute;
   left: 50%;
-  top: 20px;
+  top: 35px;
   margin-top: 95px;
   transform: translateX(-50%);
   display: flex;
