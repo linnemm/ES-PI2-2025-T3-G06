@@ -92,6 +92,7 @@ body {
   background: linear-gradient(to right, #a7d5bb, #9dccb2);
 }
 
+/*redirecionamento para o login caso já tenha cadastro*/
 .cadastro-container a {
   display: block;
   margin-top: 15px;
@@ -134,7 +135,7 @@ body {
   background-size: contain;
 }
 
-/* Aviso geral acima do formulário */
+/* Aviso de campo obrigatorio acima do formulário */
 .aviso-obrigatorio {
   color: red;
   font-size: 14px;
@@ -166,7 +167,7 @@ body {
   content: "*";
   color: red;
   position: absolute;
-  right: 40px; /* desloca o * mais para a esquerda */
+  right: 40px; 
   top: 50%;
   transform: translateY(-50%);
   font-weight: bold;
