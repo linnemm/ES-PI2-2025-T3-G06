@@ -31,22 +31,23 @@
 
       <!--Formulário de nova senha-->
 
-<form> 
+<form id="formRedefinirSenha"> 
     <h1>Redefinir Senha</h1>
 
       <!--Digitar nova senha-->
-    <div class="password-container">
-            <label for="nova senha">Nova senha:</label>
-            <input type="password" placeholder="Digite a nova senha" id="password1" name="senha">
-            <i class="fas fa-eye toggle-password"></i>
+    <div class="input-wrapper password-container">
+            <input type="password" placeholder="Digite a nova senha" id="password1" name="senha" required />
+            <span id="togglePassword" class="toggle-password"></span>
         </div>
 
       <!--Confirmar a senha-->
-    <div class="password-container">
-            <label for="confirmar senha">Confirmar senha:</label>
-            <input type="password" placeholder="Confirme a nova senha" id="password2" name="senha">
-            <i class="fas fa-eye toggle-password"></i>
+    <div class="input-wrapper password-container">
+            <input type="password" placeholder="Confirme a senha" id="password2" name="senha" required />
+            <span id="togglePassword2" class="toggle-password"></span>
         </div>
+
+    <p id="errorMsg" class="error-message"></p>
+
     <br><button type="submit">Redefinir senha</button>
 </form>
 </div>
@@ -64,6 +65,36 @@
         input.type = isPassword ? "text" : "password";
         icon.classList.toggle("fa-eye-slash", isPassword);
       });
+    });
+
+    // Validação do formulário
+    const form = document.getElementById('formRedefinirSenha');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener ('submit', function (e) {
+      e.preventDefault(); // impede envio até validar
+
+      const senha1 = document.getElementById('password1').value.trim();
+      const senha2 = document.getElementById('password2').value.trim();
+
+      // limpa a mensagem anterior
+      errorMsg.style.display = 'none';
+      errorMsg.textContent = '';
+    
+  // validações
+      if (senha1.length < 6) {
+        errorMsg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      if (senha1 !== senha2) {
+        errorMsg.textContent = 'As senhas não coincidem.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+    // se passou nas validações
+      window.location.href = 'login.html';
     });
   </script>
 

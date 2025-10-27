@@ -81,13 +81,34 @@ form h1 {
   box-shadow: 0 0 6px #a7d5bb;
 }
 
-/* Ícone do olho */
-.password-container i {
+/* olho da senha */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
   position: absolute;
   right: 12px;
-  top: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
   cursor: pointer;
-  color: #888;
+  background: url('https://cdn-icons-png.flaticon.com/512/709/709612.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.7;
+  transition: 0.2s ease;
+  z-index: 10;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+
+.toggle-password.visible {
+  background: url('https://cdn-icons-png.flaticon.com/512/159/159604.png') no-repeat center;
+  background-size: contain;
 }
 
 /* Botão */
@@ -132,6 +153,16 @@ form button:hover {
   background: #6b6b6b;
   border-radius: 50%;
 }
+
+/* mensagem de erro na senha */
+.error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+      text-align: center;
+      display: none;
+    }
 
 /* Flâmulas */
 .flamula {
