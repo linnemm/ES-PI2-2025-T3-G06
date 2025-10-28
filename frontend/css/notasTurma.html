@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notas da Turma - NotaDez</title>
+  <link rel="stylesheet" href="notasTurma.css">
+</head>
+<body>
+  <header>
+    <h1>NotaDez</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Disciplinas</a></li>
+        <li><a href="#">Turmas</a></li>
+        <li><a href="#">Alunos</a></li>
+        <li><a href="#">Perfil</a></li>
+        <li><a href="#">Sair</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="info-turma">
+      <h2>Notas da Turma A - Engenharia de Software</h2>
+      <p><strong>Disciplina:</strong> Cálculo I | <strong>Instituição:</strong> PUCCAMP | <strong>Período:</strong> 1º Semestre</p>
+
+      <div class="botoes">
+        <button id="novoComponente">+ Novo Componente</button>
+        <button id="exportarNotas">📤 Exportar Notas</button>
+        <button id="adicionarAluno">👤 Adicionar Aluno</button>
+      </div>
+    </section>
+
+    <section class="tabela-notas">
+      <h3>Notas dos Alunos</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Matrícula</th>
+            <th>Aluno</th>
+            <th>P1</th>
+            <th>P2</th>
+            <th>P3</th>
+            <th>Final</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaAlunos">
+          <tr>
+            <td>11111</td>
+            <td>João Silva</td>
+            <td>8.5</td>
+            <td>7.0</td>
+            <td>9.0</td>
+            <td>8.2</td>
+            <td><button class="excluir">🗑</button></td>
+          </tr>
+          <tr>
+            <td>11112</td>
+            <td>Maria Souza</td>
+            <td>9.0</td>
+            <td>8.0</td>
+            <td>8.5</td>
+            <td>8.5</td>
+            <td><button class="excluir">🗑</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="voltar" onclick="voltar()">⬅ Voltar</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>NotaDez © 2025</p>
+  </footer>
+
+  <script src="notasTurma.js"></script>
+</body>
+</html>
