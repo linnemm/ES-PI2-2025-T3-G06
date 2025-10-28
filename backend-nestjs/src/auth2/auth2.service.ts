@@ -1,4 +1,4 @@
-// Autoria: Miriã
+// Autoria: Miriã Nasc
 
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { MailService } from '../mail/mail.service';
