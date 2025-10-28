@@ -5,21 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notas da Turma - NotaDez</title>
   <link rel="stylesheet" href="notasTurma.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <header>
-    <h1>NotaDez</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Disciplinas</a></li>
-        <li><a href="#">Turmas</a></li>
-        <li><a href="#">Alunos</a></li>
-        <li><a href="#">Perfil</a></li>
-        <li><a href="#">Sair</a></li>
-      </ul>
-    </nav>
-  </header>
+<div class="dashboard">
+  <!-- Topbar -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+    <ul class="menu-horizontal">
+      <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+      <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
+      <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+      <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
+      <li><a href="#"><i class="fa-solid fa-user"></i> Perfil</a></li>
+      <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+    </ul>
+  </nav>
 
+  <!-- Menu flutuante -->
+  <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
+    <div class="menu-conteudo">
+      <h3 id="tituloAba">Selecionar</h3>
+      <div id="selectContainer"></div>
+      <button id="btnIr" class="btn-curso" style="display:none;">Ir</button>
+    </div>
+  </div>
+
+  <!-- Conteúdo principal -->
   <main>
     <section class="info-turma">
       <h2>Notas da Turma A - Engenharia de Software</h2>
@@ -28,7 +41,6 @@
       <div class="botoes">
         <button id="novoComponente">+ Novo Componente</button>
         <button id="exportarNotas">📤 Exportar Notas</button>
-        <button id="adicionarAluno">👤 Adicionar Aluno</button>
       </div>
     </section>
 
@@ -68,14 +80,13 @@
         </tbody>
       </table>
 
-      <button class="voltar" onclick="voltar()">⬅ Voltar</button>
+      <div class="voltar-container">
+        <button class="voltar" onclick="voltar()">⬅ Voltar</button>
+      </div>
     </section>
   </main>
+</div>
 
-  <footer>
-    <p>NotaDez © 2025</p>
-  </footer>
-
-  <script src="notasTurma.js"></script>
+<script src="notasTurma.js"></script>
 </body>
 </html>
