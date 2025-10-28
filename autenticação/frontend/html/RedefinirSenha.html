@@ -54,49 +54,70 @@
 </div>
       
 
-<!-- Script para mostrar/ocultar senha -->
-   <script>
-    const toggleIcons = document.querySelectorAll(".toggle-password");
+<script>
+  // Função para pegar o token da URL (ex: ?token=abcdef)
+  function getTokenFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('token');
+  }
 
-    toggleIcons.forEach((icon, index) => {
-      const input = document.getElementById(`password${index + 1}`);
-      icon.addEventListener("click", () => {
-        const isPassword = input.type === "password";
-        input.type = isPassword ? "text" : "password";
-        icon.classList.toggle("fa-eye-slash", isPassword);
+  const form = document.getElementById('formRedefinirSenha');
+  const errorMsg = document.getElementById('errorMsg');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const senha1 = document.getElementById('password1').value.trim();
+    const senha2 = document.getElementById('password2').value.trim();
+    const token = getTokenFromURL();
+
+    errorMsg.style.display = 'none';
+    errorMsg.textContent = '';
+
+    if (!token) {
+      errorMsg.textContent = 'Link de redefinição inválido ou expirado.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    if (senha1.length < 6) {
+      errorMsg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    if (senha1 !== senha2) {
+      errorMsg.textContent = 'As senhas não coincidem.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token,
+          newPassword: senha1
+        })
       });
-    });
 
-    // Validação do formulário
-    const form = document.getElementById('formRedefinirSenha');
-    const errorMsg = document.getElementById('errorMsg');
-
-    form.addEventListener ('submit', function (e) {
-      e.preventDefault(); // impede envio até validar
-
-      const senha1 = document.getElementById('password1').value.trim();
-      const senha2 = document.getElementById('password2').value.trim();
-
-      // limpa a mensagem anterior
-      errorMsg.style.display = 'none';
-      errorMsg.textContent = '';
-    
-  // validações
-      if (senha1.length < 6) {
-        errorMsg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+      if (response.ok) {
+        alert('Senha redefinida com sucesso!');
+        window.location.href = 'login.html';
+      } else {
+        const data = await response.json();
+        errorMsg.textContent = data.message || 'Erro ao redefinir senha.';
         errorMsg.style.display = 'block';
-        return;
       }
+    } catch (error) {
+      console.error(error);
+      errorMsg.textContent = 'Erro de conexão com o servidor.';
+      errorMsg.style.display = 'block';
+    }
+  });
+</script>
 
-      if (senha1 !== senha2) {
-        errorMsg.textContent = 'As senhas não coincidem.';
-        errorMsg.style.display = 'block';
-        return;
-      }
-    // se passou nas validações
-      window.location.href = 'login.html';
-    });
-  </script>
 
 </body>
 </html>

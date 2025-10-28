@@ -7,20 +7,21 @@ export class MailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      service: 'gmail', // ou outro serviço de e-mail
+      service: 'gmail',
       auth: {
-        user: 'seuemail@gmail.com',
-        pass: 'suasenhaouapppassword',
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
       },
     });
   }
 
-  async sendMail({ to, subject, html }) {
-    await this.transporter.sendMail({
-      from: '"NotaDez" <seuemail@gmail.com>',
-      to,
-      subject,
-      html,
-    });
-  }
+  async sendMail({ to, subject, html }: { to: string; subject: string; html: string }) {
+  await this.transporter.sendMail({
+    from: `"NotaDez 💚" <${process.env.MAIL_USER}>`,
+    to,
+    subject,
+    html,
+  });
+}
+
 }

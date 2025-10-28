@@ -65,47 +65,69 @@
     </div>
   </div>
 
-    <!-- Script para mostrar/ocultar senha -->
-  <script>
-    const senha = document.getElementById("password1", "password2");
-    const toggle = document.getElementById("togglePassword");
+<script>
+  const form = document.getElementById('formCadastro');
+  const errorMsg = document.getElementById('errorMsg');
 
-    toggle.addEventListener("click", () => {
-      const isPassword = senha.type === "password";
-      senha.type = isPassword ? "text" : "password";
-      toggle.classList.toggle("visible", isPassword);
-    });
- 
-  // Validação do formulário
-    const form = document.getElementById('formCadastro');
-    const errorMsg = document.getElementById('errorMsg');
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault(); // impede envio até validar
+    const nome = form.querySelector('input[placeholder="Nome"]').value.trim();
+    const sobrenome = form.querySelector('input[placeholder="Sobrenome"]').value.trim();
+    const email = form.querySelector('input[placeholder="E-mail"]').value.trim();
+    const telefone = form.querySelector('input[placeholder="Telefone"]').value.trim();
+    const senha1 = document.getElementById('password1').value.trim();
+    const senha2 = document.getElementById('password2').value.trim();
 
-      const senha1 = document.getElementById('password1').value.trim();
-      const senha2 = document.getElementById('password2').value.trim();
+    errorMsg.style.display = 'none';
+    errorMsg.textContent = '';
 
-      // limpa a mensagem anterior
-      errorMsg.style.display = 'none';
-      errorMsg.textContent = '';
+    if (senha1.length < 6) {
+      errorMsg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+      errorMsg.style.display = 'block';
+      return;
+    }
 
-      // validações
-      if (senha1.length < 6) {
-        errorMsg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+    if (senha1 !== senha2) {
+      errorMsg.textContent = 'As senhas não coincidem.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    // Monta o corpo da requisição pro backend
+    const body = {
+      nome,
+      sobrenome,
+      email,
+      telefone,
+      senha: senha1
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (response.ok) {
+        alert('Cadastro realizado com sucesso!');
+        window.location.href = 'login.html';
+      } else {
+        const data = await response.json();
+        errorMsg.textContent = data.message || 'Erro ao cadastrar.';
         errorMsg.style.display = 'block';
-        return;
       }
 
-      if (senha1 !== senha2) {
-        errorMsg.textContent = 'As senhas não coincidem.';
-        errorMsg.style.display = 'block';
-        return;
-      }
+    } catch (error) {
+      console.error(error);
+      errorMsg.textContent = 'Erro de conexão com o servidor.';
+      errorMsg.style.display = 'block';
+    }
+  });
+</script>
 
-      // se passou nas validações
-      window.location.href = 'login.html';
-    });
-     </script>
 </body>
 </html>

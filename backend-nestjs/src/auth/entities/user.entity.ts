@@ -1,5 +1,3 @@
-// Autoria: Alinne
-
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('users')
@@ -8,14 +6,20 @@ export class User {
   id: number;
 
   @Column({ length: 100 })
-  name: string;
+  nome: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column({ length: 15 })
-  phone: string;
+  @Column()
+  telefone: string;
 
   @Column()
-  password: string;
+  senha: string;
+
+  @Column({ nullable: true })
+resetToken?: string | null;
+
+  @Column({ nullable: true })
+resetTokenExpires?: Date | null;
 }
