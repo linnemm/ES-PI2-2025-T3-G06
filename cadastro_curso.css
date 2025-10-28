@@ -1,39 +1,36 @@
+/* ===== Base ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
   background-color: #f4f6f5;
-  display: flex;
   color: #333;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  overflow-x: hidden;
 }
 
-/* Menu horizontal fixo no topo */
+/* === TOPBAR PADRÃO DASHBOARD === */
 .topbar {
-  height: 60px;
-  padding: 15px 40px;
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
   color: white;
+  padding: 15px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
   z-index: 10;
   box-shadow: 0 2px 8px rgb(236, 232, 232);
-  box-sizing: border-box;
 }
 
-.topbar h2 {
-  font-size: 22px;
-  font-weight: 700;
-}
+.topbar h2 { font-size: 22px; font-weight: 700; }
 
-/* Menu horizontal */
 .menu-horizontal {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: 25px;
+  flex-wrap: wrap;
 }
 
 .menu-horizontal li a {
@@ -45,56 +42,95 @@ body {
   gap: 8px;
   padding: 8px 12px;
   border-radius: 6px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow .2s;
+  background: transparent;
+  box-shadow: none;
 }
 
-.menu-horizontal li a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+.menu-horizontal li a:hover,
+.menu-horizontal li a:focus {
+  background-color: rgba(255,255,255,0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-/* Conteúdo principal */
+.menu-horizontal li a.ativo {
+  background-color: rgba(255,255,255,0.2);
+}
+
+/* === MENU FLUTUANTE (padrão) === */
+.menu-flutuante {
+  position: absolute;
+  top: 75px;
+  right: 40px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  padding: 20px;
+  width: 280px;
+  z-index: 50;
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {opacity: 0; transform: translateY(-10px);}
+  to   {opacity: 1; transform: translateY(0);}
+}
+
+.menu-conteudo h3 {
+  color: #6ca98c;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.campo-selecao { margin-bottom: 12px; }
+
+.campo-selecao label {
+  font-size: 14px;
+  color: #444;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.campo-selecao select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.menu-flutuante .btn-curso {
+  width: 100%;
+  background-color: #6ca98c;
+  color: white;
+  border: none;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.menu-flutuante .btn-curso:hover { background-color: #5c8c75; }
+
+/* === CONTEÚDO PRINCIPAL === */
 .main-content {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;  
-  align-items: center;     
-  background-color: #f4f6f5;
-  height: 100vh; 
-  padding: 20px;   
-  margin-top: 60px;        
+  align-items: center;
+  padding: 24px;
+  padding-top: 32px;
+  min-height: calc(100vh - 70px); /* ~ altura visual da topbar */
 }
 
-.dashboard {
-  flex: 1; /* para ocupar o espaço restante */
-  display: flex;
-  flex-direction: column;
-  margin-top: 60px; /* altura da topbar para evitar sobreposição */
-}
+h1 { color: #5c8c75; margin-bottom: 24px; }
 
-
-/* Conteúdo principal */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;  
-  align-items: center;     
-  background-color: #f4f6f5;
-  height: 100vh;            
-}
-
-h1 {
-  color: #5c8c75;
-  margin-bottom: 20px;
-}
-
+/* Card do formulário */
 form {
   background-color: white;
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  width: 400px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 420px;
+  max-width: calc(100vw - 40px);
   text-align: left;
 }
 
@@ -104,6 +140,7 @@ label {
   font-weight: 600;
 }
 
+/* Inputs e selects com mesma UI */
 input, select {
   width: 100%;
   padding: 10px;
@@ -111,56 +148,49 @@ input, select {
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 15px;
-  box-sizing: border-box;   
-  height: 42px;             
-  appearance: none;        
+  box-sizing: border-box;
+  height: 42px;
+  background-color: #fff;
+  outline: none;
+  transition: box-shadow .2s, border-color .2s;
 }
 
-select {
-  background-color: #fff;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%236ca98c' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 18px;
-  padding-right: 35px; /* espaço pro ícone */
+input:focus, select:focus {
+  border-color: #6ca98c;
+  box-shadow: 0 0 5px rgba(108,169,140,.6);
 }
 
 .botoes {
   display: flex;
+  gap: 10px;
   justify-content: space-between;
   margin-top: 25px;
+  flex-wrap: wrap;
 }
 
-.btn-salvar {
-  background-color: #6ca98c;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.btn-salvar:hover {
-  background-color: #5c8c75;
-}
-
+.btn-salvar,
+.btn-curso,
 .btn-cancelar {
-  background-color: #ccc;
-  color: black;
-  padding: 10px 20px;
+  padding: 10px 16px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.btn-cancelar:hover {
-  background-color: #aaa;
-}
+.btn-salvar,
+.btn-curso { background-color: #6ca98c; color: #fff; }
+.btn-salvar:hover,
+.btn-curso:hover { background-color: #5c8c75; }
 
-input:focus, select:focus {
-  outline: none;
-  border-color: #6ca98c;
-  box-shadow: 0 0 5px rgba(108, 169, 140, 0.6);
-  transition: 0.2s ease-in-out;
+.btn-cancelar { background-color: #ccc; color: #000; }
+.btn-cancelar:hover { background-color: #aaa; }
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .topbar { flex-direction: column; gap: 10px; padding: 12px 16px; }
+  .menu-horizontal { justify-content: center; gap: 15px; }
 }

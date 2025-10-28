@@ -4,27 +4,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cadastro de Disciplina - NotaDez</title>
+
   <link rel="stylesheet" href="cadastro_disciplina.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
+
 <body>
   <div class="dashboard">
-    <!-- Menu horizontal fixo no topo -->
+    <!-- Topbar PADRÃO DASHBOARD -->
     <nav class="topbar">
       <h2>NotaDez</h2>
       <ul class="menu-horizontal">
         <li><a href="listaInstituicoes.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-        <li><a href="listaCursos.html"><i class="fa-solid fa-graduation-cap"></i> Cursos</a></li>
-        <li><a href="listaDisciplinas.html"><i class="fa-solid fa-book"></i> Disciplinas</a></li>
-        <li><a href="turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
+        <li><a href="listaCursos.html"><i class="fa-solid fa-book"></i> Cursos</a></li>
+        <li><a href="listaDisciplinas.html" class="ativo"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+        <li><a href="listaTurmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
         <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+        <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
+        <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
       </ul>
     </nav>
 
-    <div class="main-content">
+    <!-- Conteúdo principal -->
+    <main class="main-content">
       <h1 id="titulo">Cadastro de Disciplina</h1>
 
       <form id="formDisciplina">
@@ -55,7 +58,7 @@
           <button type="submit" class="btn-salvar" id="btnSalvar">Salvar</button>
         </div>
       </form>
-    </div>
+    </main>
   </div>
 
   <script src="cadastro_disciplina.js"></script>

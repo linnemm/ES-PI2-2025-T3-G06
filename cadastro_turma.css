@@ -1,27 +1,22 @@
-/*Autoria: Miriã*/
-
+/* Autoria: Miriã */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background-color: #f4f6f5;
-  display: flex;
-  flex-direction: column;
   color: #333;
 }
 
-/* Menu horizontal fixo no topo */
+/* === MENU HORIZONTAL FIXO (TOPBAR PADRÃO DASHBOARD) === */
 .topbar {
-  height: 60px;
-  padding: 15px 40px;
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
   color: white;
+  padding: 15px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
   z-index: 10;
   box-shadow: 0 2px 8px rgb(236, 232, 232);
   box-sizing: border-box;
@@ -32,11 +27,12 @@ body {
   font-weight: 700;
 }
 
-/* Menu horizontal */
 .menu-horizontal {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
 }
 
 .menu-horizontal li a {
@@ -51,11 +47,19 @@ body {
   transition: background-color 0.3s;
 }
 
-.menu-horizontal li a:hover {
+.menu-horizontal li a:hover,
+.menu-horizontal li a.ativo {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Conteúdo principal */
+/* === CONTEÚDO PRINCIPAL === */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  margin-top: 60px; /* altura da topbar */
+  min-height: calc(100vh - 60px);
+}
+
 .main-content {
   flex: 1;
   display: flex;
@@ -63,29 +67,20 @@ body {
   justify-content: center;  
   align-items: center;     
   background-color: #f4f6f5;
-  height: 100vh; 
-  padding: 20px;   
-  margin-top: 60px;        
-}
-
-.dashboard {
-  flex: 1; /* para ocupar o espaço restante */
-  display: flex;
-  flex-direction: column;
-  margin-top: 60px; /* altura da topbar para evitar sobreposição */
+  padding: 40px 20px;
 }
 
 h1 {
-  margin-top: -40px;
   color: #5c8c75;
   margin-bottom: 30px;
 }
 
+/* === FORMULÁRIO === */
 form {
   background-color: white;
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 400px;
   text-align: left;
 }
@@ -96,54 +91,47 @@ label {
   font-weight: 600;
 }
 
-/*Caixa de texto */
-input {
+input,
+select {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 15px;
-  box-sizing: border-box;
-  height: 42px; 
+  box-sizing: border-box;   
+  height: 42px;             
+  appearance: none;        
   background-color: #fff;
 }
 
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
-    box-sizing: border-box;   
-    height: 42px;             
-    appearance: none;        
-  }
-  
 select {
-    background-color: #fff;
-    background-image: url("data:image/svg+xml;utf8,<svg fill='%236ca98c' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 18px;
-    padding-right: 35px;
-  }
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%236ca98c' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+  padding-right: 35px;
+}
 
+/* === BOTÕES === */
 .botoes {
   display: flex;
   justify-content: space-between;
   margin-top: 25px;
 }
 
-.btn-salvar {
-  background-color: #6ca98c;
-  color: white;
+.btn-salvar,
+.btn-cancelar {
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
+}
+
+.btn-salvar {
+  background-color: #6ca98c;
+  color: white;
 }
 
 .btn-salvar:hover {
@@ -153,18 +141,15 @@ select {
 .btn-cancelar {
   background-color: #ccc;
   color: black;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
 }
 
 .btn-cancelar:hover {
   background-color: #aaa;
 }
 
-/*Brilho ao selecionar caixa de texto */
-input:focus, select:focus {
+/* === FOCUS (BRILHO PADRÃO) === */
+input:focus,
+select:focus {
   outline: none;
   border-color: #6ca98c;
   box-shadow: 0 0 5px rgba(108, 169, 140, 0.6);

@@ -1,3 +1,5 @@
+/* Autoria: Miriã (padronizado com dashboard) */
+
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -7,9 +9,9 @@ body {
   overflow: hidden;
 }
 
-/* Menu superior */
+/* === TOPO PADRÃO DASHBOARD === */
 .topbar {
-  height: 70px; /* use 70 em vez de 60 pra garantir o espaço total */
+  height: 70px;
   padding: 0 40px;
   position: fixed;
   top: 0;
@@ -34,6 +36,8 @@ body {
   list-style: none;
   display: flex;
   gap: 30px;
+  margin: 0;
+  padding: 0;
 }
 
 .menu-horizontal li a {
@@ -48,39 +52,37 @@ body {
   transition: background-color 0.3s;
 }
 
-.menu-horizontal li a:hover {
+.menu-horizontal li a:hover,
+.menu-horizontal li a.ativo {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Conteúdo */
+/* === CONTEÚDO === */
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 80px 24px 20px; 
+  padding: 100px 24px 20px;
   background-color: #f4f6f5;
-  height: 100vh; 
-  overflow-y: auto; 
-  box-sizing: border-box;
-  margin-top: 80px; /* empurra tudo para baixo */
-  padding-top: 20px; /* distância entre o topo e o título */
-  min-height: calc(100vh - 80px);
+  height: 100vh;
+  overflow-y: auto;
   box-sizing: border-box;
 }
 
 h1 {
   color: #5c8c75;
   margin-bottom: 20px;
+  text-align: center;
 }
 
-/* Filtro / busca */
+/* === FILTRO / BUSCA === */
 form.filtro-card {
   background-color: #fff;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 900px;
   max-width: calc(100vw - 100px);
 }
@@ -103,6 +105,14 @@ input {
   background-color: #fff;
 }
 
+input:focus {
+  outline: none;
+  border-color: #6ca98c;
+  box-shadow: 0 0 5px rgba(108, 169, 140, 0.6);
+  transition: 0.2s ease-in-out;
+}
+
+/* === BOTÕES === */
 .botoes {
   display: flex;
   justify-content: space-between;
@@ -123,26 +133,19 @@ input {
   background-color: #5c8c75;
 }
 
-input:focus {
-  outline: none;
-  border-color: #6ca98c;
-  box-shadow: 0 0 5px rgba(108,169,140,0.6);
-  transition: .2s ease-in-out;
-}
-
-/* Lista de cursos */
+/* === LISTA / TABELA === */
 .lista-card {
   margin-top: 18px;
   background: #fff;
-  padding: 0;
   border-radius: 15px;
   width: 900px;
   max-width: calc(100vw - 100px);
-  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-.tabela-head, .tabela-row {
+.tabela-head,
+.tabela-row {
   display: grid;
   grid-template-columns: 1fr 150px 250px 150px;
   gap: 12px;
@@ -182,7 +185,7 @@ input:focus {
 }
 
 .btn-excluir:hover {
-  filter: brightness(.95);
+  filter: brightness(0.95);
 }
 
 .vazio {
@@ -198,14 +201,17 @@ input:focus {
   margin-top: 10px;
 }
 
+/* === RESPONSIVIDADE === */
 @media (max-width: 920px) {
-  .tabela-head, .tabela-row {
+  .tabela-head,
+  .tabela-row {
     grid-template-columns: 1fr 100px 180px 120px;
   }
 }
 
 @media (max-width: 720px) {
-  form.filtro-card, .lista-card {
+  form.filtro-card,
+  .lista-card {
     width: 100%;
   }
 }

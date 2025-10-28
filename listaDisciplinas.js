@@ -1,60 +1,87 @@
-// Chaves de armazenamento (segue padrão dos seus arquivos)
-const LS_DISC = 'pi.disciplinas'; // [{ id, cursoId?, nome }]
+// =========================================
+// LISTA DE DISCIPLINAS - NOTADEZ
+// Padronizado conforme o Dashboard
+// =========================================
+
+const LS_DISC = 'pi.disciplinas'; // [{ id, cursoId?, nome, codigo?, ch?, professor? }]
 const $ = (id) => document.getElementById(id);
 
-// Seeds para testes (remova ao integrar com back-end)
+// ===== Seed temporária (apenas para testes locais) =====
 if (!localStorage.getItem(LS_DISC)) {
-  localStorage.setItem(LS_DISC, JSON.stringify([
-    { id: 'd1', cursoId: '1', nome: 'Algoritmos e Programação' },
-    { id: 'd2', cursoId: '1', nome: 'Banco de Dados I' },
-    { id: 'd3', cursoId: '2', nome: 'Engenharia de Requisitos' },
-    { id: 'd4', cursoId: '3', nome: 'Estruturas de Dados' }
-  ]));
+  localStorage.setItem(
+    LS_DISC,
+    JSON.stringify([
+      { id: 'd1', cursoId: '1', nome: 'Algoritmos e Programação', codigo: 'ALG101', ch: '80h', professor: 'Profa. Maria Lima' },
+      { id: 'd2', cursoId: '1', nome: 'Banco de Dados I',            codigo: 'BDI201', ch: '60h', professor: 'Prof. João Serra' },
+      { id: 'd3', cursoId: '2', nome: 'Engenharia de Requisitos',    codigo: 'ER301',  ch: '60h', professor: 'Profa. Carla Sousa' },
+      { id: 'd4', cursoId: '3', nome: 'Estruturas de Dados',         codigo: 'ED202',  ch: '80h', professor: 'Prof. Ricardo Melo' },
+    ])
+  );
 }
 
-function getParam(name){ return new URLSearchParams(window.location.search).get(name); }
+// ===== Utils =====
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
 
-function linhaHTML(d){
+// ===== Linha com 5 colunas (alinhada ao head) =====
+function linhaHTML(d) {
+  const codigo = d.codigo || '-';
+  const ch = d.ch || '-';
+  const prof = d.professor || '-';
+
   return `
     <div class="tabela-row">
       <span><strong>${d.nome}</strong></span>
+      <span>${codigo}</span>
+      <span>${ch}</span>
+      <span>${prof}</span>
       <span class="acoes">
-        <a class="link" href="turmas.html?disciplinaId=${encodeURIComponent(d.id)}">Turmas</a>
-        <button class="btn-excluir" onclick="excluirDisciplina('${d.id}')">Excluir</button>
+        <a class="link" href="listaTurmas.html?disciplinaId=${encodeURIComponent(d.id)}">
+          <i class="fa-solid fa-users"></i> Turmas
+        </a>
+        <button class="btn-excluir" onclick="excluirDisciplina('${d.id}')">
+          <i class="fa-solid fa-trash"></i> Excluir
+        </button>
       </span>
     </div>
   `;
 }
 
-function renderLista(){
-  const cursoId = getParam('cursoId'); // se vier do fluxo Cursos→Disciplinas
+// ===== Render =====
+function renderLista() {
+  const cursoId = getParam('cursoId');
   const lista = JSON.parse(localStorage.getItem(LS_DISC) || '[]');
 
-  // Filtra por cursoId quando informado; senão, mostra todas
-  const base = cursoId ? lista.filter(d => d.cursoId === cursoId) : lista;
+  // Filtra por curso (quando vier da tela de cursos)
+  const base = cursoId ? lista.filter((d) => String(d.cursoId) === String(cursoId)) : lista;
 
-  const q = $('fBuscaDisc').value.trim().toLowerCase();
-  const filtradas = base.filter(d => !q || d.nome.toLowerCase().includes(q));
+  // Busca
+  const termo = $('fBuscaDisc').value.trim().toLowerCase();
+  const filtradas = base.filter((d) => {
+    const nome = (d.nome || '').toLowerCase();
+    const codigo = (d.codigo || '').toLowerCase();
+    const ch = (d.ch || '').toLowerCase();
+    const prof = (d.professor || '').toLowerCase();
+    return !termo || nome.includes(termo) || codigo.includes(termo) || ch.includes(termo) || prof.includes(termo);
+  });
 
   $('corpoTabelaDisc').innerHTML = filtradas.map(linhaHTML).join('');
   $('vazioDisc').style.display = filtradas.length ? 'none' : 'block';
 }
 
-function excluirDisciplina(id){
-  if(!confirm('Confirmar exclusão desta disciplina?')) return;
-
-  // (Opcional) validar se há turmas vinculadas ao id antes de excluir.
-  const lista = JSON.parse(localStorage.getItem(LS_DISC) || '[]').filter(x => x.id !== id);
+// ===== Excluir =====
+function excluirDisciplina(id) {
+  if (!confirm('Deseja realmente excluir esta disciplina?')) return;
+  const lista = JSON.parse(localStorage.getItem(LS_DISC) || '[]').filter((x) => x.id !== id);
   localStorage.setItem(LS_DISC, JSON.stringify(lista));
   renderLista();
 }
 
-// Eventos
+// ===== Eventos =====
 $('btnBuscarDisc').addEventListener('click', renderLista);
-$('fBuscaDisc').addEventListener('keyup', e => { if(e.key === 'Enter') renderLista(); });
+$('fBuscaDisc').addEventListener('keydown', (e) => { if (e.key === 'Enter') renderLista(); });
 
-// Inicialização
+// ===== Init =====
 renderLista();
-
-// Expor para botão inline
 window.excluirDisciplina = excluirDisciplina;
