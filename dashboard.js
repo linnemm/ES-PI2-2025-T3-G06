@@ -90,7 +90,7 @@ function abrirMenu(tipo) {
     btnVerTodas.textContent = "Ver todas as instituições";
     btnVerTodas.classList.add("btn-curso");
     btnVerTodas.style.marginBottom = "10px";
-    btnVerTodas.onclick = () => window.location.href = "instituicoes.html";
+    btnVerTodas.onclick = () => window.location.href = "dashboard.html";
     selectContainer.appendChild(btnVerTodas);
 
     selectContainer.appendChild(criarSelect("selInstituicao", "Selecionar Instituição:", instituicoes));
