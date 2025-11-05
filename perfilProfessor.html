@@ -5,18 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Perfil do Professor</title>
   <link rel="stylesheet" href="perfilProfessor.css" />
-  <!-- (necessário para os ícones da barrinha de cima) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-  <!-- Topbar no padrão do dashboard (substitui a sidebar) -->
+  <!-- Topbar -->
   <nav class="topbar">
     <h2>NotaDez</h2>
     <ul class="menu-horizontal">
       <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
       <li><a href="listaDisciplinas.html"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
       <li><a href="turmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
-      <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
       <li><a class="ativo" href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
       <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
     </ul>
@@ -25,11 +23,9 @@
   <main class="main-content">
     <h1>Perfil do Professor</h1>
 
-    <!-- Card: Dados básicos (somente exibição do nome e email atual) -->
+    <!-- Dados do professor -->
     <section class="card perfil-card">
-      <div class="avatar">
-        <span id="letrasAvatar">PR</span>
-      </div>
+      <div class="avatar"><span id="letrasAvatar">PR</span></div>
       <div class="info">
         <h2 id="nomeProfessor">Professor</h2>
         <p class="email-atual">
@@ -38,53 +34,41 @@
       </div>
     </section>
 
-    <!-- Card: Trocar e-mail -->
+    <!-- Trocar e-mail -->
     <form class="card" id="formEmail">
       <h3>Trocar e-mail</h3>
       <label for="novoEmail">Novo e-mail</label>
       <input id="novoEmail" type="email" placeholder="nome@dominio.com" />
       <label for="senhaConfirmaEmail">Confirme com sua senha</label>
-      <div class="senha-group">
-        <input id="senhaConfirmaEmail" type="password" placeholder="Sua senha atual" />
-        <button class="toggle" type="button" data-target="senhaConfirmaEmail">👁️</button>
-      </div>
+      <input id="senhaConfirmaEmail" type="password" placeholder="Sua senha atual" />
       <div class="botoes">
         <button class="btn-cancelar" type="button" id="cancelarEmail">Cancelar</button>
         <button class="btn-salvar" type="submit">Salvar e-mail</button>
       </div>
     </form>
 
-    <!-- Card: Trocar senha -->
+    <!-- Trocar senha -->
     <form class="card" id="formSenha">
       <h3>Trocar senha</h3>
-      <label for="senhaAtual">Senha atual</label>
-      <div class="senha-group">
+        <div class="senha-group">
         <input id="senhaAtual" type="password" placeholder="Senha atual" />
-        <button class="toggle" type="button" data-target="senhaAtual">👁️</button>
-      </div>
+        </div>
 
-      <label for="novaSenha">Nova senha</label>
-      <div class="senha-group">
+        <div class="senha-group">
         <input id="novaSenha" type="password" placeholder="Mín. 8 caracteres" />
-        <button class="toggle" type="button" data-target="novaSenha">👁️</button>
-      </div>
-      <div id="forcaSenha" class="forca"><span></span></div>
+        </div>
 
-      <label for="confirmaSenha">Confirmar nova senha</label>
-      <div class="senha-group">
+        <div id="forcaSenha" class="forca"><span></span></div>
+
+        <div class="senha-group">
         <input id="confirmaSenha" type="password" placeholder="Repita a nova senha" />
-        <button class="toggle" type="button" data-target="confirmaSenha">👁️</button>
-      </div>
+        </div>
+  
 
-      <div class="botoes">
-        <button class="btn-cancelar" type="button" id="cancelarSenha">Cancelar</button>
-        <button class="btn-salvar" type="submit">Salvar senha</button>
-      </div>
     </form>
-
-    <!-- Toast -->
+    
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  </main>
+    </main>
 
   <script src="perfilProfessor.js"></script>
 </body>
