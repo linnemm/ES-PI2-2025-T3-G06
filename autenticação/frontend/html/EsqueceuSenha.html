@@ -30,17 +30,15 @@
 
     
       <!--Formulário para o e-mail de redefinir a senha-->
-<form> 
+<form id="formEsqueciSenha">
     <h1>Esqueci minha senha</h1>
-
     <p>Para redefinir sua senha, informe o e-mail 
        cadastrado na sua conta e lhe enviaremos um link para o próximo passo.</p>
 
     <div class="email">
-            <label for="email">E-mail:</label><br>
-            <input type="email" placeholder="Digite um e-mail" id="email" name="email"
-            placehalder="email@example.com">
-        </div>
+        <label for="email">E-mail:</label><br>
+        <input type="email" placeholder="Digite um e-mail" id="email" name="email" placeholder="email@example.com">
+    </div>
     <br><button type="submit">Enviar</button>
 </form>
 </div>
@@ -76,7 +74,7 @@
         const dados = await resposta.json();
 
         if (resposta.ok) {
-          alert("📨 " + dados.message);
+          alert("✅ " + dados.message);
           // backend envia o e-mail de redefinição
           form.reset();
         } else {

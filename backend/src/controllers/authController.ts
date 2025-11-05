@@ -76,7 +76,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     const token = jwt.sign({ email }, "chave_secreta_do_token", { expiresIn: "15m" });
 
     // Monta o link e o HTML do e-mail
-    const link = `http://127.0.0.1:5500/frontend/html/RedefinirSenha.html?token=${token}`;
+    const link = `http://127.0.0.1:8080/frontend/html/RedefinirSenha.html?token=${token}`;
     const html = `
       <h2>Redefinição de senha - NotaDez</h2>
       <p>Olá,</p>

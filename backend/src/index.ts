@@ -1,25 +1,29 @@
 import express from "express";
 import cors from "cors";
-import { openConnection } from "./config/database"; // Importa a função openConnection, responsável por abrir uma conexão com o banco de dados
+import { openConnection } from "./config/database";
+import authRoutes from "./routes/authRoutes"; // 🟢 importe suas rotas
 
 const app = express();
 app.use(cors());
-// permite que o servidor receba e interprete dados no formato JSON no corpo das requisições
 app.use(express.json());
 
+// rota de teste
 app.get("/", (req, res) => {
   res.send("Servidor ativo!");
 });
 
-// Servidor ficará rodando em http://localhost:3000
+// 🟢 use as rotas de autenticação (prefixo /api/auth)
+app.use("/api/auth", authRoutes);
+
+// servidor
 app.listen(3000, async () => {
   console.log("Servidor rodando na porta 3000");
 
-  // testa a conexão com o oracle ao iniciar o servidor
   try {
-    const conn = await openConnection(); // abre conexão
-    await conn.close(); // fecha a conexão (teste)
-  } catch (error) { //caso haja algum erro, mensagem aparece 
+    const conn = await openConnection();
+    await conn.close();
+    console.log("Conexão com Oracle bem-sucedida!");
+  } catch (error) {
     console.error("Falha ao testar conexão:", error);
   }
 });
