@@ -1,12 +1,13 @@
 import oracledb from "oracledb";
+import "dotenv/config";
 
 // habilita modo de Promises
-oracledb.initOracleClient?.(); // só é necessário se você usa Oracle Client local
+oracledb.initOracleClient?.(); 
 
 export const dbConfig = {
-  user: "PROJETO",
-  password: "projeto",
-  connectString: "localhost:1521/XEPDB1", // ajuste para seu banco
+  user: process.env.ORACLE_USER,
+  password: process.env.ORACLE_PASSWORD,
+  connectString: `${process.env.ORACLE_HOST}:${process.env.ORACLE_PORT}/${process.env.ORACLE_SERVICE}`,
 };
 
 export async function openConnection() {

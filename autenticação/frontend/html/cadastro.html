@@ -66,6 +66,15 @@
   </div>
 
 <script>
+  const senha = document.getElementById("password1", "password2");
+  const toggle = document.getElementById("togglePassword");
+
+  toggle.addEventListener("click", () => {
+    const isPassword = senha.type === "password";
+    senha.type = isPassword ? "text" : "password";
+    toggle.classList.toggle("visible", isPassword);
+  });
+  
   const form = document.getElementById('formCadastro');
   const errorMsg = document.getElementById('errorMsg');
 
@@ -82,6 +91,7 @@
     errorMsg.style.display = 'none';
     errorMsg.textContent = '';
 
+    // Validações simples de senha
     if (senha1.length < 6) {
       errorMsg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
       errorMsg.style.display = 'block';
@@ -94,36 +104,34 @@
       return;
     }
 
-    // Monta o corpo da requisição pro backend
-    const body = {
-      nome,
-      sobrenome,
-      email,
-      telefone,
-      senha: senha1
-    };
+    // Monta o nome completo e o corpo da requisição
+    const nomeCompleto = `${nome} ${sobrenome}`;
 
     try {
-      const response = await fetch('http://localhost:3000/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
+      const resposta = await fetch("http://localhost:3000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: nomeCompleto,
+          email,
+          telefone,
+          senha: senha1
+        }),
       });
 
-      if (response.ok) {
-        alert('Cadastro realizado com sucesso!');
-        window.location.href = 'login.html';
+      const dados = await resposta.json();
+
+      if (resposta.ok) {
+        alert("✅ " + dados.message);
+        form.reset(); // limpa o formulário
+        window.location.href = "login.html"; //
       } else {
-        const data = await response.json();
-        errorMsg.textContent = data.message || 'Erro ao cadastrar.';
+        errorMsg.textContent = dados.message || "Erro ao cadastrar usuário.";
         errorMsg.style.display = 'block';
       }
-
-    } catch (error) {
-      console.error(error);
-      errorMsg.textContent = 'Erro de conexão com o servidor.';
+    } catch (erro) {
+      console.error("Erro ao conectar com o servidor:", erro);
+      errorMsg.textContent = "Erro ao conectar com o servidor.";
       errorMsg.style.display = 'block';
     }
   });

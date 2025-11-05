@@ -4,7 +4,7 @@ import { openConnection } from "./config/database"; // Importa a função openCo
 
 const app = express();
 app.use(cors());
-// Permite que o servidor receba e interprete dados no formato JSON no corpo das requisições
+// permite que o servidor receba e interprete dados no formato JSON no corpo das requisições
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -15,10 +15,10 @@ app.get("/", (req, res) => {
 app.listen(3000, async () => {
   console.log("Servidor rodando na porta 3000");
 
-  // Testa a conexão com Oracle ao iniciar o servidor
+  // testa a conexão com o oracle ao iniciar o servidor
   try {
     const conn = await openConnection(); // abre conexão
-    await conn.close(); // fecha a conexão (só teste)
+    await conn.close(); // fecha a conexão (teste)
   } catch (error) { //caso haja algum erro, mensagem aparece 
     console.error("Falha ao testar conexão:", error);
   }
