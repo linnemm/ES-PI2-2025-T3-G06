@@ -2,34 +2,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Instituição - NotaDez</title>
-  <link rel="stylesheet" href="cadastro_instituicao.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Instituição — NotaDez</title>
 
+  <!-- Fontes e ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- CSS da página -->
+  <link rel="stylesheet" href="cadastro_instituicao.css" />
+</head>
 <body>
-  <!-- Topbar PADRÃO DASHBOARD -->
-    <nav class="topbar">
-      <h2>NotaDez</h2>
-      <ul class="menu-horizontal">
-        <li><a href="dashboard.html"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-        <li><a href="listaCursos.html" class="ativo"><i class="fa-solid fa-book"></i> Cursos</a></li>
-        <li><a href="listaDisciplinas.html"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
-        <li><a href="listaTurmas.html"><i class="fa-solid fa-users"></i> Turmas</a></li>
-        <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
+  <div class="dashboard">
+    <!-- ===== TOPBAR PADRÃO  ===== -->
+    <header class="topbar-notadez">
+      <h2 class="topbar-notadez__brand">NotaDez</h2>
+      <ul class="ndz-menu">
+        <li><a href="#" id="btnInstituicoes" class="ativo"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+        <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
+        <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+        <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
         <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
         <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
       </ul>
-    </nav>
+    </header>
 
-    <!-- Conteúdo principal -->
+    <!-- ===== ABA FLUTUANTE (janelinha) ===== -->
+    <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
+      <div class="menu-conteudo">
+        <h3 id="tituloAba">Selecionar</h3>
+        <div id="selectContainer"></div>
+        <button id="btnIr" class="btn-curso" style="display:none;">Ir</button>
+      </div>
+    </div>
+
+    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
     <main class="main-content">
       <h1>Cadastro de Instituição</h1>
 
-      <form id="formInstituicao">
+      <form id="formInstituicao" autocomplete="off" novalidate>
         <label for="nome">Nome da Instituição:</label>
         <input type="text" id="nome" name="nome" placeholder="Ex: Pontifícia Universidade Católica de Campinas" required>
 
@@ -38,13 +52,14 @@
 
         <div class="botoes">
           <button type="submit" class="btn-salvar">Salvar</button>
-          <button type="button" class="btn-curso" id="btnIrCurso" onclick="window.location.href='cadastro_curso.html'">Cadastrar Curso</button>
-          <button type="reset" class="btn-cancelar" onclick="window.location.href='dashboard.html'">Cancelar</button>
+          <button type="button" class="btn-curso" id="btnIrCurso">Cadastrar Curso</button>
+          <button type="reset" class="btn-cancelar" id="btnCancelar">Cancelar</button>
         </div>
       </form>
     </main>
   </div>
 
+  <!-- JS -->
   <script src="cadastro_instituicao.js"></script>
 </body>
 </html>

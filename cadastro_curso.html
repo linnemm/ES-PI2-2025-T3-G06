@@ -3,32 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cadastro de Curso - NotaDez</title>
+  <title>Cadastro de Curso — NotaDez</title>
 
   <!-- Fontes e ícones -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <!-- CSS da página -->
   <link rel="stylesheet" href="cadastro_curso.css" />
 </head>
 <body>
   <div class="dashboard">
-    <!-- === TOPBAR PADRÃO DASHBOARD === -->
-    <nav class="topbar">
-      <h2>NotaDez</h2>
-      <ul class="menu-horizontal">
+    <!-- ===== TOPBAR ===== -->
+    <header class="topbar-notadez">
+      <h2 class="topbar-notadez__brand">NotaDez</h2>
+      <ul class="ndz-menu">
         <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
         <li><a href="#" id="btnCursos" class="ativo"><i class="fa-solid fa-book"></i> Cursos</a></li>
         <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
         <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
-        <li><a href="alunos.html"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
-        <li><a href="perfilProfessor.html" id="btnPerfil"><i class="fa-solid fa-user"></i> Perfil</a></li>
+        <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
         <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
       </ul>
-    </nav>
+    </header>
 
-    <!-- === ABA FLUTUANTE (padrão) === -->
+    <!-- ===== ABA FLUTUANTE (janelinha) ===== -->
     <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
       <div class="menu-conteudo">
         <h3 id="tituloAba">Selecionar</h3>
@@ -37,7 +38,7 @@
       </div>
     </div>
 
-    <!-- === CONTEÚDO PRINCIPAL === -->
+    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
     <main class="main-content">
       <h1>Cadastro de Curso</h1>
 
@@ -64,8 +65,7 @@
     </main>
   </div>
 
-  <!-- Scripts -->
-  <script src="topbar.js" defer></script>
+  <!-- JS da página  -->
   <script src="cadastro_curso.js"></script>
 </body>
 </html>

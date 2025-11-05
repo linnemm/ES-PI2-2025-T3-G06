@@ -1,157 +1,104 @@
-/* Autoria: Miriã */
+/* Autoria: Miriã  */
+
+/* ===== Base ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   background-color: #f4f6f5;
   color: #333;
 }
 
-/* === MENU HORIZONTAL FIXO (TOPBAR PADRÃO DASHBOARD) === */
-.topbar {
+/* ===== Layout ===== */
+.dashboard { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 40px 20px; min-height: calc(100vh - 70px);
+}
+h1 { color: #5c8c75; margin-bottom: 30px; }
+
+/* ===== TOPBAR  ===== */
+.topbar-notadez {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
   color: white;
   padding: 15px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
   box-shadow: 0 2px 8px rgb(236, 232, 232);
-  box-sizing: border-box;
 }
-
-.topbar h2 {
-  font-size: 22px;
-  font-weight: 700;
+.topbar-notadez__brand { font-size: 22px; font-weight: 700; }
+.ndz-menu { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; flex-wrap: wrap; }
+.ndz-menu li a {
+  color: white; text-decoration: none; font-size: 16px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-radius: 6px;
+  transition: background-color 0.3s, box-shadow .2s;
+  background: transparent; box-shadow: none;
 }
+.ndz-menu li a:hover,
+.ndz-menu li a:focus { background-color: rgba(255,255,255,0.2); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.ndz-menu li a.ativo { background-color: rgba(255,255,255,0.2); }
 
-.menu-horizontal {
-  list-style: none;
-  display: flex;
-  gap: 25px;
-  margin: 0;
-  padding: 0;
+/* ===== ABA FLUTUANTE (janelinha) ===== */
+.menu-flutuante {
+  position: absolute;
+  top: 75px;
+  right: 40px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  padding: 20px;
+  width: 280px;
+  z-index: 50;
+  display: none;
+  animation: slideDown 0.3s ease;
 }
+@keyframes slideDown { from {opacity: 0; transform: translateY(-10px);} to {opacity: 1; transform: translateY(0);} }
+.menu-conteudo h3 { color: #6ca98c; margin-bottom: 10px; text-align: center; }
+.campo-selecao { margin-bottom: 12px; }
+.campo-selecao label { font-size: 14px; color: #444; display: block; margin-bottom: 4px; }
+.campo-selecao select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
 
-.menu-horizontal li a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: background-color 0.3s;
+.menu-flutuante .btn-curso {
+  width: 100%; background-color: #6ca98c; color: white; border: none;
+  padding: 8px 0; border-radius: 6px; font-weight: 600; cursor: pointer;
 }
+.menu-flutuante .btn-curso:hover { background-color: #5c8c75; }
 
-.menu-horizontal li a:hover,
-.menu-horizontal li a.ativo {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* === CONTEÚDO PRINCIPAL === */
-.dashboard {
-  display: flex;
-  flex-direction: column;
-  margin-top: 60px; /* altura da topbar */
-  min-height: calc(100vh - 60px);
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;  
-  align-items: center;     
-  background-color: #f4f6f5;
-  padding: 40px 20px;
-}
-
-h1 {
-  color: #5c8c75;
-  margin-bottom: 30px;
-}
-
-/* === FORMULÁRIO === */
+/* ===== FORM ===== */
 form {
   background-color: white;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  text-align: left;
+  width: 400px; text-align: left;
+}
+label { display: block; margin-top: 15px; font-weight: 600; }
+input, select {
+  width: 100%; padding: 10px; margin-top: 5px;
+  border: 1px solid #ccc; border-radius: 8px;
+  font-size: 15px; height: 42px; box-sizing: border-box; background-color: #fff; outline: none;
+  transition: box-shadow .2s, border-color .2s; appearance: none;
 }
 
-label {
-  display: block;
-  margin-top: 15px;
-  font-weight: 600;
-}
-
-input,
-select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
-  box-sizing: border-box;   
-  height: 42px;             
-  appearance: none;        
-  background-color: #fff;
-}
-
+/* Select com caret verde */
 select {
   background-image: url("data:image/svg+xml;utf8,<svg fill='%236ca98c' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 18px;
-  padding-right: 35px;
+  background-repeat: no-repeat; background-position: right 10px center; background-size: 18px; padding-right: 35px;
 }
 
-/* === BOTÕES === */
-.botoes {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 25px;
-}
+input:focus, select:focus { border-color: #6ca98c; box-shadow: 0 0 5px rgba(108,169,140,.6); }
 
-.btn-salvar,
-.btn-cancelar {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
+/* ===== BOTÕES ===== */
+.botoes { display: flex; justify-content: space-between; margin-top: 25px; }
+.btn-salvar { background-color: #6ca98c; color: white; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+.btn-salvar:hover { background-color: #5c8c75; }
+.btn-cancelar { background-color: #ccc; color: black; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; }
+.btn-cancelar:hover { background-color: #aaa; }
 
-.btn-salvar {
-  background-color: #6ca98c;
-  color: white;
-}
-
-.btn-salvar:hover {
-  background-color: #5c8c75;
-}
-
-.btn-cancelar {
-  background-color: #ccc;
-  color: black;
-}
-
-.btn-cancelar:hover {
-  background-color: #aaa;
-}
-
-/* === FOCUS (BRILHO PADRÃO) === */
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #6ca98c;
-  box-shadow: 0 0 5px rgba(108, 169, 140, 0.6);
-  transition: 0.2s ease-in-out;
+/* ===== Responsivo ===== */
+@media (max-width: 768px) {
+  .topbar-notadez { flex-direction: column; gap: 10px; padding: 12px 16px; }
+  .ndz-menu { justify-content: center; gap: 15px; }
 }
