@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alunos da Turma - NotaDez</title>
+  <title>Alunos da Turma — NotaDez</title>
 
-  <link rel="stylesheet" href="detalhesTurma.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Fonte e ícones -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-</head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
+  <!-- CSS da página -->
+  <link rel="stylesheet" href="detalhesTurma.css" />
+</head>
 <body>
 <div class="dashboard">
   <!-- Topbar -->
@@ -20,13 +22,13 @@
       <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
       <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
       <li><a href="#" id="btnTurmas" class="ativo"><i class="fa-solid fa-users"></i> Turmas</a></li>
-      <li><a href="#"><i class="fa-solid fa-user"></i> Perfil</a></li>
-      <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+      <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
+      <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
     </ul>
   </nav>
 
-  <!-- Aba flutuante -->
-  <div id="menuFlutuante" class="menu-flutuante">
+  <!-- Janelinha -->
+  <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
     <div class="menu-conteudo">
       <h3 id="tituloAba">Selecionar</h3>
       <div id="selectContainer"></div>
@@ -34,14 +36,13 @@
     </div>
   </div>
 
-  <!-- Conteúdo principal -->
+  <!-- Conteúdo -->
   <main class="container">
     <div class="turma-header">
-      <h1>Turma A - Engenharia de Software</h1>
-      <p>Disciplina: Cálculo I | Instituição: PUCCAMP | Período: 1º Semestre</p>
+      <h1 id="tituloTurma">Turma — </h1>
+      <p id="subTurma"></p>
     </div>
 
-    <!-- Botões principais -->
     <div class="turma-acoes">
       <button id="btnAddAluno"><i class="fa-solid fa-user-plus"></i> Adicionar Aluno</button>
       <button id="btnImportar"><i class="fa-solid fa-file-import"></i> Importar Alunos</button>
@@ -49,7 +50,6 @@
       <button id="btnNotasTurma"><i class="fa-solid fa-clipboard-list"></i> Notas da Turma</button>
     </div>
 
-    <!-- Tabela: Lista de Alunos -->
     <div class="tabela-notas">
       <h2 style="color:#6ca98c; margin-bottom:10px;">Alunos da Turma</h2>
       <table id="tabelaAlunos">
@@ -61,30 +61,10 @@
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td><input type="checkbox" class="chkAluno"></td>
-            <td>11111</td>
-            <td contenteditable="true">João Silva</td>
-            <td>
-              <button class="btnEditar" title="Editar"><i class="fa-solid fa-pen"></i></button>
-              <button class="btnExcluir" title="Excluir"><i class="fa-solid fa-trash"></i></button>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" class="chkAluno"></td>
-            <td>11112</td>
-            <td contenteditable="true">Maria Souza</td>
-            <td>
-              <button class="btnEditar" title="Editar"><i class="fa-solid fa-pen"></i></button>
-              <button class="btnExcluir" title="Excluir"><i class="fa-solid fa-trash"></i></button>
-            </td>
-          </tr>
-        </tbody>
+        <tbody id="tbodyAlunos"></tbody>
       </table>
     </div>
 
-    <!-- Botões inferiores -->
     <div class="footer-acoes">
       <button id="btnSalvar"><i class="fa-solid fa-floppy-disk"></i> Salvar Alterações</button>
       <button id="btnVoltar"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
