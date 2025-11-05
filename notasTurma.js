@@ -15,9 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("Notas exportadas com sucesso (simulação)!");
   });
 
- function adicionarNota(matricula, nome, componente, nota) {
-  const novaLinha = document.createElement("tr");
-  novaLinha.innerHTML = `
+  function adicionarNota(matricula, nome, componente, nota) {
+    const novaLinha = document.createElement("tr");
+    novaLinha.innerHTML = `
       <td>${matricula}</td>
       <td>${nome}</td>
       <td contenteditable="true">${componente}</td>
@@ -27,20 +27,18 @@ document.addEventListener("DOMContentLoaded", () => {
         <button class="btnExcluir" title="Excluir"><i class="fa-solid fa-trash"></i></button>
       </td>
     `;
-  tabela.appendChild(novaLinha);
-  atualizarEventos();
-}
-
+    tabela.appendChild(novaLinha);
+    atualizarEventos();
+  }
 
   // Excluir múltiplos
   document.getElementById("btnExcluirSelecionados").addEventListener("click", () => {
     const selecionados = tabela.querySelectorAll(".chkNota:checked");
-    if(selecionados.length === 0) return alert("Nenhuma nota selecionada.");
-    if(!confirm(`Remover ${selecionados.length} nota(s)?`)) return;
+    if (selecionados.length === 0) return alert("Nenhuma nota selecionada.");
+    if (!confirm(`Remover ${selecionados.length} nota(s)?`)) return;
     selecionados.forEach(chk => chk.closest("tr").remove());
   });
 
-  
   // Salvar alterações
   document.getElementById("btnSalvar").addEventListener("click", () => {
     alert("Alterações salvas (simulação).");
@@ -54,18 +52,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function atualizarEventos() {
     tabela.querySelectorAll(".btnExcluir").forEach(btn => {
       btn.onclick = () => {
-        if(confirm("Remover esta nota?")) btn.closest("tr").remove();
+        if (confirm("Remover esta nota?")) btn.closest("tr").remove();
       };
     });
   }
 
   atualizarEventos();
 
-  // Menu flutuante (reaproveitado do dashboard)
+  // ------------------------------
+  // Menu flutuante (reaproveitado)
+  // ------------------------------
   const menuFlutuante = document.getElementById("menuFlutuante");
   const selectContainer = document.getElementById("selectContainer");
   const tituloAba = document.getElementById("tituloAba");
   const btnIr = document.getElementById("btnIr");
+
+  // 🔹 Garante que o menu NÃO apareça automaticamente
+  menuFlutuante.style.display = "none";
 
   const instituicoes = ["PUCCAMP", "USP", "UNICAMP"];
   const cursos = ["Engenharia", "Direito", "Administração"];
@@ -176,14 +179,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Botões da Topbar que abrem o menu
   document.getElementById("btnInstituicoes").onclick = () => abrirMenu("instituicao");
   document.getElementById("btnCursos").onclick = () => abrirMenu("curso");
   document.getElementById("btnDisciplinas").onclick = () => abrirMenu("disciplina");
   document.getElementById("btnTurmas").onclick = () => abrirMenu("turma");
 
+  // Fecha o menu ao clicar fora
   document.addEventListener("click", e => {
-    if (!menuFlutuante.contains(e.target) &&
-        !e.target.closest(".menu-horizontal")) {
+    if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
       menuFlutuante.style.display = "none";
     }
   });
