@@ -1,47 +1,44 @@
-// ===== Topbar / Aba flutuante (copiado da página de referência) =====
+// ===== Topbar / Aba flutuante — padrão do dashboard =====
 document.addEventListener("DOMContentLoaded", () => {
-  const menuFlutuante = document.getElementById("menuFlutuante");
+  const menuFlutuante   = document.getElementById("menuFlutuante");
   const selectContainer = document.getElementById("selectContainer");
-  const tituloAba = document.getElementById("tituloAba");
-  const btnIr = document.getElementById("btnIr");
+  const tituloAba       = document.getElementById("tituloAba");
+  const btnIr           = document.getElementById("btnIr");
 
+  // mocks
   const instituicoes = ["PUCCAMP", "USP", "UNICAMP"];
-  const cursos = ["Engenharia", "Direito", "Administração"];
-  const disciplinas = ["Cálculo I", "Física", "Lógica"];
-  const turmasSel = ["Turma A", "Turma B", "Turma C"];
+  const cursos       = ["Engenharia", "Direito", "Administração"];
+  const disciplinas  = ["Cálculo I", "Física", "Lógica"];
+  const turmasSel    = ["Turma A", "Turma B", "Turma C"];
 
-  function criarSelect(id, label, opcoes) {
+  function criarSelect(id, label, opcoes){
     const div = document.createElement("div");
     div.classList.add("campo-selecao");
-
-    const lbl = document.createElement("label");
-    lbl.textContent = label;
-    lbl.htmlFor = id;
-
-    const select = document.createElement("select");
-    select.id = id;
-    select.innerHTML = `<option value="">Selecione...</option>` + opcoes.map(o => `<option>${o}</option>`).join("");
-
-    div.appendChild(lbl);
-    div.appendChild(select);
+    div.innerHTML = `
+      <label for="${id}">${label}</label>
+      <select id="${id}">
+        <option value="">Selecione...</option>
+        ${opcoes.map(o => `<option>${o}</option>`).join("")}
+      </select>`;
     return div;
   }
 
-  function abrirMenu(tipo) {
+  function abrirMenu(tipo){
+    if(!menuFlutuante) return;
     selectContainer.innerHTML = "";
     btnIr.style.display = "none";
     menuFlutuante.style.display = "block";
 
-    if (tipo === "instituicao") {
+    if(tipo === "instituicao"){
       tituloAba.textContent = "Selecionar Instituição";
       const btnVerTodas = document.createElement("button");
       btnVerTodas.textContent = "Ver todas as instituições";
       btnVerTodas.classList.add("btn-curso");
       btnVerTodas.style.marginBottom = "10px";
-      btnVerTodas.onclick = () => window.location.href = "listaCursos.html";
+      btnVerTodas.onclick = () => window.location.href = "dashboard.html";
       selectContainer.appendChild(btnVerTodas);
-      selectContainer.appendChild(criarSelect("selInstituicao", "Selecionar Instituição:", instituicoes));
 
+      selectContainer.appendChild(criarSelect("selInstituicao","Selecionar Instituição:",instituicoes));
       btnIr.style.display = "block";
       btnIr.onclick = () => {
         const sel = document.getElementById("selInstituicao");
@@ -50,12 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
       };
     }
 
-    if (tipo === "curso") {
+    if(tipo === "curso"){
       tituloAba.textContent = "Selecionar Curso";
-      selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
+      selectContainer.appendChild(criarSelect("selInstituicao","Instituição:",instituicoes));
       document.getElementById("selInstituicao").addEventListener("change", () => {
-        if (!document.getElementById("selCurso")) {
-          selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
+        if(!document.getElementById("selCurso")){
+          selectContainer.appendChild(criarSelect("selCurso","Curso:",cursos));
           btnIr.style.display = "block";
           btnIr.onclick = () => {
             const sel = document.getElementById("selCurso");
@@ -63,18 +60,18 @@ document.addEventListener("DOMContentLoaded", () => {
             else alert("Selecione um curso!");
           };
         }
-      }, { once: true });
+      }, { once:true });
     }
 
-    if (tipo === "disciplina") {
+    if(tipo === "disciplina"){
       tituloAba.textContent = "Selecionar Disciplina";
-      selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
+      selectContainer.appendChild(criarSelect("selInstituicao","Instituição:",instituicoes));
       document.getElementById("selInstituicao").addEventListener("change", () => {
-        if (!document.getElementById("selCurso")) {
-          selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
+        if(!document.getElementById("selCurso")){
+          selectContainer.appendChild(criarSelect("selCurso","Curso:",cursos));
           document.getElementById("selCurso").addEventListener("change", () => {
-            if (!document.getElementById("selDisciplina")) {
-              selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
+            if(!document.getElementById("selDisciplina")){
+              selectContainer.appendChild(criarSelect("selDisciplina","Disciplina:",disciplinas));
               btnIr.style.display = "block";
               btnIr.onclick = () => {
                 const sel = document.getElementById("selDisciplina");
@@ -82,23 +79,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 else alert("Selecione uma disciplina!");
               };
             }
-          }, { once: true });
+          }, { once:true });
         }
-      }, { once: true });
+      }, { once:true });
     }
 
-    if (tipo === "turma") {
+    if(tipo === "turma"){
       tituloAba.textContent = "Selecionar Turma";
-      selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
+      selectContainer.appendChild(criarSelect("selInstituicao","Instituição:",instituicoes));
       document.getElementById("selInstituicao").addEventListener("change", () => {
-        if (!document.getElementById("selCurso")) {
-          selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
+        if(!document.getElementById("selCurso")){
+          selectContainer.appendChild(criarSelect("selCurso","Curso:",cursos));
           document.getElementById("selCurso").addEventListener("change", () => {
-            if (!document.getElementById("selDisciplina")) {
-              selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
+            if(!document.getElementById("selDisciplina")){
+              selectContainer.appendChild(criarSelect("selDisciplina","Disciplina:",disciplinas));
               document.getElementById("selDisciplina").addEventListener("change", () => {
-                if (!document.getElementById("selTurma")) {
-                  selectContainer.appendChild(criarSelect("selTurma", "Turma:", turmasSel));
+                if(!document.getElementById("selTurma")){
+                  selectContainer.appendChild(criarSelect("selTurma","Turma:",turmasSel));
                   btnIr.style.display = "block";
                   btnIr.onclick = () => {
                     const sel = document.getElementById("selTurma");
@@ -106,20 +103,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     else alert("Selecione uma turma!");
                   };
                 }
-              }, { once: true });
+              }, { once:true });
             }
-          }, { once: true });
+          }, { once:true });
         }
-      }, { once: true });
+      }, { once:true });
     }
   }
 
+  // ligações da topbar (Perfil não abre janelinha)
   const id = s => document.getElementById(s);
-  id("btnInstituicoes")?.addEventListener("click", () => abrirMenu("instituicao"));
-  id("btnCursos")?.addEventListener("click", () => abrirMenu("curso"));
-  id("btnDisciplinas")?.addEventListener("click", () => abrirMenu("disciplina"));
-  id("btnTurmas")?.addEventListener("click", () => abrirMenu("turma"));
+  id("btnInstituicoes")?.addEventListener("click", (e)=>{ e.preventDefault(); abrirMenu("instituicao"); });
+  id("btnCursos")?.addEventListener("click",        (e)=>{ e.preventDefault(); abrirMenu("curso"); });
+  id("btnDisciplinas")?.addEventListener("click",   (e)=>{ e.preventDefault(); abrirMenu("disciplina"); });
+  id("btnTurmas")?.addEventListener("click",        (e)=>{ e.preventDefault(); abrirMenu("turma"); });
 
+  // fechar ao clicar fora
   document.addEventListener("click", e => {
     if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
       menuFlutuante.style.display = "none";
@@ -127,48 +126,38 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// ===== Lista de Turmas (seu código, com pequenos ajustes) =====
+// ===== Lista de Turmas (mock) =====
 document.addEventListener("DOMContentLoaded", () => {
-  // Dados simulados de turmas
   let turmas = [
-    { nome: "100", codigo: "A013", disciplina: "Banco de Dados I" },
-    { nome: "101", codigo: "D809", disciplina: "Álgebra Linear" },
-    { nome: "102", codigo: "S789", disciplina: "Teologia" },
-    { nome: "103", codigo: "A133", disciplina: "Introdução a Web" }
+    { nome:"100", codigo:"A013", disciplina:"Banco de Dados I" },
+    { nome:"101", codigo:"D809", disciplina:"Álgebra Linear" },
+    { nome:"102", codigo:"S789", disciplina:"Teologia" },
+    { nome:"103", codigo:"A133", disciplina:"Introdução a Web" }
   ];
 
-  // Seleção dos elementos do DOM
   const corpoTabela = document.getElementById("corpoTabela");
-  const vazio = document.getElementById("vazio");
-  const btnBuscar = document.getElementById("btnBuscar");
-  const fBusca = document.getElementById("fBusca");
+  const vazio       = document.getElementById("vazio");
+  const btnBuscar   = document.getElementById("btnBuscar");
+  const fBusca      = document.getElementById("fBusca");
 
-  function renderizarTabela(lista) {
+  function renderizarTabela(lista){
     corpoTabela.innerHTML = "";
-
-    if (!lista.length) {
-      vazio.style.display = "block";
-      return;
-    }
-    vazio.style.display = "none";
+    if(!lista.length){ vazio.style.display="block"; return; }
+    vazio.style.display="none";
 
     lista.forEach((turma, index) => {
       const row = document.createElement("div");
       row.classList.add("tabela-row");
-
       row.innerHTML = `
         <span>${turma.nome}</span>
         <span>${turma.codigo}</span>
         <span>${turma.disciplina}</span>
         <div class="acoes">
           <button class="btn-excluir" data-index="${index}">Excluir</button>
-        </div>
-      `;
-
+        </div>`;
       corpoTabela.appendChild(row);
     });
 
-    // Delegação de evento para botões Excluir
     corpoTabela.querySelectorAll(".btn-excluir").forEach(btn => {
       btn.addEventListener("click", e => {
         const idx = Number(e.currentTarget.getAttribute("data-index"));
@@ -177,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function buscarTurmas() {
+  function buscarTurmas(){
     const termo = fBusca.value.toLowerCase().trim();
     const filtradas = turmas.filter(t =>
       t.nome.toLowerCase().includes(termo) ||
@@ -187,19 +176,15 @@ document.addEventListener("DOMContentLoaded", () => {
     renderizarTabela(filtradas);
   }
 
-  function excluirTurma(index) {
-    if (confirm(`Deseja realmente excluir a turma "${turmas[index].nome}"?`)) {
+  function excluirTurma(index){
+    if(confirm(`Deseja realmente excluir a turma "${turmas[index].nome}"?`)){
       turmas.splice(index, 1);
       buscarTurmas();
     }
   }
 
-  // Eventos
   btnBuscar.addEventListener("click", buscarTurmas);
-  fBusca.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") buscarTurmas();
-  });
+  fBusca.addEventListener("keydown", (e)=>{ if(e.key==="Enter") buscarTurmas(); });
 
-  // Render inicial
   renderizarTabela(turmas);
 });
