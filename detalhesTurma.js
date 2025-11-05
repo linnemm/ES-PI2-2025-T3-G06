@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Menu flutuante (reaproveitado do dashboard)
   const menuFlutuante = document.getElementById("menuFlutuante");
   const selectContainer = document.getElementById("selectContainer");
   const tituloAba = document.getElementById("tituloAba");

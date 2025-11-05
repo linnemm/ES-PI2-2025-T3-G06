@@ -18,10 +18,18 @@ body { background-color:#f5f6fa; overflow-x:hidden; }
 
 /* Aba flutuante */
 .menu-flutuante {
-  position:absolute; top:75px; right:40px; background-color:white; border-radius:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.15); padding:20px; width:280px; z-index:50;
+  position: fixed;              /* Agora o menu fica flutuante em relação à janela, não preso à dashboard */
+  top: 80px;                    /* Distância do topo da página */
+  right: 40px;                  /* Distância da lateral direita */
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  padding: 20px;
+  width: 280px;
+  z-index: 9999;                /* Garante que o menu sempre apareça sobre tudo */
   animation: slideDown 0.3s ease;
 }
+
 @keyframes slideDown { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
 .menu-conteudo h3 { color:#6ca98c; margin-bottom:10px; text-align:center; }
 .campo-selecao { margin-bottom:12px; }
