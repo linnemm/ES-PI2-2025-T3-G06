@@ -99,3 +99,28 @@
     if (e.touches && e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive:true });
 })();
+
+/* Botão Login - redireciona para a página de login */
+(function loginButtonRedirect() {
+  const btnLogin = document.getElementById("btnLogin");
+
+  if (btnLogin) {
+    btnLogin.addEventListener("click", () => {
+      // Redireciona para o login servido pelo Express
+      window.location.href = "/html/login.html";
+    });
+  } else {
+    console.warn("⚠️ Botão de login (id='btnLogin') não encontrado na tela inicial.");
+  }
+})();
+
+/* Botão Cadastro - redireciona para a página de cadastro */
+(function cadastroButtonRedirect() {
+  const btnCadastro = document.getElementById("btnCadastro");
+
+  if (btnCadastro) {
+    btnCadastro.addEventListener("click", () => {
+      window.location.href = "/html/cadastro.html";
+    });
+  }
+})();

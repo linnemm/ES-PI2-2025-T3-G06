@@ -1,18 +1,28 @@
-import { Router } from "express";
-import { registerUser, loginUser, forgotPassword, resetPassword } from "../controllers/authController";
+import express from "express";
+import {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+} from "../controllers/authController";
 
-const router = Router();
+const router = express.Router();
 
-// Rota para criar conta
+/* ====================== AUTENTICAÇÃO ====================== */
+
+// 🟢 Rota de cadastro (criação de conta)
 router.post("/register", registerUser);
 
-// Rota para login
+// 🟢 Rota de login (geração de token JWT)
 router.post("/login", loginUser);
 
-// Rota para recuperação de senha
+// 🟢 Rota de recuperação de senha (envio de e-mail)
 router.post("/forgot-password", forgotPassword);
 
-// Rota para redefinir senha
+// 🟢 Rota de redefinição de senha (com token)
 router.post("/reset-password", resetPassword);
 
+/* ========================================================= */
+
+// Exporta todas as rotas com o prefixo /api/auth
 export default router;
