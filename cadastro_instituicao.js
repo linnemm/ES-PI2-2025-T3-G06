@@ -1,7 +1,7 @@
 // Autoria: Alinne 
 
 // --------------------------
-// Formulário (salvar instituição)
+// Formulário 
 // --------------------------
 const form = document.getElementById("formInstituicao");
 const btnIrCurso = document.getElementById("btnIrCurso");
@@ -34,7 +34,7 @@ form.addEventListener("submit", (e) => {
   form.reset();
 });
 
-// Cancelar → volta ao dashboard
+// Cancelar → volta pro dashboard
 btnCancelar?.addEventListener("click", () => {
   window.location.href = "dashboard.html";
 });
@@ -152,7 +152,7 @@ function abrirMenu(tipo) {
   }
 }
 
-// Abridores (iguais ao dashboard)
+// Abridores 
 document.getElementById("btnInstituicoes")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("instituicao"); });
 document.getElementById("btnCursos")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("curso"); });
 document.getElementById("btnDisciplinas")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("disciplina"); });
@@ -161,6 +161,6 @@ document.getElementById("btnTurmas")?.addEventListener("click", (e) => { e.preve
 // Fechar janelinha ao clicar fora
 document.addEventListener("click", (e) => {
   const dentro = menuFlutuante.contains(e.target);
-  const ehTopbar = e.target.closest(".ndz-menu");
+  const ehTopbar = e.target.closest(".menu-horizontal");
   if (!dentro && !ehTopbar) menuFlutuante.style.display = "none";
 });

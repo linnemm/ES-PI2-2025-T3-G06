@@ -165,10 +165,10 @@ $('btnCursos')?.addEventListener('click', (e)=>{ e.preventDefault(); abrirMenu('
 $('btnDisciplinas')?.addEventListener('click', (e)=>{ e.preventDefault(); abrirMenu('disciplina'); });
 $('btnTurmas')?.addEventListener('click', (e)=>{ e.preventDefault(); abrirMenu('turma'); });
 
-// Fechar ao clicar fora
+// Fechar ao clicar fora 
 document.addEventListener('click', (e) => {
   const dentro = menuFlutuante.contains(e.target);
-  const ehTopbar = e.target.closest('.ndz-menu');
+  const ehTopbar = e.target.closest('.menu-horizontal');
   if (!dentro && !ehTopbar) menuFlutuante.style.display = 'none';
 });
 

@@ -1,10 +1,10 @@
 // =========================================
-// LISTA DE DISCIPLINAS 
+// LISTA DE DISCIPLINAS
 // =========================================
 const LS_DISC = 'pi.disciplinas'; // [{ id, cursoId?, nome, codigo?, ch?, professor? }]
 const $ = (id) => document.getElementById(id);
 
-// ------- Seeds temporários  -------
+// ------- Seeds temporários ) -------
 if (!localStorage.getItem(LS_DISC)) {
   localStorage.setItem(LS_DISC, JSON.stringify([
     { id:'d1', cursoId:'1', nome:'Algoritmos e Programação', codigo:'ALG101', ch:'80h', professor:'Profa. Maria Lima' },
@@ -72,9 +72,8 @@ $('btnNovaDisc').addEventListener('click', () => location.href = 'cadastro_disci
 renderLista();
 window.excluirDisciplina = excluirDisciplina;
 
-// =========================================
 // JANELINHA 
-// =========================================
+
 const menuFlutuante = document.getElementById("menuFlutuante");
 const selectContainer = document.getElementById("selectContainer");
 const tituloAba = document.getElementById("tituloAba");
@@ -83,7 +82,7 @@ const btnIr = document.getElementById("btnIr");
 // começa fechado
 if(menuFlutuante) menuFlutuante.style.display = "none";
 
-// Mock
+// Mocks
 const instituicoes = ["PUCCAMP","USP","UNICAMP"];
 const cursos = ["Engenharia","Direito","Administração"];
 const disciplinas = ["Cálculo I","Física","Lógica"];
@@ -169,7 +168,7 @@ document.addEventListener("click", (e)=>{
 });
 
 // =========================================
-// MODAL: Cadastrar componente de nota
+/* MODAL: Cadastrar componente de nota */
 // =========================================
 (() => {
   const LS_COMP_DISC  = 'pi.componentesDisc';
@@ -206,14 +205,14 @@ document.addEventListener("click", (e)=>{
   function toNumberOrNull(v){
     const n = Number(String(v).replace(',', '.'));
     return Number.isFinite(n) ? n : null;
-  }
+    }
 
   function salvar(){
     const disciplinaId = cmpDisc.value.trim();
     const nome  = cmpNome.value.trim();
-    const sigla = cmpSigla.value.trim().toUpperCase();
-    const pesoPct = cmpPeso.value.trim();
-    const descricao = cmpDesc.value.trim();
+    const sigla = (cmpSigla.value || "").trim().toUpperCase();
+    const pesoPct = (cmpPeso.value || "").trim();
+    const descricao = (cmpDesc.value || "").trim();
 
     if(!disciplinaId){ alert('Selecione a disciplina.'); cmpDisc.focus(); return; }
     if(!nome){ alert('Informe o nome do componente.'); cmpNome.focus(); return; }
@@ -258,7 +257,11 @@ document.addEventListener("click", (e)=>{
   });
 
   [cmpNome, cmpSigla, cmpPeso, cmpDesc].forEach(el=>{
-    el.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); btnSalvar.click(); }});
+    el.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter' && !e.shiftKey){
+        e.preventDefault(); btnSalvar.click();
+      }
+    });
   });
   btnSalvar.addEventListener('click', salvar);
 })();
