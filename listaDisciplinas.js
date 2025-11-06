@@ -1,10 +1,10 @@
 // =========================================
-// LISTA DE DISCIPLINAS - padrão do Dashboard
+// LISTA DE DISCIPLINAS 
 // =========================================
 const LS_DISC = 'pi.disciplinas'; // [{ id, cursoId?, nome, codigo?, ch?, professor? }]
 const $ = (id) => document.getElementById(id);
 
-// ------- Seeds temporários (remova ao integrar) -------
+// ------- Seeds temporários  -------
 if (!localStorage.getItem(LS_DISC)) {
   localStorage.setItem(LS_DISC, JSON.stringify([
     { id:'d1', cursoId:'1', nome:'Algoritmos e Programação', codigo:'ALG101', ch:'80h', professor:'Profa. Maria Lima' },
@@ -73,7 +73,7 @@ renderLista();
 window.excluirDisciplina = excluirDisciplina;
 
 // =========================================
-// JANELINHA (menu flutuante) — igual ao dashboard
+// JANELINHA 
 // =========================================
 const menuFlutuante = document.getElementById("menuFlutuante");
 const selectContainer = document.getElementById("selectContainer");
@@ -153,7 +153,7 @@ function abrirMenu(tipo){
   }
 }
 
-// ligações da topbar (Perfil não abre janelinha)
+// ligações da topbar
 document.getElementById("btnInstituicoes").addEventListener("click", e=>{e.preventDefault(); abrirMenu("instituicao");});
 document.getElementById("btnCursos").addEventListener("click",        e=>{e.preventDefault(); abrirMenu("curso");});
 document.getElementById("btnDisciplinas").addEventListener("click",   e=>{e.preventDefault(); abrirMenu("disciplina");});
@@ -167,3 +167,98 @@ document.addEventListener("click", (e)=>{
     menuFlutuante.style.display = "none";
   }
 });
+
+// =========================================
+// MODAL: Cadastrar componente de nota
+// =========================================
+(() => {
+  const LS_COMP_DISC  = 'pi.componentesDisc';
+
+  const overlay    = document.getElementById('modalComponente');
+  const btnOpen    = document.getElementById('btnComponenteNota');
+  const btnCloseX  = document.getElementById('btnFecharModal');
+  const btnClose   = document.getElementById('btnFechar');
+  const btnSalvar  = document.getElementById('btnSalvarComponente');
+
+  const cmpDisc = document.getElementById('cmpDisc');
+  const cmpNome = document.getElementById('cmpNome');
+  const cmpSigla= document.getElementById('cmpSigla');
+  const cmpPeso = document.getElementById('cmpPeso');
+  const cmpDesc = document.getElementById('cmpDesc');
+
+  function popularDisciplinas(){
+    const lista = JSON.parse(localStorage.getItem(LS_DISC) || '[]');
+    cmpDisc.innerHTML = `<option value="">Selecione...</option>` +
+      lista.map(d => `<option value="${d.id}">${d.nome}${d.codigo?` — ${d.codigo}`:""}</option>`).join('');
+  }
+
+  function openModal(){
+    popularDisciplinas();
+    overlay.classList.add('show');
+    setTimeout(()=> cmpDisc.focus(), 60);
+  }
+  function closeModal(){
+    overlay.classList.remove('show');
+    cmpDisc.value = ""; cmpNome.value = ""; cmpSigla.value = "";
+    cmpPeso.value = ""; cmpDesc.value = "";
+  }
+
+  function toNumberOrNull(v){
+    const n = Number(String(v).replace(',', '.'));
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function salvar(){
+    const disciplinaId = cmpDisc.value.trim();
+    const nome  = cmpNome.value.trim();
+    const sigla = cmpSigla.value.trim().toUpperCase();
+    const pesoPct = cmpPeso.value.trim();
+    const descricao = cmpDesc.value.trim();
+
+    if(!disciplinaId){ alert('Selecione a disciplina.'); cmpDisc.focus(); return; }
+    if(!nome){ alert('Informe o nome do componente.'); cmpNome.focus(); return; }
+    if(!sigla){ alert('Informe a sigla do componente.'); cmpSigla.focus(); return; }
+
+    let peso = toNumberOrNull(pesoPct);
+    if(peso !== null){
+      if(peso < 0 || peso > 100){ alert('Peso deve estar entre 0 e 100.'); cmpPeso.focus(); return; }
+      peso = Number((peso/100).toFixed(4)); // 40% -> 0.4
+    }
+
+    const comps = JSON.parse(localStorage.getItem(LS_COMP_DISC) || '[]');
+
+    // impede duplicidade de sigla na mesma disciplina
+    const existe = comps.some(c => String(c.disciplinaId)===String(disciplinaId) && String(c.sigla).toUpperCase()===sigla);
+    if(existe){
+      alert('Já existe um componente com essa sigla para esta disciplina.');
+      return;
+    }
+
+    const novo = {
+      id: 'cmp_' + Date.now(),
+      disciplinaId, nome, sigla,
+      peso: (peso===null ? undefined : peso),
+      descricao
+    };
+    comps.push(novo);
+    localStorage.setItem(LS_COMP_DISC, JSON.stringify(comps));
+
+    alert('Componente salvo com sucesso!');
+    closeModal();
+  }
+
+  // gatilhos
+  btnOpen.addEventListener('click', openModal);
+  btnCloseX.addEventListener('click', closeModal);
+  btnClose.addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e)=> { if(e.target === overlay) closeModal(); });
+
+  document.addEventListener('keydown', (e)=> {
+    if(overlay.classList.contains('show') && e.key==='Escape') closeModal();
+  });
+
+  [cmpNome, cmpSigla, cmpPeso, cmpDesc].forEach(el=>{
+    el.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); btnSalvar.click(); }});
+  });
+  btnSalvar.addEventListener('click', salvar);
+})();

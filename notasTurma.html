@@ -38,13 +38,12 @@
   <!-- Conteúdo principal -->
   <main class="container">
     <div class="turma-header">
-      <h1>Turma A - Engenharia de Software</h1>
-      <p>Disciplina: Cálculo I | Instituição: PUCCAMP | Período: 1º Semestre</p>
+      <h1 id="hdrTurma">Turma - Engenharia de Software</h1>
+      <p id="hdrDesc">Disciplina: — | Instituição: — | Período: —</p>
     </div>
 
-    <!-- Botões principais -->
+    <!-- Botões  -->
     <div class="turma-acoes">
-      <button id="btnAddComponente"><i class="fa-solid fa-plus"></i> Novo Componente</button>
       <button id="btnExportar"><i class="fa-solid fa-file-export"></i> Exportar Notas</button>
       <button id="btnExcluirSelecionados"><i class="fa-solid fa-trash"></i> Excluir Selecionados</button>
     </div>
@@ -54,21 +53,20 @@
       <h2 style="color:#6ca98c; margin-bottom:10px;">Notas da Turma</h2>
       <table id="tabelaNotas">
         <thead>
-          <tr> 
+          <tr>
             <th>Matrícula</th>
             <th>Aluno</th>
-            <th>Componente</th>
-            <th>Nota</th>
+            <!-- colunas de componentes entram aqui -->
+            <!-- <th>Nota Final</th> será injetado ao final -->
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
+          <!-- Linhas de exemplo (mock). Em produção, vêm da importação de alunos -->
           <tr>
             <td>11111</td>
             <td>João Silva</td>
-            <td contenteditable="true">Prova 1</td>
-            <td contenteditable="true">9.5</td>
-            <td>
+            <td class="acoes">
               <button class="btnEditar" title="Editar"><i class="fa-solid fa-pen"></i></button>
               <button class="btnExcluir" title="Excluir"><i class="fa-solid fa-trash"></i></button>
             </td>
@@ -76,9 +74,7 @@
           <tr>
             <td>11112</td>
             <td>Maria Souza</td>
-            <td contenteditable="true">Prova 1</td>
-            <td contenteditable="true">8.0</td>
-            <td>
+            <td class="acoes">
               <button class="btnEditar" title="Editar"><i class="fa-solid fa-pen"></i></button>
               <button class="btnExcluir" title="Excluir"><i class="fa-solid fa-trash"></i></button>
             </td>

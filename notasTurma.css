@@ -1,4 +1,4 @@
-/* Base do dashboard e menu horizontal */
+
 * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins", sans-serif; }
 body { background-color:#f5f6fa; overflow-x:hidden; }
 .dashboard { display:flex; flex-direction:column; min-height:100vh; }
@@ -29,7 +29,7 @@ body { background-color:#f5f6fa; overflow-x:hidden; }
   width: 280px;
   z-index: 9999;
   animation: slideDown 0.3s ease;
-  display: none; /* agora inicia oculta */
+  display: none;
 }
 
 @keyframes slideDown { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
@@ -71,7 +71,7 @@ td button:hover { color:#4b7d64; }
 }
 .footer-acoes button:hover { background-color:#5c8c75; transform:scale(1.03); }
 
-/* Responsividade */
+/* Responsivo */
 @media (max-width:768px) {
   .topbar { flex-direction:column; gap:10px; }
   .menu-horizontal { justify-content:center; gap:15px; }

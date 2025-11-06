@@ -118,25 +118,25 @@
 // ========== Detalhes / alunos ==========
 (function initDetalhes(){
   const qs = new URLSearchParams(location.search);
-  const turmaId        = qs.get("turmaId")       || "-";
-  const turmaNome      = qs.get("turmaNome")     || "-";
-  const turmaCodigo    = qs.get("turmaCodigo")   || "-";
-  const disciplinaNome = qs.get("disciplinaNome")|| "-";
-  const instituicao    = qs.get("instituicaoNome") || "-";
-  const periodo        = qs.get("periodo")       || "-";
+  const turmaId        = qs.get("turmaId")        || "t1";
+  const turmaNome      = qs.get("turmaNome")      || "A";
+  const turmaCodigo    = qs.get("turmaCodigo")    || "TURMA-A";
+  const disciplinaNome = qs.get("disciplinaNome") || "Engenharia de Software";
+  const disciplinaId   = qs.get("disciplinaId")   || "d1";
+  const instituicao    = qs.get("instituicaoNome")|| "PUCCAMP";
+  const periodo        = qs.get("periodo")        || "1º Semestre";
 
   // Cabeçalho
   document.getElementById("tituloTurma").textContent = `Turma ${turmaNome} — ${disciplinaNome}`;
   document.getElementById("subTurma").textContent    = `Código: ${turmaCodigo} | Disciplina: ${disciplinaNome} | Instituição: ${instituicao} | Período: ${periodo}`;
 
-  // Mock de alunos (substituir por fetch em produção)
+  
   let alunos = [
     { id:"11111", nome:"João Silva"  },
     { id:"11112", nome:"Maria Souza" }
   ];
 
   const tbody = document.getElementById("tbodyAlunos");
-  const chkAll = document.getElementById("selecionarTodos");
 
   function linhaAluno(a){
     return `<tr>
@@ -165,11 +165,6 @@
     });
   }
 
-  // selecionar todos
-  chkAll.addEventListener("change", ()=>{
-    tbody.querySelectorAll(".chkAluno").forEach(c => c.checked = chkAll.checked);
-  });
-
   // ações
   document.getElementById("btnAddAluno").addEventListener("click", ()=>{
     const novoId = String(Date.now()).slice(-5);
@@ -190,8 +185,9 @@
     }
   });
 
+  // >>> BOTÃO "NOTAS DA TURMA"  <<<
   document.getElementById("btnNotasTurma").addEventListener("click", ()=>{
-    alert(`Abrir notas da turma ${turmaNome} (ID ${turmaId}) — rota futura.`);
+    location.href = `notasTurma.html?disciplinaId=${encodeURIComponent(disciplinaId)}&turmaId=${encodeURIComponent(turmaId)}`;
   });
 
   document.getElementById("btnSalvar").addEventListener("click", ()=>{
@@ -202,8 +198,6 @@
       const idx = alunos.findIndex(a=>a.id===id);
       if(idx>=0) alunos[idx].nome = novoNome;
     });
-
-    
     alert("Alterações salvas (mock).");
   });
 
