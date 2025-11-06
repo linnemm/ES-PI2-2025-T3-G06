@@ -134,7 +134,7 @@ form button:hover {
 .bandeirinhas {
   position: absolute;
   left: 50%;
-  top: 35px;
+  top: 50px;
   margin-top: 95px;
   transform: translateX(-50%);
   display: flex;
@@ -210,45 +210,134 @@ form button:hover {
   transform: rotate(-15deg) translateY(-1px);
 }
 
-/* RESPONSIVIDADE */
+/* RESPONSIVIDADE AJUSTADA */
 
-/* telas médias (tablets) */
+/* Telas médias (tablets) */
 @media (max-width: 768px) {
-  .background-box {
-    width: 95%;
-    padding: 20px 0;
-  }
-
-  .cadastro-container {
-    width: 95%;
-    padding: 30px 20px;
-  }
-}
-
-/* telas pequenas (celulares) */
-@media (max-width: 480px) {
   body {
-    padding: 20px 0;
+    overflow-y: auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 40px 0;
+    height: auto;
   }
 
   .background-box {
-    width: 95%;
-    padding: 20px 0;
-    box-shadow: none;
-  }
-
-  .cadastro-container {
     width: 90%;
-    padding: 25px 15px;
-    box-shadow: 0 4px 10px #9dccb2;
+    height: auto;
+    padding: 30px 0 60px;
+    border-radius: 18px;
   }
 
-  .cadastro-container input,
-  .cadastro-container button {
-    width: 100%;
+  form {
+    width: 85%;
+    padding: 40px 30px;
+    margin-top: 70px; /* espaço para bandeiras */
+  }
+
+  form h1 {
+    font-size: 1.8rem;
   }
 
   .bandeirinhas {
+    top: 10px;
     transform: translateX(-50%) scale(0.9);
+  }
+}
+
+/* 🔹 Telas pequenas (celulares) */
+@media (max-width: 480px) {
+  body {
+    flex-direction: column;
+    justify-content: center; /* 🔹 Centraliza verticalmente */
+    align-items: center; /* 🔹 Centraliza horizontalmente */
+    overflow-y: auto;
+    padding: 30px 0 60px;
+    height: 100vh;
+  }
+
+  .background-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 🔹 Centraliza o conteúdo dentro do verde */
+    width: 95%;
+    height: auto;
+    padding: 40px 0 70px;
+    border-radius: 22px;
+    box-shadow: 0 4px 10px rgba(10, 10, 10, 0.35);
+    margin: auto; /* 🔹 Garante centralização mesmo em scroll */
+  }
+
+  form {
+    background: #fff;
+    width: 80%;
+    padding: 40px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 50px 0; /* 🔹 Espaço equilibrado dentro da box */
+  }
+
+  form h1 {
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+  }
+
+  form input,
+  form button {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  /* 🔹 Bandeirinhas centralizadas e visíveis */
+  .bandeirinhas {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .bandeirinhas::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -15px;
+    right: -15px;
+    height: 2px;
+    background-color: #b5dcc6;
+  }
+
+  .flamula {
+    width: 26px;
+    height: 34px;
+    font-size: 12px;
+  }
+}
+
+/* Telas muito pequenas (smartphones menores) */
+@media (max-width: 360px) {
+  .background-box {
+    width: 95%;
+    padding: 20px 0 60px;
+  }
+
+  form {
+    width: 92%;
+    padding: 24px 16px;
+    margin-top: 80px;
+  }
+
+  .flamula {
+    width: 22px;
+    height: 30px;
+    font-size: 10px;
+  }
+
+  .bandeirinhas {
+    transform: translateX(-50%) scale(0.7);
   }
 }

@@ -166,45 +166,142 @@ form button:hover {
   transform: rotate(-15deg) translateY(-1px);
 }
 
-/* RESPONSIVIDADE */
+/* =================== RESPONSIVIDADE AJUSTADA E CENTRALIZADA =================== */
 
-/* telas médias (tablets) */
+/* Telas médias (tablets) */
 @media (max-width: 768px) {
-  .background-box {
-    width: 95%;
-    padding: 20px 0;
-  }
-
-  .cadastro-container {
-    width: 95%;
-    padding: 30px 20px;
-  }
-}
-
-/* telas pequenas (celulares) */
-@media (max-width: 480px) {
   body {
-    padding: 20px 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    height: auto;
+    padding: 40px 0;
   }
 
   .background-box {
-    width: 95%;
-    padding: 20px 0;
-    box-shadow: none;
-  }
-
-  .cadastro-container {
     width: 90%;
-    padding: 25px 15px;
-    box-shadow: 0 4px 10px #9dccb2;
+    height: auto;
+    padding: 40px 0;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .cadastro-container input,
-  .cadastro-container button {
-    width: 100%;
+  form {
+    width: 85%;
+    padding: 40px 30px;
+    margin: 0 auto; /* 🔹 Centraliza o form */
+  }
+
+  form h1 {
+    font-size: 1.8rem;
   }
 
   .bandeirinhas {
+    top: 25px;
     transform: translateX(-50%) scale(0.9);
+  }
+}
+
+/* Telas pequenas (celulares) */
+@media (max-width: 480px) {
+  body {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    padding: 40px 0 60px;
+    height: auto;
+  }
+
+  .background-box {
+    width: 92%;
+    height: auto;
+    padding: 30px 0;
+    border-radius: 22px;
+    box-shadow: 0 4px 10px rgba(157, 204, 178, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  form {
+    width: 80%;
+    padding: 35px 25px;
+    margin: 0 auto;
+    box-shadow: 0 4px 10px #9dccb2;
+  }
+
+  form h1 {
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+  }
+
+  form p {
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+  }
+
+  form input,
+  form button {
+    font-size: 1rem;
+    width: 90%;
+  }
+
+  /* 🔹 Bandeirinhas centralizadas perfeitamente acima da caixa */
+  .bandeirinhas {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8); /* 🔹 Centraliza horizontalmente */
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    z-index: 5;
+  }
+
+  .bandeirinhas::before {
+    top: -10px;
+    left: -20px;
+    right: -20px;
+  }
+
+  .flamula {
+    width: 25px;
+    height: 32px;
+    font-size: 11px;
+  }
+}
+
+/* Telas muito pequenas (celulares compactos) */
+@media (max-width: 360px) {
+  .background-box {
+    width: 94%;
+    padding: 20px 0;
+  }
+
+  form {
+    width: 90%;
+    padding: 25px 15px;
+  }
+
+  form h1 {
+    font-size: 1.3rem;
+  }
+
+  form p {
+    font-size: 0.9rem;
+  }
+
+  .flamula {
+    width: 22px;
+    height: 30px;
+    font-size: 10px;
+  }
+
+  .bandeirinhas {
+    transform: translateX(-50%) scale(0.7);
   }
 }

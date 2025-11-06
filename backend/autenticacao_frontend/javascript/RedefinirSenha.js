@@ -61,8 +61,11 @@ form.addEventListener("submit", async (e) => {
   botao.innerText = "Redefinindo...";
 
   try {
-    // Envia pro backend (porta 3000)
-    const resposta = await fetch("http://localhost:3000/api/auth/reset-password", {
+    // 🔹 Detecta automaticamente o IP/domínio atual (PC, celular, qualquer rede)
+    const baseURL = `${window.location.protocol}//${window.location.hostname}:3000`;
+
+    // Envia pro backend (rota /api/auth/reset-password)
+    const resposta = await fetch(`${baseURL}/api/auth/reset-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, novaSenha }),
@@ -73,7 +76,7 @@ form.addEventListener("submit", async (e) => {
     // Se o backend responder com sucesso
     if (resposta.ok) {
       alert("✅ " + (dados.message || "Senha redefinida com sucesso!"));
-      window.location.href = "/html/login.html";
+      window.location.href = `${baseURL}/html/login.html`;
     } else {
       alert("❌ " + (dados.message || "Erro ao redefinir senha."));
     }

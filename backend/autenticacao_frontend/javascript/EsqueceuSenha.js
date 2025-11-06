@@ -22,8 +22,11 @@ if (form) {
     botao.innerText = "Enviando...";
 
     try {
-      // Faz a requisição ao backend na porta 3000
-      const resposta = await fetch("http://localhost:3000/api/auth/forgot-password", {
+      // 🔹 Detecta automaticamente o IP ou domínio atual (funciona no PC e celular)
+      const baseURL = `${window.location.protocol}//${window.location.hostname}:3000`;
+
+      // Faz a requisição ao backend
+      const resposta = await fetch(`${baseURL}/api/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

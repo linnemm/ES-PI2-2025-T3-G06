@@ -64,8 +64,11 @@ if (form) {
     const nomeCompleto = `${nome} ${sobrenome}`;
 
     try {
+      // 🔹 Detecta automaticamente o host atual (PC ou celular)
+      const baseURL = `${window.location.protocol}//${window.location.hostname}:3000`;
+
       // Faz a requisição para o backend (rota de cadastro)
-      const resposta = await fetch("http://localhost:3000/api/auth/register", {
+      const resposta = await fetch(`${baseURL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -83,8 +86,8 @@ if (form) {
       if (resposta.ok) {
         alert("✅ " + (dados.message || "Cadastro realizado com sucesso!"));
         form.reset(); // limpa os campos do formulário
-        // Redireciona o usuário para a tela de login
-        window.location.href = "/html/login.html";
+        // Redireciona o usuário para a tela de login (usando o host atual)
+        window.location.href = `${baseURL}/html/login.html`;
       } else {
         // Mostra mensagem de erro retornada pelo backend
         errorMsg.textContent = dados.message || "Erro ao cadastrar usuário.";

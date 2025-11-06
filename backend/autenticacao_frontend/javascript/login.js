@@ -33,8 +33,11 @@ if (form) {
     botao.innerText = "Entrando...";
 
     try {
+      // 🔹 Detecta automaticamente o IP ou domínio atual (funciona em qualquer rede)
+      const baseURL = `${window.location.protocol}//${window.location.hostname}:3000`;
+
       // Envia para o backend (rota /api/auth/login)
-      const resposta = await fetch("http://localhost:3000/api/auth/login", {
+      const resposta = await fetch(`${baseURL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha: senhaValor }),
@@ -51,7 +54,7 @@ if (form) {
         }
 
         // Redireciona o usuário (ajuste o destino conforme sua página pós-login)
-        window.location.href = "/html/telainicial.html";
+        window.location.href = `${baseURL}/html/telainicial.html`;
       } else {
         alert("❌ " + (dados.message || "Erro ao fazer login."));
       }
