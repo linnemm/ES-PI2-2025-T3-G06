@@ -1,26 +1,20 @@
-// ===== Topbar: “janelinha” (igual ao dashboard) + Form de cadastro =====
 document.addEventListener("DOMContentLoaded", () => {
-  // --------------------------
-  // FORM cadastra aluno
-  // --------------------------
   const form = document.getElementById("formAluno");
   const btnImportar = document.getElementById("btnImportar");
-  const btnCancelar = document.getElementById("btnCancelar");
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const nome = document.getElementById("nome").value.trim();
     const matricula = document.getElementById("matricula").value.trim();
-    const email = document.getElementById("email").value.trim();
 
-    if (!nome || !matricula || !email) {
+    if (!nome || !matricula) {
       alert("Preencha todos os campos!");
       return;
     }
 
     const lista = JSON.parse(localStorage.getItem("listaAlunos")) || [];
-    lista.push({ nome, matricula, email });
+    lista.push({ nome, matricula });
     localStorage.setItem("listaAlunos", JSON.stringify(lista));
 
     alert("Aluno salvo com sucesso!");
@@ -29,22 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btnImportar.addEventListener("click", () => {
     alert("Aqui você pode implementar a importação por arquivo (CSV/Excel).");
-    // <input type="file" accept=".csv,.xlsx"> + Papaparse/SheetJS
   });
 
-  btnCancelar.addEventListener("click", () => {
-    window.location.href = "dashboard.html";
-  });
-
-  // --------------------------
-  // ABA FLUTUANTE 
-  // --------------------------
+  // ===== ABA FLUTUANTE =====
   const menuFlutuante = document.getElementById("menuFlutuante");
   const selectContainer = document.getElementById("selectContainer");
   const tituloAba = document.getElementById("tituloAba");
   const btnIr = document.getElementById("btnIr");
 
-  // Dados simulados 
   const instituicoes = ["PUCCAMP", "USP", "UNICAMP"];
   const cursos = ["Engenharia", "Direito", "Administração"];
   const disciplinas = ["Cálculo I", "Física", "Lógica"];
@@ -77,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tipo === "instituicao") {
       tituloAba.textContent = "Instituições";
 
-      // “Ver todas” 
       const btnVerTodas = document.createElement("button");
       btnVerTodas.textContent = "Ver todas as instituições";
       btnVerTodas.classList.add("btn-curso");
@@ -135,15 +120,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Abridores 
-  const btnInstituicoes = document.getElementById("btnInstituicoes");
-  const btnCursos = document.getElementById("btnCursos");
-  const btnDisciplinas = document.getElementById("btnDisciplinas");
-  const btnTurmas = document.getElementById("btnTurmas");
-
-  btnInstituicoes?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("instituicao"); });
-  btnCursos?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("curso"); });
-  btnDisciplinas?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("disciplina"); });
-  btnTurmas?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("turma"); });
+  document.getElementById("btnInstituicoes")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("instituicao"); });
+  document.getElementById("btnCursos")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("curso"); });
+  document.getElementById("btnDisciplinas")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("disciplina"); });
+  document.getElementById("btnTurmas")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("turma"); });
 
   // Fechar ao clicar fora
   document.addEventListener("click", (e) => {

@@ -166,10 +166,8 @@
   }
 
   // ações
-  document.getElementById("btnAddAluno").addEventListener("click", ()=>{
-    const novoId = String(Date.now()).slice(-5);
-    alunos.push({ id: novoId, nome: "Novo Aluno" });
-    render();
+  document.getElementById("btnAddAluno").addEventListener("click", () => {
+   window.location.href = "cadastro_aluno.html";
   });
 
   document.getElementById("btnImportar").addEventListener("click", ()=>{

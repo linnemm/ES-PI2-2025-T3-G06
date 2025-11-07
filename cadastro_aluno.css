@@ -15,7 +15,7 @@ body {
   min-height: 100vh;
 }
 
-/* ===== TOPBAR  ===== */
+/* ===== TOPBAR ===== */
 .topbar-notadez {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
@@ -33,13 +33,11 @@ body {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 12px; border-radius: 6px;
   transition: background-color 0.3s, box-shadow .2s;
-  background: transparent; box-shadow: none;
 }
 .ndz-menu li a:hover,
 .ndz-menu li a:focus { background-color: rgba(255,255,255,0.2); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-.ndz-menu li a.ativo { background-color: rgba(255,255,255,0.2); }
 
-/* ===== ABA FLUTUANTE  ===== */
+/* ===== ABA FLUTUANTE ===== */
 .menu-flutuante {
   position: absolute;
   top: 75px;
@@ -101,14 +99,12 @@ input:focus { border-color: #6ca98c; box-shadow: 0 0 5px rgba(108,169,140,.6); }
   display: flex; gap: 10px; justify-content: space-between;
   margin-top: 25px; flex-wrap: wrap;
 }
-.btn-salvar, .btn-curso, .btn-cancelar {
+.btn-salvar, .btn-curso {
   padding: 10px 16px; border: none; border-radius: 10px; cursor: pointer; font-weight: 700;
   display: inline-flex; align-items: center; gap: 8px;
+  background-color: #6ca98c; color: #fff;
 }
-.btn-salvar, .btn-curso { background-color: #6ca98c; color: #fff; }
 .btn-salvar:hover, .btn-curso:hover { background-color: #5c8c75; }
-.btn-cancelar { background-color: #ccc; color: #000; }
-.btn-cancelar:hover { background-color: #aaa; }
 
 /* ===== Responsivo ===== */
 @media (max-width: 768px) {
