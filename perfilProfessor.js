@@ -1,6 +1,3 @@
-// ============================
-// Dados e helpers (LocalStorage)
-// ============================
 const LS_PROF = 'pi.professor';
 const $ = (id) => document.getElementById(id);
 const toast = (msg) => {
@@ -71,7 +68,7 @@ $('formSenha').addEventListener('submit', (e) => {
   const conf  = $('confirmaSenha').value;
 
   if (atual !== p.senha) return toast('Senha atual incorreta.');
-  if (nova.length < 8)   return toast('A nova senha deve ter pelo menos 8 caracteres.');
+  if (nova.length < 8)   return toast('A nova senha deve ter pelo menos 6 caracteres.');
   if (nova === atual)    return toast('A nova senha deve ser diferente da atual.');
   if (nova !== conf)     return toast('A confirmação não confere.');
 
