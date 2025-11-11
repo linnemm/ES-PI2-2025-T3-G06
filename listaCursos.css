@@ -111,6 +111,9 @@ body {
   width: 90%;
   max-width: 1000px;
   margin: 100px auto 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .titulo-verde {
@@ -130,6 +133,7 @@ form.filtro-card {
   width: 900px;
   max-width: calc(100vw - 100px);
   margin: 0 auto 20px auto;
+  align-self: center;
 }
 
 form.filtro-card label {
@@ -175,7 +179,7 @@ form.filtro-card input:focus {
 }
 .btn-curso:hover { background-color: #5c8c75; }
 
-/* ===== Lista (grid igual ao visual do dashboard) ===== */
+/* ===== Lista  ===== */
 .lista-card {
   margin-top: 18px;
   background: #fff;
@@ -184,6 +188,7 @@ form.filtro-card input:focus {
   max-width: calc(100vw - 100px);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   overflow: hidden;
+  align-self: center;
 }
 
 .tabela-head,
