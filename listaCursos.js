@@ -6,7 +6,7 @@
 const LS_KEY = 'pi.cursos';
 const $ = (id) => document.getElementById(id);
 
-// ------- Seeds temporários (remova após integrar com backend) -------
+// ------- Seeds temporários (remover dps de integrar com backend) -------
 if (!localStorage.getItem(LS_KEY)) {
   localStorage.setItem(LS_KEY, JSON.stringify([
     { id: '1', nome: 'Engenharia de Software', sigla: 'ESW', coordenador: 'Prof. Ivan Granja' },
@@ -23,7 +23,7 @@ function linhaHTML(curso) {
       <span>${curso.sigla}</span>
       <span>${curso.coordenador}</span>
       <span class="acoes">
-        <a class="link" href="cadastro_curso.html?id=${encodeURIComponent(curso.id)}">
+        <a class="btn-editar" href="cadastro_curso.html?id=${encodeURIComponent(curso.id)}">
           <i class="fa-solid fa-pen"></i> Editar
         </a>
         <button class="btn-excluir" onclick="excluirCurso('${curso.id}')">
@@ -33,6 +33,7 @@ function linhaHTML(curso) {
     </div>
   `;
 }
+
 
 function renderLista() {
   const lista = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
@@ -65,9 +66,6 @@ $('fBusca').addEventListener('keyup', e => { if (e.key === 'Enter') renderLista(
 // Inicializa lista
 renderLista();
 
-// =========================================
-// JANELINHA (menu flutuante) — igual ao dashboard
-// =========================================
 const menuFlutuante = document.getElementById("menuFlutuante");
 const selectContainer = document.getElementById("selectContainer");
 const tituloAba = document.getElementById("tituloAba");

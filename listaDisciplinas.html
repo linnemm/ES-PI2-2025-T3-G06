@@ -71,48 +71,6 @@
 
 <!-- Modal: Componente de Nota -->
 <div id="modalComponente" class="modal-overlay" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTituloComponente">
-    <div class="modal-header">
-      <span id="modalTituloComponente" class="modal-title">Cadastrar Componente de Nota</span>
-      <button id="btnFecharModal" class="modal-close" aria-label="Fechar">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="field col-2">
-          <label for="cmpDisc" class="required">Disciplina</label>
-          <select id="cmpDisc">
-            <option value="">Selecione...</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="cmpNome" class="required">Nome do componente</label>
-          <input type="text" id="cmpNome" placeholder="Ex.: Prova 1, Trabalho, Projeto" />
-        </div>
-
-        <div class="field">
-          <label for="cmpSigla" class="required">Sigla</label>
-          <input type="text" id="cmpSigla" placeholder="Ex.: P1, TRAB, PROJ" />
-        </div>
-
-        <div class="field">
-          <label for="cmpPeso">Peso (%)</label>
-          <input type="text" id="cmpPeso" placeholder="Ex.: 40 (opcional)" />
-        </div>
-
-        <div class="field col-2">
-          <label for="cmpDesc">Descrição</label>
-          <textarea id="cmpDesc" placeholder="Detalhes sobre o componente, regras, etc. (opcional)"></textarea>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button id="btnFechar" class="btn btn-ghost"><i class="fa-solid fa-xmark"></i> Fechar</button>
-      <button id="btnSalvarComponente" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
-    </div>
-  </div>
 </div>
 
 <script src="listaDisciplinas.js"></script>

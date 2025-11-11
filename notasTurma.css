@@ -1,8 +1,8 @@
-
 * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins", sans-serif; }
 body { background-color:#f5f6fa; overflow-x:hidden; }
 .dashboard { display:flex; flex-direction:column; min-height:100vh; }
 
+/* Topbar */
 .topbar {
   width:100%; background:linear-gradient(to right,#6ca98c,#5c8c75); color:white;
   padding:15px 40px; display:flex; align-items:center; justify-content:space-between;
@@ -31,7 +31,6 @@ body { background-color:#f5f6fa; overflow-x:hidden; }
   animation: slideDown 0.3s ease;
   display: none;
 }
-
 @keyframes slideDown { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
 .menu-conteudo h3 { color:#6ca98c; margin-bottom:10px; text-align:center; }
 .campo-selecao { margin-bottom:12px; }
@@ -41,12 +40,17 @@ body { background-color:#f5f6fa; overflow-x:hidden; }
 .menu-flutuante .btn-curso:hover { background-color:#5c8c75; }
 
 /* Conteúdo principal */
-.container { width:90%; max-width:1100px; margin:100px auto 40px; }
+.container { 
+  width:90%; 
+  max-width:1100px; 
+  margin:50px auto 40px;  
+}
+
 .turma-header { text-align:center; margin-bottom:25px; }
 .turma-header h1 { color:#6ca98c; font-size:28px; font-weight:700; }
 .turma-header p { color:#555; font-size:16px; margin-top:5px; }
 
-/* Botões principais */
+/* Botões principais (topo) */
 .turma-acoes { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:25px; }
 .turma-acoes button {
   background-color:#6ca98c; color:white; border:none; padding:10px 16px; border-radius:8px; font-weight:600;
@@ -57,11 +61,26 @@ body { background-color:#f5f6fa; overflow-x:hidden; }
 /* Tabela de notas */
 .tabela-notas { background:white; border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,0.15); overflow-x:auto; padding:20px; }
 table { width:100%; border-collapse:collapse; font-size:15px; min-width:700px; }
-th,td { padding:12px; text-align:left; border-bottom:1px solid #ddd; }
+th,td { padding:12px; text-align:left; border-bottom:none; } /* sem border-bottom; usaremos divisória entre TRs */
 th { background-color:#6ca98c; color:white; font-weight:600; position:sticky; top:0; z-index:2; }
-tr:hover { background-color:#f2f7f4; }
-td button { background:none; border:none; cursor:pointer; color:#6ca98c; font-size:16px; }
-td button:hover { color:#4b7d64; }
+
+/* Divisória mais visível entre itens e hover */
+tbody tr + tr { border-top:2px solid #cfe1d8; }
+tbody tr:hover { background-color:#f5fbf8; }
+
+/* Ações dentro da tabela  */
+td.acoes {
+  display:flex; align-items:center; justify-content:flex-end; gap:10px; white-space:nowrap;
+}
+.acao-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  padding:8px 12px; border:none; border-radius:8px; cursor:pointer; line-height:1;
+  min-width:120px; height:36px; font-weight:600;
+}
+.btn-editar{ background:#6ca98c; color:#fff; }
+.btn-editar:hover{ background:#5c8c75; }
+.btn-excluir{ background:#b33a3a; color:#fff; }
+.btn-excluir:hover{ filter:brightness(.95); }
 
 /* Botões inferiores */
 .footer-acoes { display:flex; justify-content:space-between; margin-top:25px; flex-wrap:wrap; gap:10px; }
@@ -79,4 +98,10 @@ td button:hover { color:#4b7d64; }
   table { font-size:14px; }
   th,td { padding:8px; }
   .footer-acoes, .turma-acoes { flex-direction:column; align-items:center; }
+  .acao-btn{ min-width:108px; height:34px; }
+}
+/* Ajuste de alinhamento do cabeçalho "Ações" */
+table thead th:last-child {
+  text-align: right;
+  padding-right: 10px; /* encosta com os botões */
 }

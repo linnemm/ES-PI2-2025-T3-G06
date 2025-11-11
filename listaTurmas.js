@@ -112,7 +112,7 @@
 
   document.addEventListener("click",(e)=>{
     if(!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")){
-      menuFlutuante.style.display="none";
+      menuFlutuante.style.display = "none";
     }
   });
 })();
@@ -149,10 +149,13 @@
         <span>${turma.codigo}</span>
         <span>${turma.disciplina}</span>
         <div class="acoes">
-          <button class="btn-alunos" data-href="detalhesTurma.html?${params}">
+          <button class="acao-btn btn-editar" data-href="cadastro_turma.html?id=${encodeURIComponent(turma.id)}">
+            <i class="fa-solid fa-pen"></i> Editar
+          </button>
+          <button class="acao-btn btn-alunos" data-href="detalhesTurma.html?${params}">
             <i class="fa-solid fa-user-graduate"></i> Alunos
           </button>
-          <button class="btn-excluir" data-index="${index}">
+          <button class="acao-btn btn-excluir" data-index="${index}">
             <i class="fa-solid fa-trash"></i> Excluir
           </button>
         </div>
@@ -165,7 +168,7 @@
     vazio.style.display="none";
     corpoTabela.innerHTML = lista.map(linhaHTML).join("");
 
-    // eventos
+    // excluir
     corpoTabela.querySelectorAll(".btn-excluir").forEach(btn=>{
       btn.addEventListener("click",(e)=>{
         const idx = Number(e.currentTarget.dataset.index);
@@ -175,7 +178,9 @@
         }
       });
     });
-    corpoTabela.querySelectorAll(".btn-alunos").forEach(btn=>{
+
+    // navegar (alunos e editar)
+    corpoTabela.querySelectorAll(".btn-alunos, .btn-editar").forEach(btn=>{
       btn.addEventListener("click",(e)=>{
         location.href = e.currentTarget.dataset.href;
       });

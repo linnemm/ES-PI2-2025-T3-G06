@@ -145,7 +145,7 @@
       <td contenteditable="true" data-id="${a.id}" class="celNome">${a.nome}</td>
       <td>
         <span class="acoes">
-          <a class="link" href="cadastro_aluno.html?id=${encodeURIComponent(a.id)}">
+          <a class="btn-editar" href="cadastro_aluno.html?id=${encodeURIComponent(a.id)}">
             <i class="fa-solid fa-pen"></i> Editar
           </a>
           <button class="btn-excluir" data-id="${a.id}">
@@ -155,6 +155,7 @@
       </td>
     </tr>`;
   }
+  
 
   function render(){
     tbody.innerHTML = alunos.map(linhaAluno).join("");

@@ -42,7 +42,7 @@ body { background-color:#f4f6f5; color:#333; }
 /* Main */
 .main-content{
   display:flex; flex-direction:column; align-items:center;
-  background-color:#f4f6f5; min-height:100vh; padding:100px 24px 40px;
+  background-color:#f4f6f5; min-height:100vh; padding:60px 24px 40px;
 }
 h1{ color:#5c8c75; margin-bottom:26px; }
 

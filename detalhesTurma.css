@@ -39,14 +39,21 @@ body { background:#f5f6fa; overflow-x:hidden; overflow-y:auto; }
 .menu-flutuante .btn-curso:hover{ background:#5c8c75; }
 
 /* Container */
-.container{ width:90%; max-width:1100px; margin:100px auto 40px; }
+.container {
+  width: 90%;
+  max-width: 1000px;
+  margin: 40px auto 40px;  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .turma-header{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:25px; }
 .turma-header h1{ color:#6ca98c; font-size:30px; font-weight:700; }
 .turma-header p{ color:#555; font-size:16px; margin-top:5px; }
 
 /* Botões superiores */
-.turma-acoes{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:25px; }
+.turma-acoes{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:15px; }
 .turma-acoes button{
   background:#6ca98c; color:#fff; border:none; padding:10px 16px; border-radius:8px; font-weight:600; cursor:pointer;
   display:flex; align-items:center; gap:8px; transition:background-color .3s, transform .1s;
@@ -89,43 +96,38 @@ td button:hover{ color:#4b7d64; }
   .footer-acoes,.turma-acoes{ flex-direction:column; align-items:center; }
 }
 /* ==== Fix alinhamento AÇÕES  ==== */
-th:last-child,
-td:last-child { text-align: right; }
+th:last-child, td:last-child { text-align:right; }
 
 td .acoes{
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;   /* alinha verticalmente ícone + texto */
-  gap: 10px;
+  width:100%;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
 }
 
-td .acoes .link{
-  display: inline-flex;  /* evita “cair” no baseline */
-  align-items: center;
-  gap: 6px;
-  line-height: 1;        /* elimina diferença de altura */
-  color: #5c8c75;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 0;            /* segue o padrão da lista: link sem “pill” */
+td .acoes .btn-editar{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:#6ca98c;
+  color:#fff;
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  line-height:1;
+  text-decoration:none;    /* se for <a> */
+  font-weight:600;
 }
+td .acoes .btn-editar:hover{ background:#5c8c75; }
 
+/* Mantém o Excluir como estava */
 td .acoes .btn-excluir{
-  display: inline-flex;  /* centraliza ícone/texto dentro do botão */
-  align-items: center;
-  gap: 6px;
-  background: #b33a3a;
-  color: #fff;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  line-height: 1;        /* mesma altura ótica do link */
+  display:inline-flex; align-items:center; gap:6px;
+  background:#b33a3a; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; line-height:1;
 }
-td .acoes .btn-excluir:hover{ filter: brightness(0.95); }
+td .acoes .btn-excluir:hover{ filter:brightness(0.95); }
 
-td .acoes i{ font-size: 14px; } /* ícone mais “assentado” */
-
-/* Neutraliza estilo antigo genérico dos <td> buttons desta célula */
+td .acoes i{ font-size:14px; }
 td button{ color: inherit; font-size: inherit; background: none; border: none; }

@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
       theadRow.insertBefore(th, thAcoes);
     });
 
-    // adiciona "Nota Final" antes de "Ações"
     const thNF = document.createElement("th");
     thNF.textContent = "Nota Final";
     theadRow.insertBefore(thNF, thAcoes);
@@ -69,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return comps;
   }
 
-  // lê notas salvas e aplica nas células
   function aplicarNotasExistentes(comps){
     const notas = JSON.parse(localStorage.getItem(LS_NOTAS) || '[]')
       .filter(n => n.turmaId === turmaId && n.disciplinaId === disciplinaId);
@@ -208,6 +206,23 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "detalhesTurma.html";
   });
 
+  // Delegação: ações por linha (Editar / Excluir)
+  tbody.addEventListener("click", (e) => {
+    const btn = e.target.closest(".acao-btn");
+    if(!btn) return;
+
+    const tr = e.target.closest("tr");
+    const ra = tr?.cells?.[0]?.textContent?.trim() ?? "(?)";
+    if(btn.classList.contains("btn-editar")){
+      alert(`Editar registro do aluno ${ra} (exemplo).`);
+    }
+    if(btn.classList.contains("btn-excluir")){
+      if(confirm(`Excluir registro do aluno ${ra}?`)){
+        tr.remove();
+      }
+    }
+  });
+
   // validação e recálculo on-blur
   tbody.addEventListener("blur", (e) => {
     const td = e.target.closest('td[data-componente]');
@@ -220,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
     recalcularNotasFinais(comps);
   }, true);
 
-  // menu 
+  // ====== Menu flutuante  ======
   const menuFlutuante = document.getElementById("menuFlutuante");
   const selectContainer = document.getElementById("selectContainer");
   const tituloAba = document.getElementById("tituloAba");
