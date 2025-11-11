@@ -130,7 +130,6 @@
   document.getElementById("tituloTurma").textContent = `Turma ${turmaNome} — ${disciplinaNome}`;
   document.getElementById("subTurma").textContent    = `Código: ${turmaCodigo} | Disciplina: ${disciplinaNome} | Instituição: ${instituicao} | Período: ${periodo}`;
 
-  
   let alunos = [
     { id:"11111", nome:"João Silva"  },
     { id:"11112", nome:"Maria Souza" }
@@ -138,14 +137,21 @@
 
   const tbody = document.getElementById("tbodyAlunos");
 
+  // ===== Ações =====
   function linhaAluno(a){
     return `<tr>
       <td><input type="checkbox" class="chkAluno" data-id="${a.id}"></td>
       <td>${a.id}</td>
       <td contenteditable="true" data-id="${a.id}" class="celNome">${a.nome}</td>
       <td>
-        <button class="btnEditar" title="Editar"><i class="fa-solid fa-pen"></i></button>
-        <button class="btnExcluir" data-id="${a.id}" title="Excluir"><i class="fa-solid fa-trash"></i></button>
+        <span class="acoes">
+          <a class="link" href="cadastro_aluno.html?id=${encodeURIComponent(a.id)}">
+            <i class="fa-solid fa-pen"></i> Editar
+          </a>
+          <button class="btn-excluir" data-id="${a.id}">
+            <i class="fa-solid fa-trash"></i> Excluir
+          </button>
+        </span>
       </td>
     </tr>`;
   }
@@ -153,8 +159,8 @@
   function render(){
     tbody.innerHTML = alunos.map(linhaAluno).join("");
 
-    // excluir
-    tbody.querySelectorAll(".btnExcluir").forEach(btn=>{
+    // excluir (classe atualizada para .btn-excluir)
+    tbody.querySelectorAll(".btn-excluir").forEach(btn=>{
       btn.addEventListener("click",(e)=>{
         const id = e.currentTarget.dataset.id;
         if(confirm("Remover este aluno da turma?")){
@@ -183,7 +189,7 @@
     }
   });
 
-  // >>> BOTÃO "NOTAS DA TURMA"  <<<
+  // Botão "Notas da Turma"
   document.getElementById("btnNotasTurma").addEventListener("click", ()=>{
     location.href = `notasTurma.html?disciplinaId=${encodeURIComponent(disciplinaId)}&turmaId=${encodeURIComponent(turmaId)}`;
   });

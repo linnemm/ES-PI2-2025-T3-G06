@@ -4,7 +4,8 @@
 const LS_DISC = 'pi.disciplinas'; // [{ id, cursoId?, nome, codigo?, ch?, professor? }]
 const $ = (id) => document.getElementById(id);
 
-// ------- Seeds temporários ) -------
+// ------- Seeds temporários -------
+// (mantidos para mock)
 if (!localStorage.getItem(LS_DISC)) {
   localStorage.setItem(LS_DISC, JSON.stringify([
     { id:'d1', cursoId:'1', nome:'Algoritmos e Programação', codigo:'ALG101', ch:'80h', professor:'Profa. Maria Lima' },
@@ -21,6 +22,9 @@ function linhaHTML(d){
   const codigo = d.codigo || '-';
   const ch = d.ch || '-';
   const prof = d.professor || '-';
+
+  const paramsTurmas = new URLSearchParams({ disciplinaId: d.id }).toString();
+
   return `
     <div class="tabela-row">
       <span><strong>${d.nome}</strong></span>
@@ -28,10 +32,13 @@ function linhaHTML(d){
       <span>${ch}</span>
       <span>${prof}</span>
       <span class="acoes">
-        <a class="link" href="listaTurmas.html?disciplinaId=${encodeURIComponent(d.id)}">
-          <i class="fa-solid fa-users"></i> Turmas
+        <a class="link" href="cadastro_disciplina.html?id=${encodeURIComponent(d.id)}">
+          <i class="fa-solid fa-pen"></i> Editar
         </a>
-        <button class="btn-excluir" onclick="excluirDisciplina('${d.id}')">
+        <button class="btn-turmas" data-href="listaTurmas.html?${paramsTurmas}">
+          <i class="fa-solid fa-users"></i> Turmas
+        </button>
+        <button class="btn-excluir" data-id="${d.id}">
           <i class="fa-solid fa-trash"></i> Excluir
         </button>
       </span>
@@ -56,6 +63,18 @@ function renderLista(){
 
   $('corpoTabelaDisc').innerHTML = filtradas.map(linhaHTML).join('');
   $('vazioDisc').style.display = filtradas.length ? 'none' : 'block';
+
+  // handlers das ações
+  document.querySelectorAll('.btn-turmas').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      location.href = e.currentTarget.dataset.href;
+    });
+  });
+  document.querySelectorAll('.btn-excluir').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      excluirDisciplina(e.currentTarget.dataset.id);
+    });
+  });
 }
 
 function excluirDisciplina(id){
@@ -72,8 +91,7 @@ $('btnNovaDisc').addEventListener('click', () => location.href = 'cadastro_disci
 renderLista();
 window.excluirDisciplina = excluirDisciplina;
 
-// JANELINHA 
-
+// =================== JANELINHA ===================
 const menuFlutuante = document.getElementById("menuFlutuante");
 const selectContainer = document.getElementById("selectContainer");
 const tituloAba = document.getElementById("tituloAba");
@@ -167,9 +185,7 @@ document.addEventListener("click", (e)=>{
   }
 });
 
-// =========================================
-/* MODAL: Cadastrar componente de nota */
-// =========================================
+// =================== MODAL: Componente de nota ===================
 (() => {
   const LS_COMP_DISC  = 'pi.componentesDisc';
 
@@ -205,7 +221,7 @@ document.addEventListener("click", (e)=>{
   function toNumberOrNull(v){
     const n = Number(String(v).replace(',', '.'));
     return Number.isFinite(n) ? n : null;
-    }
+  }
 
   function salvar(){
     const disciplinaId = cmpDisc.value.trim();

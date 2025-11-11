@@ -61,8 +61,8 @@ form.filtro-card {
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 900px;                      /* igual ao dashboard */
-  max-width: calc(100vw - 100px);    /* igual ao dashboard */
+  width: 900px;                      
+  max-width: calc(100vw - 100px);    
   margin-bottom: 20px;
 }
 form.filtro-card label { display:block; font-weight:600; font-size:16px; color:#333; }
@@ -91,10 +91,36 @@ form.filtro-card input:focus {
 }
 .tabela-head { background:#f7faf9; font-weight:700; }
 .tabela-row { border-top:1px solid #e7ecef; background:#fff; }
-.acoes { display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
-.link { color:#5c8c75; text-decoration:none; font-weight:600; }
 
-.btn-excluir { background:#b33a3a; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; }
+/* ===== AÇÕES ===== */
+.tabela-head span:last-child { text-align:right; }
+
+.acoes{
+  width:100%;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  line-height:1;
+  color:#5c8c75;
+  text-decoration:none;
+  font-weight:600;
+}
+.btn-turmas{
+  display:inline-flex; align-items:center; gap:6px;
+  background:#6ca98c; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; line-height:1;
+}
+.btn-turmas:hover{ background:#5c8c75; }
+.btn-excluir{
+  display:inline-flex; align-items:center; gap:6px;
+  background:#b33a3a; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; line-height:1;
+}
 .btn-excluir:hover { filter:brightness(0.95); }
 
 .vazio { padding:16px; text-align:center; color:#6b7b87; display:none; }

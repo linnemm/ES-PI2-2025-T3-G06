@@ -59,6 +59,15 @@ table{ width:100%; border-collapse:collapse; font-size:15px; min-width:700px; }
 th,td{ padding:12px; text-align:left; border-bottom:1px solid #ddd; }
 th{ background:#6ca98c; color:#fff; font-weight:600; position:sticky; top:0; z-index:2; }
 tr:hover{ background:#f2f7f4; }
+
+/* ===== AÇÕES  ===== */
+.acoes{ display:flex; gap:10px; justify-content:flex-end; }
+.link{ color:#5c8c75; text-decoration:none; font-weight:600; }
+.btn-excluir{
+  background:#b33a3a; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer;
+}
+.btn-excluir:hover{ filter:brightness(0.95); }
+
 td button{ background:none; border:none; cursor:pointer; color:#6ca98c; font-size:16px; }
 td button:hover{ color:#4b7d64; }
 
@@ -79,3 +88,44 @@ td button:hover{ color:#4b7d64; }
   th,td{ padding:8px; }
   .footer-acoes,.turma-acoes{ flex-direction:column; align-items:center; }
 }
+/* ==== Fix alinhamento AÇÕES  ==== */
+th:last-child,
+td:last-child { text-align: right; }
+
+td .acoes{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;   /* alinha verticalmente ícone + texto */
+  gap: 10px;
+}
+
+td .acoes .link{
+  display: inline-flex;  /* evita “cair” no baseline */
+  align-items: center;
+  gap: 6px;
+  line-height: 1;        /* elimina diferença de altura */
+  color: #5c8c75;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0;            /* segue o padrão da lista: link sem “pill” */
+}
+
+td .acoes .btn-excluir{
+  display: inline-flex;  /* centraliza ícone/texto dentro do botão */
+  align-items: center;
+  gap: 6px;
+  background: #b33a3a;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  line-height: 1;        /* mesma altura ótica do link */
+}
+td .acoes .btn-excluir:hover{ filter: brightness(0.95); }
+
+td .acoes i{ font-size: 14px; } /* ícone mais “assentado” */
+
+/* Neutraliza estilo antigo genérico dos <td> buttons desta célula */
+td button{ color: inherit; font-size: inherit; background: none; border: none; }

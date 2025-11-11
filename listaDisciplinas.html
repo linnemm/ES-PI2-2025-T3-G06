@@ -17,7 +17,7 @@
     <ul class="menu-horizontal">
       <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
       <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
-      <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+      <li><a href="#" id="btnDisciplinas" class="ativo"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
       <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
       <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
       <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
@@ -59,7 +59,7 @@
         <span>Código</span>
         <span>C.H.</span>
         <span>Professor</span>
-        <span style="text-align:right;"></span>
+        <span style="text-align:right;">Ações</span>
       </div>
       <div id="corpoTabelaDisc"></div>
       <div id="vazioDisc" class="vazio">Nenhuma disciplina encontrada.</div>
@@ -69,7 +69,7 @@
   </main>
 </div>
 
-<!-- Modal: Componente de Nota (markup completo para funcionar com o JS) -->
+<!-- Modal: Componente de Nota -->
 <div id="modalComponente" class="modal-overlay" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTituloComponente">
     <div class="modal-header">
