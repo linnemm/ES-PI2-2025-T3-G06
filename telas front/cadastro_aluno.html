@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Aluno — NotaDez</title>
+
+  <!-- Fontes e ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="cadastro_aluno.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <!-- ===== TOPBAR PADRÃO  ===== -->
+    <header class="topbar-notadez">
+      <h2 class="topbar-notadez__brand">NotaDez</h2>
+      <ul class="ndz-menu">
+        <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+        <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
+        <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+        <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
+        <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
+        <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+      </ul>
+    </header>
+
+    <!-- ===== ABA FLUTUANTE ===== -->
+    <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
+      <div class="menu-conteudo">
+        <h3 id="tituloAba">Selecionar</h3>
+        <div id="selectContainer"></div>
+        <button id="btnIr" class="btn-curso" style="display:none;">Ir</button>
+      </div>
+    </div>
+
+    <!-- ===== CONTEÚDO ===== -->
+    <main class="main-content">
+      <h1>Cadastro de Aluno</h1>
+
+      <form id="formAluno" autocomplete="off" novalidate>
+        <label for="nome">Nome do Aluno:</label>
+        <input type="text" id="nome" name="nome" placeholder="Ex: João da Silva" required />
+
+        <label for="matricula">Matrícula:</label>
+        <input type="text" id="matricula" name="matricula" placeholder="Ex: 20251234" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="exemplo@email.com" required />
+
+        <div class="botoes">
+          <button type="submit" class="btn-salvar">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar
+          </button>
+          <button type="button" class="btn-curso" id="btnImportar">
+            <i class="fa-solid fa-file-import"></i> Importar por arquivo
+          </button>
+          <button type="button" class="btn-cancelar" id="btnCancelar">
+            <i class="fa-solid fa-xmark"></i> Cancelar
+          </button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <!-- JS -->
+  <script src="cadastro_aluno.js"></script>
+</body>
+</html>

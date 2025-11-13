@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Disciplinas - NotaDez</title>
+
+  <link rel="stylesheet" href="listaDisciplinas.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="dashboard">
+  <!-- Topbar  -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+    <ul class="menu-horizontal">
+      <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+      <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
+      <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+      <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
+      <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
+      <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+    </ul>
+  </nav>
+
+  <!-- Janelinha -->
+  <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
+    <div class="menu-conteudo">
+      <h3 id="tituloAba">Selecionar</h3>
+      <div id="selectContainer"></div>
+      <button id="btnIr" class="btn-curso" style="display:none;">Ir</button>
+    </div>
+  </div>
+
+  <!-- Conteúdo -->
+  <main class="container">
+    <h1 class="titulo-verde">Disciplinas do Curso</h1>
+
+    <form class="filtro-card" onsubmit="return false;">
+      <label for="fBuscaDisc">Busca</label>
+      <div class="busca-linha">
+        <input id="fBuscaDisc" type="text" placeholder="Buscar por nome, código, C.H. ou professor" />
+        <button class="btn-curso" id="btnBuscarDisc" type="button">
+          <i class="fa-solid fa-magnifying-glass"></i> Buscar
+        </button>
+      </div>
+      <div class="botoes">
+        <div style="display:flex; gap:10px; margin-left:auto;">
+          <button class="btn-curso" id="btnComponenteNota" type="button">+ Componente de nota</button>
+          <button class="btn-curso" id="btnNovaDisc" type="button">+ Nova Disciplina</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="lista-card">
+      <div class="tabela-head">
+        <span>Disciplina</span>
+        <span>Código</span>
+        <span>C.H.</span>
+        <span>Professor</span>
+        <span style="text-align:right;"></span>
+      </div>
+      <div id="corpoTabelaDisc"></div>
+      <div id="vazioDisc" class="vazio">Nenhuma disciplina encontrada.</div>
+    </div>
+
+    <p class="nota">* Para excluir, a disciplina não pode ter turmas vinculadas.</p>
+  </main>
+</div>
+
+<!-- Modal: Componente de Nota (markup completo para funcionar com o JS) -->
+<div id="modalComponente" class="modal-overlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTituloComponente">
+    <div class="modal-header">
+      <span id="modalTituloComponente" class="modal-title">Cadastrar Componente de Nota</span>
+      <button id="btnFecharModal" class="modal-close" aria-label="Fechar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field col-2">
+          <label for="cmpDisc" class="required">Disciplina</label>
+          <select id="cmpDisc">
+            <option value="">Selecione...</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="cmpNome" class="required">Nome do componente</label>
+          <input type="text" id="cmpNome" placeholder="Ex.: Prova 1, Trabalho, Projeto" />
+        </div>
+
+        <div class="field">
+          <label for="cmpSigla" class="required">Sigla</label>
+          <input type="text" id="cmpSigla" placeholder="Ex.: P1, TRAB, PROJ" />
+        </div>
+
+        <div class="field">
+          <label for="cmpPeso">Peso (%)</label>
+          <input type="text" id="cmpPeso" placeholder="Ex.: 40 (opcional)" />
+        </div>
+
+        <div class="field col-2">
+          <label for="cmpDesc">Descrição</label>
+          <textarea id="cmpDesc" placeholder="Detalhes sobre o componente, regras, etc. (opcional)"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button id="btnFechar" class="btn btn-ghost"><i class="fa-solid fa-xmark"></i> Fechar</button>
+      <button id="btnSalvarComponente" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script src="listaDisciplinas.js"></script>
+</body>
+</html>

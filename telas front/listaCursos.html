@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cursos Cadastrados - NotaDez</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="listaCursos.css" />
+
+  <!-- Ícones e fonte (iguais ao dashboard) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="dashboard">
+
+  <!-- Topbar  -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+    <ul class="menu-horizontal">
+      <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+      <li><a href="#" id="btnCursos" class="ativo"><i class="fa-solid fa-book"></i> Cursos</a></li>
+      <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+      <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
+      <!-- Perfil vai direto (sem janelinha) -->
+      <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
+      <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+    </ul>
+  </nav>
+
+  <!-- Janelinha (menu flutuante) -->
+  <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
+    <div class="menu-conteudo">
+      <h3 id="tituloAba">Selecionar</h3>
+      <div id="selectContainer"></div>
+      <button id="btnIr" class="btn-curso" style="display:none;">Ir</button>
+    </div>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <main class="container">
+    <h1 class="titulo-verde">Cursos Cadastrados</h1>
+
+    <!-- Barra de busca -->
+    <form class="filtro-card" onsubmit="return false;">
+      <label for="fBusca">Busca</label>
+      <input id="fBusca" type="text" placeholder="Buscar por nome, sigla ou coordenador" />
+
+      <div class="botoes">
+        <button class="btn-curso" id="btnBuscar" type="button">
+          <i class="fa-solid fa-magnifying-glass"></i> Buscar
+        </button>
+        <div style="display:flex; gap:10px; margin-left:auto;">
+          <button class="btn-curso" id="btnNovo" type="button">+ Novo Curso</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Lista -->
+    <div class="lista-card">
+      <div class="tabela-head">
+        <span>Curso</span>
+        <span>Sigla</span>
+        <span>Coordenador</span>
+        <span style="text-align:right;">Ações</span>
+      </div>
+      <div id="corpoTabela"></div>
+      <div id="vazio" class="vazio">Nenhum curso encontrado.</div>
+    </div>
+
+    <p class="nota">* Para excluir, o curso não pode ter disciplinas vinculadas.</p>
+  </main>
+</div>
+
+<!-- JS -->
+<script src="listaCursos.js"></script>
+</body>
+</html>
