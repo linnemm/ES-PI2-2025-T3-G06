@@ -1,0 +1,266 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f5f6fa;
+  overflow-x: hidden;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Topbar */
+.topbar {
+  width: 100%;
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  color: white;
+  padding: 15px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgb(236, 232, 232);
+}
+
+.topbar h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.menu-horizontal {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.menu-horizontal li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.menu-horizontal li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Aba flutuante */
+.menu-flutuante {
+  position: absolute;
+  top: 75px;
+  right: 40px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  padding: 20px;
+  width: 280px;
+  z-index: 50;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {opacity: 0; transform: translateY(-10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.menu-conteudo h3 {
+  color: #6ca98c;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.campo-selecao {
+  margin-bottom: 12px;
+}
+
+.campo-selecao label {
+  font-size: 14px;
+  color: #444;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.campo-selecao select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Botão Ir */
+.menu-flutuante .btn-curso {
+  width: 100%;
+  background-color: #6ca98c;
+  color: white;
+  border: none;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.menu-flutuante .btn-curso:hover {
+  background-color: #5c8c75;
+}
+
+/* Conteúdo principal */
+.container {
+  width: 90%;
+  max-width: 1000px;
+  margin: 100px auto 40px;
+}
+
+.titulo-verde {
+  text-align: center;
+  color: #6ca98c;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* Barra de busca */
+form.filtro-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 900px;
+  max-width: calc(100vw - 100px);
+  margin: 0 auto 35px auto;
+}
+
+form.filtro-card label {
+  display: block;
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.busca-linha {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+form.filtro-card input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  height: 42px;
+}
+
+form.filtro-card input:focus {
+  outline: none;
+  border-color: #6ca98c;
+  box-shadow: 0 0 5px rgba(108, 169, 140, 0.6);
+  transition: 0.2s ease-in-out;
+}
+
+.btn-curso {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #6ca98c;
+  color: #fff;
+}
+
+.btn-curso:hover {
+  background-color: #5c8c75;
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+  padding: 25px 20px;
+  cursor: pointer;
+}
+
+.card-content h2 {
+  font-size: 22px;
+  color: #6ca98c;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.card-content p {
+  font-size: 15px;
+  color: #555;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 10px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+}
+
+.edit-btn,
+.remove-btn {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.edit-btn {
+  background-color: #51cf66;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #37b24d;
+}
+
+.remove-btn {
+  background-color: #fa5252;
+  color: white;
+}
+
+.remove-btn:hover {
+  background-color: #e03131;
+}

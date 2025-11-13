@@ -1,0 +1,62 @@
+<!-- Autoria: Livia -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!-- Define o tipo de documento como HTML5 -->
+  <meta charset="UTF-8" /> <!-- Permite acentuação e caracteres especiais -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Garante boa exibição em dispositivos móveis -->
+  <title>Login - NotaDez</title> <!-- Título que aparece na aba do navegador -->
+
+  <!-- Importa o arquivo CSS responsável pelo estilo da página -->
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+
+  <!-- FUNDO VERDE ARREDONDADO -->
+  <div class="background-box">
+    
+    <!-- CAIXA BRANCA CENTRAL ONDE FICA O FORMULÁRIO -->
+    <div class="login-container">
+
+      <!-- BANDEIRINHAS DECORATIVAS COM AS LETRAS "NOTADEZ"  -->
+      <div class="bandeirinhas">
+        <div class="flamula">N</div>
+        <div class="flamula">O</div>
+        <div class="flamula">T</div>
+        <div class="flamula">A</div>
+        <div class="flamula">D</div>
+        <div class="flamula">E</div>
+        <div class="flamula">Z</div>
+      </div>
+
+      <!-- Título principal do formulário -->
+      <h1>Login</h1>
+
+      <!-- FORMULÁRIO DE LOGIN -->
+      <form id="formLogin">
+        
+        <!-- Campo para o e-mail do usuário -->
+        <input type="email" placeholder="E-mail" required />
+
+        <!-- Campo da senha + botão de mostrar/ocultar senha -->
+        <div class="password-wrapper">
+          <input type="password" id="senha" placeholder="Senha" required />
+          <!-- Ícone (span) que serve como botão para mostrar/ocultar a senha -->
+          <span class="toggle-password" id="togglePassword"></span>
+        </div>
+
+        <!-- Botão de envio do formulário -->
+        <button type="submit">Entrar</button>
+
+        <!-- Links de navegação para outras páginas -->
+        <a href="EsqueceuSenha.html">Esqueci minha senha</a>
+        <a href="cadastro.html">Não possui cadastro? Cadastre-se aqui</a>
+      </form>
+
+    </div> <!-- Fim da div .login-container -->
+  </div> <!-- Fim da div .background-box -->
+
+  <!-- Importa o arquivo JavaScript que contém as funções de interação da página (mostrar senha e login) -->
+  <script src="../javascript/login.js"></script>
+</body>
+</html>
