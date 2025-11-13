@@ -1,4 +1,4 @@
-//  OLHO DE MOSTRAR/OCULTAR SENHA 
+// ==================== MOSTRAR / OCULTAR SENHA ====================
 const senha = document.getElementById("senha");
 const toggle = document.getElementById("togglePassword");
 
@@ -10,14 +10,14 @@ if (toggle && senha) {
   });
 }
 
-//  ENVIO DO FORMULÁRIO 
+// ==================== ENVIO DO FORMULÁRIO (LOGIN) ====================
 const form = document.getElementById("formLogin");
 
 if (form) {
   form.addEventListener("submit", async (e) => {
-    e.preventDefault(); // impede o reload da página
+    e.preventDefault(); // impede recarregar a página
 
-    // Captura os valores digitados
+    // Captura dos valores
     const email = form.querySelector('input[type="email"]').value.trim();
     const senhaValor = document.getElementById("senha").value.trim();
 
@@ -27,17 +27,14 @@ if (form) {
       return;
     }
 
-    // Desabilita o botão enquanto envia
+    // Desabilita o botão
     const botao = form.querySelector("button");
     botao.disabled = true;
     botao.innerText = "Entrando...";
 
     try {
-      // 🔹 Detecta automaticamente o IP ou domínio atual (funciona em qualquer rede)
-      const baseURL = `${window.location.protocol}//${window.location.hostname}:3000`;
-
-      // Envia para o backend (rota /api/auth/login)
-      const resposta = await fetch(`${baseURL}/api/auth/login`, {
+      // Faz a requisição (caminho absoluto → funciona com localhost e IP)
+      const resposta = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha: senhaValor }),
@@ -46,23 +43,39 @@ if (form) {
       const dados = await resposta.json();
 
       if (resposta.ok) {
-        alert("✅ Login realizado com sucesso!");
 
-        // Armazena o token JWT no navegador
+        // Salva token
         if (dados.token) {
           localStorage.setItem("token", dados.token);
         }
 
-        // Redireciona o usuário (ajuste o destino conforme sua página pós-login)
-        window.location.href = `${baseURL}/html/telainicial.html`;
+        // Salva ID do usuário
+        if (dados.userId) {
+          localStorage.setItem("userId", dados.userId);
+        }
+
+        // Salva o estado de primeiro acesso
+        if (dados.primeiroAcesso === true) {
+          localStorage.setItem("primeiroAcesso", "true");
+        } else {
+          localStorage.setItem("primeiroAcesso", "false");
+        }
+
+        // ==================== REDIRECIONAMENTO ====================
+        if (dados.primeiroAcesso === true) {
+          window.location.href = "/gerenciar/html/cadastro_instituicao.html";
+        } else {
+          window.location.href = "/gerenciar/html/dashboard.html";
+        }
+
       } else {
         alert("❌ " + (dados.message || "Erro ao fazer login."));
       }
+
     } catch (erro) {
       console.error("Erro ao conectar com o servidor:", erro);
       alert("❌ Erro ao conectar com o servidor.");
     } finally {
-      // Reabilita o botão
       botao.disabled = false;
       botao.innerText = "Entrar";
     }

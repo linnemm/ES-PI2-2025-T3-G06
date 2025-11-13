@@ -111,3 +111,12 @@ input:focus, select:focus {
   .topbar { flex-direction: column; gap: 10px; padding: 12px 16px; }
   .menu-horizontal { justify-content: center; gap: 15px; }
 }
+
+/* ================================
+   MENU BLOQUEADO (Primeiro Acesso)
+================================ */
+.desabilitado {
+  pointer-events: none !important;
+  opacity: 0.4;
+  cursor: not-allowed !important;
+}

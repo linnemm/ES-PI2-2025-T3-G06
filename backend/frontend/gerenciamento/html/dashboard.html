@@ -4,12 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard - NotaDez</title>
-  <link rel="stylesheet" href="dashboard.css" />
+
+  <link rel="stylesheet" href="/gerenciar/css/dashboard.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
+
 <body>
 <div class="dashboard">
+
   <!-- Topbar -->
   <nav class="topbar">
     <h2>NotaDez</h2>
@@ -18,8 +21,10 @@
       <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
       <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
       <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
-      <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
-      <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+      <li><a href="/gerenciar/html/perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
+
+      <!-- === SAIR CORRIGIDO === -->
+      <li><a href="#" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
     </ul>
   </nav>
 
@@ -45,47 +50,27 @@
           <i class="fa-solid fa-magnifying-glass"></i> Buscar
         </button>
       </div>
-      <button class="btn-curso" id="addInstituicao" type="button" style="margin-top:15px;">+ Nova Instituição</button>
+
+      <button class="btn-curso" id="addInstituicao" type="button" style="margin-top:15px;">
+        + Nova Instituição
+      </button>
     </form>
 
-    <!-- Lista de instituições -->
-    <div class="cards" id="listaInstituicoes">
-      <div class="card" onclick="window.location.href='listaCursos.html'">
-        <div class="card-content">
-          <h2>PUCCAMP</h2>
-          <p><strong>Nome:</strong> Pontifícia Universidade Católica de Campinas</p>
-        </div>
-        <div class="card-actions">
-          <button class="edit-btn"><i class="fa-solid fa-pen"></i> Editar</button>
-          <button class="remove-btn"><i class="fa-solid fa-trash"></i> Remover</button>
-        </div>
-      </div>
+    <!-- Lista de instituições (AGORA É DINÂMICO) -->
+    <div class="cards" id="listaInstituicoes"></div>
 
-      <div class="card" onclick="window.location.href='listaCursos.html'">
-        <div class="card-content">
-          <h2>USP</h2>
-          <p><strong>Nome:</strong> Universidade de São Paulo</p>
-        </div>
-        <div class="card-actions">
-          <button class="edit-btn"><i class="fa-solid fa-pen"></i> Editar</button>
-          <button class="remove-btn"><i class="fa-solid fa-trash"></i> Remover</button>
-        </div>
-      </div>
-
-      <div class="card" onclick="window.location.href='listaCursos.html'">
-        <div class="card-content">
-          <h2>UNICAMP</h2>
-          <p><strong>Nome:</strong> Universidade Estadual de Campinas</p>
-        </div>
-        <div class="card-actions">
-          <button class="edit-btn"><i class="fa-solid fa-pen"></i> Editar</button>
-          <button class="remove-btn"><i class="fa-solid fa-trash"></i> Remover</button>
-        </div>
-      </div>
-    </div>
   </main>
 </div>
 
-<script src="dashboard.js"></script>
+<script src="/gerenciar/javascript/dashboard.js"></script>
+
+<script>
+  // Botão sair
+  document.getElementById("btnLogout").addEventListener("click", () => {
+    localStorage.clear();
+    window.location.href = "/auth/html/login.html";
+  });
+</script>
+
 </body>
 </html>

@@ -1,4 +1,7 @@
-* {
+/* ============================
+   RESET E BASE
+============================ */
+* { 
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -16,7 +19,9 @@ body {
   min-height: 100vh;
 }
 
-/* Topbar */
+/* ============================
+   TOPBAR
+============================ */
 .topbar {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
@@ -59,7 +64,16 @@ body {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Aba flutuante */
+/* BLOQUEIO DO MENU */
+.menu-horizontal a.desabilitado {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================
+   ABA FLUTUANTE
+============================ */
 .menu-flutuante {
   position: absolute;
   top: 75px;
@@ -118,7 +132,9 @@ body {
   background-color: #5c8c75;
 }
 
-/* Conteúdo principal */
+/* ============================
+   CONTEÚDO PRINCIPAL
+============================ */
 .container {
   width: 90%;
   max-width: 1000px;
@@ -133,7 +149,9 @@ body {
   margin-bottom: 30px;
 }
 
-/* Barra de busca */
+/* ============================
+   BUSCA
+============================ */
 form.filtro-card {
   background-color: #fff;
   padding: 20px;
@@ -181,19 +199,23 @@ form.filtro-card input:focus {
   font-weight: bold;
   background-color: #6ca98c;
   color: #fff;
+  transition: 0.3s;
 }
 
 .btn-curso:hover {
   background-color: #5c8c75;
 }
 
-/* Cards */
+/* ============================
+   LISTA DE CARDS
+============================ */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
 }
 
+/* CARD */
 .card {
   background: white;
   border-radius: 12px;
@@ -226,6 +248,7 @@ form.filtro-card input:focus {
   color: #555;
 }
 
+/* BOTÕES DO CARD */
 .card-actions {
   display: flex;
   justify-content: space-around;
@@ -263,4 +286,14 @@ form.filtro-card input:focus {
 
 .remove-btn:hover {
   background-color: #e03131;
+}
+
+/* ============================
+   MENSAGEM DE LISTA VAZIA
+============================ */
+.mensagem-vazia {
+  text-align: center;
+  font-size: 16px;
+  color: #777;
+  margin-top: 30px;
 }

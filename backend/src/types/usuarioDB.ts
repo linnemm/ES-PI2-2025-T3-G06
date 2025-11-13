@@ -5,4 +5,7 @@ export interface UsuarioDB {
   TELEFONE: string | null;
   SENHA: string;
   CRIADO_EM?: Date;
+
+  // 🔥 ADICIONADO PARA O LOGIN FUNCIONAR
+  PRIMEIRO_ACESSO: number;
 }

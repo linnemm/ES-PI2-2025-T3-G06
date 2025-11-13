@@ -22,11 +22,8 @@ if (form) {
     botao.innerText = "Enviando...";
 
     try {
-      // 🔹 Detecta automaticamente o IP ou domínio atual (funciona no PC e celular)
-      const baseURL = `${window.location.protocol}//${window.location.hostname}:3000`;
-
-      // Faz a requisição ao backend
-      const resposta = await fetch(`${baseURL}/api/auth/forgot-password`, {
+      // 🔹 Faz a requisição ao backend usando caminho absoluto (mais seguro)
+      const resposta = await fetch(`/api/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

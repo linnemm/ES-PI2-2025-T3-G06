@@ -49,7 +49,12 @@ export const loginUser = async (req: Request, res: Response) => {
     { expiresIn: "15min" }
   );
 
-  return res.json({ message: "Login realizado com sucesso!", token });
+  return res.json({
+    message: "Login realizado com sucesso!",
+    token,
+    userId: user.ID,
+    primeiroAcesso: user.PRIMEIRO_ACESSO === 1
+  });
 };
 
 // ======================= ESQUECI MINHA SENHA =======================

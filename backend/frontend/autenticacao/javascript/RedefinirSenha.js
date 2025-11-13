@@ -19,22 +19,22 @@ function toggleSenha(input, toggle) {
   });
 }
 
-// Aplica o comportamento aos dois campos
+// Ativa o comportamento
 if (senha1 && toggle1) toggleSenha(senha1, toggle1);
 if (senha2 && toggle2) toggleSenha(senha2, toggle2);
 
 /* ==== Captura o token do link ==== */
 const token = new URLSearchParams(window.location.search).get("token");
 
-// Se não houver token na URL, mostra alerta e redireciona
+// Se não houver token, redireciona
 if (!token) {
   alert("❌ Link inválido! O token de redefinição não foi encontrado.");
-  window.location.href = "/html/login.html";
+  window.location.href = "/auth/html/login.html";
 }
 
 /* ==== Envio do formulário ==== */
 form.addEventListener("submit", async (e) => {
-  e.preventDefault(); // impede o recarregamento da página
+  e.preventDefault();
 
   const novaSenha = senha1.value.trim();
   const confirmar = senha2.value.trim();
@@ -42,7 +42,7 @@ form.addEventListener("submit", async (e) => {
   errorMsg.style.display = "none";
   errorMsg.textContent = "";
 
-  // --- Validações básicas ---
+  // Validações
   if (novaSenha.length < 6) {
     errorMsg.textContent = "A senha deve ter pelo menos 6 caracteres.";
     errorMsg.style.display = "block";
@@ -55,17 +55,13 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // Desativa o botão enquanto envia
   const botao = form.querySelector("button");
   botao.disabled = true;
   botao.innerText = "Redefinindo...";
 
   try {
-    // 🔹 Detecta automaticamente o IP/domínio atual (PC, celular, qualquer rede)
-    const baseURL = `${window.location.protocol}//${window.location.hostname}:3000`;
-
-    // Envia pro backend (rota /api/auth/reset-password)
-    const resposta = await fetch(`${baseURL}/api/auth/reset-password`, {
+    // 🔹 fetch correto (SEM baseURL)
+    const resposta = await fetch(`/api/auth/reset-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, novaSenha }),
@@ -73,19 +69,16 @@ form.addEventListener("submit", async (e) => {
 
     const dados = await resposta.json();
 
-    // Se o backend responder com sucesso
     if (resposta.ok) {
       alert("✅ " + (dados.message || "Senha redefinida com sucesso!"));
-      window.location.href = `${baseURL}/html/login.html`;
+      window.location.href = "/auth/html/login.html"; // <-- CORRETO
     } else {
       alert("❌ " + (dados.message || "Erro ao redefinir senha."));
     }
   } catch (erro) {
-    // Em caso de erro de conexão
     console.error("Erro ao conectar com o servidor:", erro);
     alert("⚠️ Erro ao conectar com o servidor. Tente novamente mais tarde.");
   } finally {
-    // Reativa o botão
     botao.disabled = false;
     botao.innerText = "Redefinir senha";
   }

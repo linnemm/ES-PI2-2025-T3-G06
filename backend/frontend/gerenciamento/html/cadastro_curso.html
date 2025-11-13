@@ -11,11 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- CSS da página -->
-  <link rel="stylesheet" href="cadastro_curso.css" />
+  <!-- CSS CORRETO -->
+  <link rel="stylesheet" href="/gerenciar/css/cadastro_curso.css" />
 </head>
 <body>
   <div class="dashboard">
+
     <!-- ===== TOPBAR ===== -->
     <header class="topbar-notadez">
       <h2 class="topbar-notadez__brand">NotaDez</h2>
@@ -24,8 +25,12 @@
         <li><a href="#" id="btnCursos" class="ativo"><i class="fa-solid fa-book"></i> Cursos</a></li>
         <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
         <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
-        <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
-        <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+
+        <!-- PERFIL CORRETO -->
+        <li><a href="/gerenciar/html/perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
+
+        <!-- SAIR CORRETO -->
+        <li><a href="/auth/html/login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
       </ul>
     </header>
 
@@ -43,6 +48,7 @@
       <h1>Cadastro de Curso</h1>
 
       <form id="formCurso" autocomplete="off" novalidate>
+        
         <label for="instituicao">Instituição:</label>
         <select id="instituicao" required>
           <option value="">Selecione uma instituição</option>
@@ -65,7 +71,7 @@
     </main>
   </div>
 
-  <!-- JS da página  -->
-  <script src="cadastro_curso.js"></script>
+  <!-- JS CORRETO -->
+  <script src="/gerenciar/javascript/cadastro_curso.js"></script>
 </body>
 </html>

@@ -1,62 +1,128 @@
-// ===== Cadastro de Curso + Topbar (janelinha) =====
-window.addEventListener("DOMContentLoaded", () => {
-  // --------------------------
-  // Popula select de Instituições
-  // --------------------------
-  const selectInstituicao = document.getElementById("instituicao");
-  const instituicoesLS = JSON.parse(localStorage.getItem("listaInstituicoes")) || [];
-  const unica = JSON.parse(localStorage.getItem("instituicaoCadastrada"));
-  if (unica && instituicoesLS.length === 0) {
-    instituicoesLS.push(unica);
+// ===============================
+// CADASTRO DE CURSO — NotaDez
+// ===============================
+
+window.addEventListener("DOMContentLoaded", async () => {
+
+  // =====================================================
+  // BLOQUEAR MENU DURANTE O PRIMEIRO ACESSO
+  // =====================================================
+
+  const primeiroAcesso = localStorage.getItem("primeiroAcesso");
+
+  if (primeiroAcesso === "true") {
+    const itensMenu = document.querySelectorAll(".menu-horizontal a");
+
+    itensMenu.forEach(item => {
+      item.classList.add("desabilitado");
+
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        alert("⚠ Termine o cadastro da instituição e do curso primeiro!");
+      });
+    });
   }
-  instituicoesLS.forEach((inst) => {
-    const option = document.createElement("option");
-    option.value = inst.nome;
-    option.textContent = inst.nome;
-    selectInstituicao.appendChild(option);
-  });
 
   // --------------------------
-  // Salvar Curso
+  // CARREGAR INSTITUIÇÕES DO BANCO
   // --------------------------
-  document.getElementById("formCurso").addEventListener("submit", (e) => {
-    e.preventDefault();
+  
+  const selectInstituicao = document.getElementById("instituicao");
+  const userId = localStorage.getItem("userId");
 
-    const nome = document.getElementById("nome").value.trim();
-    const sigla = document.getElementById("sigla").value.trim();
-    const coordenador = document.getElementById("coordenador").value.trim();
-    const instituicao = document.getElementById("instituicao").value;
+  if (!userId) {
+    alert("⚠ Erro: usuário não identificado. Faça login novamente.");
+    window.location.href = "/auth/html/login.html";
+    return;
+  }
 
-    if (!instituicao) {
-      alert("Selecione uma instituição para vincular o curso!");
+  try {
+    const resp = await fetch(`/api/instituicoes/listar/${userId}`);
+    const instituicoes = await resp.json();
+
+    if (!resp.ok) {
+      alert("Erro ao carregar instituições.");
       return;
     }
 
-    const curso = { nome, sigla, coordenador, instituicao };
-    const listaCursos = JSON.parse(localStorage.getItem("listaCursos")) || [];
-    listaCursos.push(curso);
-    localStorage.setItem("listaCursos", JSON.stringify(listaCursos));
+    instituicoes.forEach(inst => {
+      const option = document.createElement("option");
+      option.value = inst.ID;
+      option.textContent = inst.NOME;
+      selectInstituicao.appendChild(option);
+    });
 
-    alert(`Curso "${nome}" vinculado à instituição "${instituicao}" cadastrado com sucesso!`);
-    window.location.href = "dashboard.html";
+  } catch (error) {
+    console.error("Erro ao carregar instituições:", error);
+    alert("Erro ao conectar com o servidor.");
+  }
+
+  // --------------------------
+  // SALVAR CURSO NO BANCO
+  // --------------------------
+
+  document.getElementById("formCurso").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const instituicaoId = document.getElementById("instituicao").value;
+    const nome = document.getElementById("nome").value.trim();
+    const sigla = document.getElementById("sigla").value.trim();
+    const coordenador = document.getElementById("coordenador").value.trim();
+
+    if (!instituicaoId) {
+      alert("Selecione uma instituição!");
+      return;
+    }
+
+    try {
+      const resp = await fetch("/api/cursos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          usuarioId: userId,
+          instituicaoId,
+          nome,
+          sigla,
+          coordenador
+        })
+      });
+
+      const dados = await resp.json();
+
+      if (resp.ok) {
+        alert("📚 Curso cadastrado com sucesso!");
+
+        // Ao cadastrar o curso → desbloqueia o menu
+        localStorage.setItem("primeiroAcesso", "false");
+
+        window.location.href = "/gerenciar/html/dashboard.html";
+      } else {
+        alert("Erro: " + dados.message);
+      }
+
+    } catch (error) {
+      console.error("Erro ao cadastrar curso:", error);
+      alert("Erro ao conectar com o servidor.");
+    }
   });
 
   // --------------------------
-  // Botão Cancelar
+  // CANCELAR
   // --------------------------
+
   document.getElementById("btnCancelar").addEventListener("click", () => {
-    window.location.href = "dashboard.html";
+    window.location.href = "/gerenciar/html/dashboard.html";
   });
 
   // --------------------------
-  // ABA FLUTUANTE 
+  // MENU FLUTUANTE (TOPBAR)
   // --------------------------
+
   const menuFlutuante = document.getElementById("menuFlutuante");
   const selectContainer = document.getElementById("selectContainer");
   const tituloAba = document.getElementById("tituloAba");
   const btnIr = document.getElementById("btnIr");
 
-  // Dados simulados 
   const insts = ["PUCCAMP", "USP", "UNICAMP"];
   const cursos = ["Engenharia", "Direito", "Administração"];
   const disciplinas = ["Cálculo I", "Física", "Lógica"];
@@ -93,14 +159,15 @@ window.addEventListener("DOMContentLoaded", () => {
       btnVerTodas.textContent = "Ver todas as instituições";
       btnVerTodas.classList.add("btn-curso");
       btnVerTodas.style.marginBottom = "10px";
-      btnVerTodas.onclick = () => window.location.href = "dashboard.html";
+      btnVerTodas.onclick = () => window.location.href = "/gerenciar/html/dashboard.html";
       selectContainer.appendChild(btnVerTodas);
 
       selectContainer.appendChild(criarSelect("selInstituicao", "Selecionar Instituição:", insts));
+
       btnIr.style.display = "block";
       btnIr.onclick = () => {
         const sel = document.getElementById("selInstituicao");
-        if (sel.value) window.location.href = "listaCursos.html";
+        if (sel.value) window.location.href = "/gerenciar/html/listaCursos.html";
         else alert("Selecione uma instituição!");
       };
     }
@@ -108,22 +175,25 @@ window.addEventListener("DOMContentLoaded", () => {
     if (tipo === "curso") {
       tituloAba.textContent = "Selecionar Curso";
       selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", insts));
+
       document.getElementById("selInstituicao").addEventListener("change", () => {
         selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
         btnIr.style.display = "block";
-        btnIr.onclick = () => window.location.href = "listaDisciplinas.html";
+        btnIr.onclick = () => window.location.href = "/gerenciar/html/listaDisciplinas.html";
       });
     }
 
     if (tipo === "disciplina") {
       tituloAba.textContent = "Selecionar Disciplina";
       selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", insts));
+
       document.getElementById("selInstituicao").addEventListener("change", () => {
         selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
+
         document.getElementById("selCurso").addEventListener("change", () => {
           selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
           btnIr.style.display = "block";
-          btnIr.onclick = () => window.location.href = "listaTurmas.html";
+          btnIr.onclick = () => window.location.href = "/gerenciar/html/listaTurmas.html";
         });
       });
     }
@@ -131,31 +201,48 @@ window.addEventListener("DOMContentLoaded", () => {
     if (tipo === "turma") {
       tituloAba.textContent = "Selecionar Turma";
       selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", insts));
+
       document.getElementById("selInstituicao").addEventListener("change", () => {
         selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
+
         document.getElementById("selCurso").addEventListener("change", () => {
           selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
+
           document.getElementById("selDisciplina").addEventListener("change", () => {
             selectContainer.appendChild(criarSelect("selTurma", "Turma:", turmas));
             btnIr.style.display = "block";
-            btnIr.onclick = () => window.location.href = "detalhesTurma.html";
+            btnIr.onclick = () => window.location.href = "/gerenciar/html/detalhesTurma.html";
           });
         });
       });
     }
   }
 
-  // Ações do menu 
+  // BOTÕES DO MENU (TOPBAR)
+  document.getElementById("btnInstituicoes")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    abrirMenu("instituicao");
+  });
 
-  document.getElementById("btnInstituicoes")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("instituicao"); });
-  document.getElementById("btnCursos")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("curso"); });
-  document.getElementById("btnDisciplinas")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("disciplina"); });
-  document.getElementById("btnTurmas")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("turma"); });
+  document.getElementById("btnCursos")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    abrirMenu("curso");
+  });
 
-  // Fechar janelinha ao clicar fora
+  document.getElementById("btnDisciplinas")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    abrirMenu("disciplina");
+  });
+
+  document.getElementById("btnTurmas")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    abrirMenu("turma");
+  });
+
+  // FECHAR MENU AO CLICAR FORA
   document.addEventListener("click", (e) => {
     const dentro = menuFlutuante.contains(e.target);
-    const ehTopbar = e.target.closest(".ndz-menu");
+    const ehTopbar = e.target.closest(".menu-horizontal");
     if (!dentro && !ehTopbar) menuFlutuante.style.display = "none";
   });
 });
