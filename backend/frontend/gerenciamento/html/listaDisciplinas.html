@@ -30,7 +30,7 @@
     </ul>
   </nav>
 
-  <!-- ================== MENU FLUTUANTE ================== -->
+  <!-- ================== MENU FLUTUANTE (USADO EM OUTRAS TELAS) ================== -->
   <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
     <div class="menu-conteudo">
       <h3 id="tituloAba">Selecionar</h3>
@@ -55,12 +55,26 @@
         </button>
       </div>
 
-      <div class="botoes">
-        <div style="display:flex; gap:10px; margin-left:auto;">
-          <button class="btn-curso" id="btnComponenteNota" type="button">+ Componente de Nota</button>
-          <button class="btn-curso" id="btnNovaDisc" type="button">+ Nova Disciplina</button>
+      <div class="botoes" style="display:flex; justify-content:space-between; margin-top:15px;">
+
+        <!-- ESQUERDA -->
+        <button class="btn-curso" id="btnNovaDisc" type="button">
+          + Nova Disciplina
+        </button>
+
+        <!-- DIREITA -->
+        <div style="display:flex; gap:10px;">
+          <button class="btn-curso" id="btnComponenteNota" type="button">
+            + Componente de Nota
+          </button>
+
+          <button class="btn-curso" id="btnNovaTurma" type="button">
+            + Nova Turma
+          </button>
         </div>
+
       </div>
+
     </form>
 
     <!-- ===== LISTA ===== -->
@@ -89,42 +103,62 @@
 <!-- ========================================================= -->
 
 <div id="modalComponente" class="modal-overlay" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalCompTitle">
+  <div class="modal" role="dialog" aria-modal="true">
 
     <div class="modal-header">
-      <div class="modal-title" id="modalCompTitle">Cadastrar componente de nota</div>
-      <button class="modal-close" id="btnFecharModal" aria-label="Fechar">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+      <div class="modal-title">Cadastrar componente de nota</div>
+      <button class="modal-close" id="btnFecharModal"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
     <div class="modal-body">
+
+      <!-- TIPOS DE MÉDIA -->
+      <div class="media-box">
+
+        <label class="radio-linha">
+          <input type="radio" name="tipoMedia" id="mediaSimples" value="simples" checked>
+          <div>
+            <strong>Média Simples</strong><br>
+            <span class="explica">Soma dos componentes ÷ quantidade de componentes (todos valem 0 a 10)</span>
+          </div>
+        </label>
+
+        <label class="radio-linha">
+          <input type="radio" name="tipoMedia" id="mediaPonderada" value="ponderada">
+          <div>
+            <strong>Média Ponderada</strong><br>
+            <span class="explica">Cada componente possui um peso (a soma dos pesos precisa totalizar exatamente 10)</span>
+          </div>
+        </label>
+
+      </div>
+
       <div class="form-grid">
 
         <div class="field col-2">
-          <label for="cmpDisc" class="required">Disciplina</label>
+          <label class="required">Disciplina</label>
           <select id="cmpDisc">
             <option value="">Selecione...</option>
           </select>
         </div>
 
         <div class="field col-2">
-          <label for="cmpNome" class="required">Nome do componente</label>
-          <input id="cmpNome" type="text" placeholder="Ex.: Prova 1">
+          <label class="required">Nome do componente</label>
+          <input id="cmpNome" placeholder="Ex.: Prova 1">
         </div>
 
         <div class="field">
-          <label for="cmpSigla" class="required">Sigla (fórmula)</label>
-          <input id="cmpSigla" type="text" placeholder="Ex.: P1">
+          <label class="required">Sigla</label>
+          <input id="cmpSigla" placeholder="Ex.: P1">
         </div>
 
-        <div class="field">
-          <label for="cmpPeso">Peso (%) — opcional</label>
+        <div class="field" id="campoPeso" style="display:none;">
+          <label>Peso (%)</label>
           <input id="cmpPeso" type="number" min="0" max="100" step="1" placeholder="Ex.: 40">
         </div>
 
         <div class="field col-2">
-          <label for="cmpDesc">Descrição</label>
+          <label>Descrição</label>
           <textarea id="cmpDesc" placeholder="Ex.: Prova teórica do 1º módulo"></textarea>
         </div>
 
@@ -132,16 +166,43 @@
     </div>
 
     <div class="modal-footer">
+
+      <!-- BOTÃO COMPONENTES CADASTRADOS (lado esquerdo) -->
+      <button class="btn btn-ghost" id="btnVerComponentes" style="margin-right:auto;">
+        <i class="fa-solid fa-list"></i> Componentes cadastrados
+      </button>
+
       <button class="btn btn-ghost" id="btnFechar">Fechar</button>
+
       <button class="btn btn-primary" id="btnSalvarComponente">
         <i class="fa-solid fa-floppy-disk"></i> Salvar
       </button>
+
     </div>
 
   </div>
 </div>
 
-<!-- JS DA PÁGINA -->
+<!-- ========================================================= -->
+<!-- =============== SUB-MODAL: LISTA DE COMPONENTES ========= -->
+<!-- ========================================================= -->
+
+<div id="modalListaComponentes" class="modal-overlay" aria-hidden="true">
+  <div class="modal modal-small">
+
+    <div class="modal-header">
+      <div class="modal-title">Componentes cadastrados</div>
+      <button class="modal-close" id="btnFecharListaComp"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <div id="listaComponentesContainer"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- JS -->
 <script src="/gerenciar/javascript/listaDisciplinas.js"></script>
 
 </body>
