@@ -18,17 +18,31 @@ export async function criarComponente(req: Request, res: Response) {
       descricao,
       peso,
       tipoMedia,
-      usuario_id
+      usuario_id   // ⭐ RECEBE AGORA COMO usuario_id (igual ao front)
     } = req.body;
 
+    // -----------------------------
+    // VALIDAÇÕES
+    // -----------------------------
     if (!disciplinaId || !nome || !sigla || !tipoMedia) {
-      return res.status(400).json({ message: "Campos obrigatórios faltando." });
+      return res.status(400).json({
+        message: "Campos obrigatórios faltando."
+      });
     }
 
-    if (!usuario_id) {
-      return res.status(400).json({ message: "Usuário não identificado." });
+    if (
+      !usuario_id ||
+      usuario_id === "null" ||
+      usuario_id === "undefined"
+    ) {
+      return res.status(400).json({
+        message: "Usuário não identificado."
+      });
     }
 
+    // -----------------------------
+    // INSERIR NO BANCO
+    // -----------------------------
     const novoId = await inserirComponente({
       disciplinaId,
       nome,
@@ -36,7 +50,7 @@ export async function criarComponente(req: Request, res: Response) {
       descricao,
       peso,
       tipoMedia,
-      usuario_id
+      usuario_id: Number(usuario_id) // ⭐ ENVIA PRO MODEL NO PADRÃO CERTO
     });
 
     return res.status(201).json({
@@ -51,7 +65,7 @@ export async function criarComponente(req: Request, res: Response) {
 }
 
 // ===========================
-// LISTAR
+// LISTAR COMPONENTES
 // ===========================
 export async function listarComponentes(req: Request, res: Response) {
   try {
@@ -68,7 +82,7 @@ export async function listarComponentes(req: Request, res: Response) {
 }
 
 // ===========================
-// EDITAR
+// EDITAR COMPONENTE
 // ===========================
 export async function atualizarComponente(req: Request, res: Response) {
   try {
@@ -88,7 +102,7 @@ export async function atualizarComponente(req: Request, res: Response) {
 }
 
 // ===========================
-// REMOVER
+// DELETAR COMPONENTE
 // ===========================
 export async function deletarComponente(req: Request, res: Response) {
   try {

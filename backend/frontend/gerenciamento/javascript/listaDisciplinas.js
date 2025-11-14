@@ -5,7 +5,7 @@ const $ = (id) => document.getElementById(id);
 
 // Curso ativo
 const cursoId = localStorage.getItem("cursoId");
-const usuarioId = localStorage.getItem("usuarioId"); // ⭐ AGORA BUSCA O USUÁRIO LOGADO
+const usuarioId = localStorage.getItem("usuarioId"); // ⭐ CERTO
 
 if (!cursoId) {
   alert("⚠ Erro: curso não selecionado.");
@@ -15,7 +15,6 @@ if (!cursoId) {
 // Elementos
 const lista = $("corpoTabelaDisc");
 const vazio = $("vazioDisc");
-
 
 // =========================================
 // 1️⃣ CARREGAR DISCIPLINAS
@@ -77,7 +76,6 @@ async function carregarDisciplinas(filtro = "") {
 
 carregarDisciplinas();
 
-
 // =========================================
 // 2️⃣ EDITAR DISCIPLINA
 // =========================================
@@ -111,7 +109,6 @@ async function editarDisciplina(disc) {
   }
 }
 
-
 // =========================================
 // 3️⃣ BUSCA
 // =========================================
@@ -122,7 +119,6 @@ $("btnBuscarDisc").addEventListener("click", () =>
 $("fBuscaDisc").addEventListener("keyup", () =>
   carregarDisciplinas($("fBuscaDisc").value.trim())
 );
-
 
 // =========================================
 // 4️⃣ REMOVER DISCIPLINA
@@ -145,7 +141,6 @@ async function removerDisciplina(id) {
   }
 }
 
-
 // =========================================
 // 5️⃣ + NOVA DISCIPLINA
 // =========================================
@@ -153,14 +148,12 @@ $("btnNovaDisc").addEventListener("click", () => {
   window.location.href = "/gerenciar/html/cadastro_disciplina.html";
 });
 
-
 // =========================================
 // 6️⃣ + NOVA TURMA
 // =========================================
 $("btnNovaTurma").addEventListener("click", () => {
   window.location.href = "/gerenciar/html/cadastro_turma.html";
 });
-
 
 // =========================================
 // 7️⃣ MODAL - COMPONENTE DE NOTA
@@ -182,7 +175,6 @@ modal.addEventListener("click", (e) => {
   if (e.target === modal) modal.style.display = "none";
 });
 
-
 // =========================================
 // 8️⃣ ALTERNAR PESO DA MÉDIA
 // =========================================
@@ -193,7 +185,6 @@ $("mediaSimples").addEventListener("change", () => {
 $("mediaPonderada").addEventListener("change", () => {
   $("campoPeso").style.display = "block";
 });
-
 
 // =========================================
 // 9️⃣ POPULAR DISCIPLINAS DO SELECT
@@ -218,9 +209,8 @@ async function carregarDisciplinasParaSelect() {
   }
 }
 
-
 // =========================================
-// 🔟 SALVAR COMPONENTE DE NOTA
+// 🔟 SALVAR COMPONENTE DE NOTA (CORRIGIDO FINAL)
 // =========================================
 btnSalvar.addEventListener("click", async () => {
 
@@ -229,15 +219,34 @@ btnSalvar.addEventListener("click", async () => {
   const sigla = $("cmpSigla").value.trim();
   const descricao = $("cmpDesc").value.trim();
   const tipoMedia = document.querySelector("input[name='tipoMedia']:checked").value;
-  const peso = tipoMedia === "ponderada" ? Number($("cmpPeso").value) : null;
+
+  // ⭐ REGRA DO ORACLE
+  let peso = null;
+
+  if (tipoMedia === "ponderada") {
+    const valor = $("cmpPeso").value.trim();
+
+    if (valor === "" || isNaN(Number(valor))) {
+      alert("Informe um peso válido para média PONDERADA.");
+      return;
+    }
+
+    peso = Number(valor);  // Ponderada exige número
+  }
+
+  if (tipoMedia === "simples") {
+    peso = null; // Simples exige NULL
+  }
 
   if (!disciplinaId || !nome || !sigla) {
     alert("Preencha todos os campos obrigatórios!");
     return;
   }
 
+  const usuarioId = localStorage.getItem("usuarioId");
+
   if (!usuarioId) {
-    alert("Erro: usuário não identificado!");
+    alert("Erro: usuário não identificado.");
     return;
   }
 
@@ -247,8 +256,8 @@ btnSalvar.addEventListener("click", async () => {
     sigla,
     descricao,
     tipoMedia,
-    peso,
-    usuario_id: usuarioId // ⭐ AGORA ENVIA PARA O BACKEND
+    peso, // ⭐ Agora 100% compatível com a constraint
+    usuario_id: Number(usuarioId)
   };
 
   try {
@@ -273,7 +282,6 @@ btnSalvar.addEventListener("click", async () => {
   }
 });
 
-
 // =========================================
 // 1️⃣1️⃣ SUB-MODAL — LISTAR COMPONENTES
 // =========================================
@@ -283,7 +291,11 @@ const listaCompsContainer = $("listaComponentesContainer");
 
 btnVerComps.addEventListener("click", async () => {
   const discId = $("cmpDisc").value;
-  if (!discId) return alert("Selecione uma disciplina primeiro!");
+
+  if (!discId) {
+    alert("Selecione uma disciplina primeiro!");
+    return;
+  }
 
   await carregarComponentesDaDisciplina(discId);
   subModal.style.display = "flex";
@@ -295,9 +307,8 @@ subModal.onclick = (e) => {
   if (e.target === subModal) subModal.style.display = "none";
 };
 
-
 // =========================================
-// 1️⃣2️⃣ CARREGAR COMPONENTES POR DISCIPLINA
+// 1️⃣2️⃣ CARREGAR COMPONENTES
 // =========================================
 async function carregarComponentesDaDisciplina(discId) {
   try {
@@ -313,8 +324,7 @@ async function carregarComponentesDaDisciplina(discId) {
     listaCompsContainer.innerHTML = comps.map(c => `
       <div class="comp-item">
         <div>
-          <strong>${c.NOME} (${c.SIGLA})</strong> 
-          <br>
+          <strong>${c.NOME} (${c.SIGLA})</strong><br>
           <small>${c.DESCRICAO || ""}</small>
         </div>
 
@@ -322,6 +332,7 @@ async function carregarComponentesDaDisciplina(discId) {
           <button class="acao-btn" onclick="editarComponente(${c.ID})">
             <i class="fa-solid fa-pen"></i>
           </button>
+
           <button class="acao-btn" onclick="excluirComponente(${c.ID}, ${discId})">
             <i class="fa-solid fa-trash"></i>
           </button>
@@ -336,12 +347,11 @@ async function carregarComponentesDaDisciplina(discId) {
   }
 }
 
-
 // =========================================
 // 1️⃣3️⃣ EDITAR COMPONENTE
 // =========================================
 async function editarComponente(id) {
-  const novoNome = prompt("Novo nome para o componente:");
+  const novoNome = prompt("Novo nome do componente:");
   if (!novoNome) return;
 
   try {
@@ -360,7 +370,6 @@ async function editarComponente(id) {
     console.error(e);
   }
 }
-
 
 // =========================================
 // 1️⃣4️⃣ EXCLUIR COMPONENTE

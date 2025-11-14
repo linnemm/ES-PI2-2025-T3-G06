@@ -17,23 +17,19 @@ if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault(); // impede recarregar a página
 
-    // Captura dos valores
     const email = form.querySelector('input[type="email"]').value.trim();
     const senhaValor = document.getElementById("senha").value.trim();
 
-    // Validação básica
     if (!email || !senhaValor) {
       alert("⚠️ Preencha todos os campos!");
       return;
     }
 
-    // Desabilita o botão
     const botao = form.querySelector("button");
     botao.disabled = true;
     botao.innerText = "Entrando...";
 
     try {
-      // Faz a requisição (caminho absoluto → funciona com localhost e IP)
       const resposta = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -44,24 +40,35 @@ if (form) {
 
       if (resposta.ok) {
 
-        // Salva token
+        // ================================
+        // 🔥 SALVAR TOKEN
+        // ================================
         if (dados.token) {
           localStorage.setItem("token", dados.token);
         }
 
-        // Salva ID do usuário
-        if (dados.userId) {
-          localStorage.setItem("userId", dados.userId);
+        // ================================
+        // 🔥 SALVAR O USUÁRIO COMPLETO
+        // PARA COMPONENTE DE NOTA FUNCIONAR
+        // ================================
+        if (dados.usuario) {
+          localStorage.setItem("usuarioId", dados.usuario.id);
+          localStorage.setItem("usuarioNome", dados.usuario.nome);
+          localStorage.setItem("usuarioEmail", dados.usuario.email);
         }
 
-        // Salva o estado de primeiro acesso
+        // ================================
+        // 🔥 SALVAR PRIMEIRO ACESSO
+        // ================================
         if (dados.primeiroAcesso === true) {
           localStorage.setItem("primeiroAcesso", "true");
         } else {
           localStorage.setItem("primeiroAcesso", "false");
         }
 
-        // ==================== REDIRECIONAMENTO ====================
+        // ================================
+        // 🔥 REDIRECIONAMENTO
+        // ================================
         if (dados.primeiroAcesso === true) {
           window.location.href = "/gerenciar/html/cadastro_instituicao.html";
         } else {
