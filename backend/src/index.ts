@@ -7,12 +7,15 @@ import { openConnection } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import instituicaoRoutes from "./routes/instituicaoRoutes";
 import cursoRoutes from "./routes/cursoRoutes";
+import disciplinaRoutes from "./routes/disciplinaRoutes"; // ✅ DISCIPLINAS
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ===================== FRONTENDS ===========================
+// ======================================================
+// FRONTEND – SERVIR ARQUIVOS HTML, CSS, JS, IMAGENS
+// ======================================================
 
 // Caminho do frontend de autenticação
 const authPath = path.join(__dirname, "../frontend/autenticacao");
@@ -20,34 +23,43 @@ const authPath = path.join(__dirname, "../frontend/autenticacao");
 // Caminho do frontend de gerenciamento
 const gerenciamentoPath = path.join(__dirname, "../frontend/gerenciamento");
 
-// Servir os arquivos estáticos do frontend de autenticação
+// Servir frontend de autenticação
 app.use("/auth", express.static(authPath));
 
-// Servir arquivos estáticos do frontend de gerenciamento
+// Servir frontend de gerenciamento
 app.use("/gerenciar", express.static(gerenciamentoPath));
 
-// Página inicial → Tela Inicial (autenticação)
+// Página inicial → tela inicial de login
 app.get("/", (req, res) => {
   res.sendFile(path.join(authPath, "html", "telainicial.html"));
 });
 
-// ===================== ROTAS API ===========================
+// ======================================================
+// ROTAS API
+// ======================================================
 
-// Rota de autenticação (login, cadastro, esqueci/redefinir senha)
+// Autenticação (login, cadastro, redefinir senha)
 app.use("/api/auth", authRoutes);
 
-// Rota de instituições
+// Instituições
 app.use("/api/instituicoes", instituicaoRoutes);
 
-// Rota de cursos
+// Cursos
 app.use("/api/cursos", cursoRoutes);
 
-// ===================== INICIAR SERVIDOR =====================
+// Disciplinas
+app.use("/api/disciplinas", disciplinaRoutes);
 
-app.listen(3000, "0.0.0.0", async () => {
+// ======================================================
+// INICIAR SERVIDOR
+// ======================================================
+
+const PORT = 3000;
+
+app.listen(PORT, "0.0.0.0", async () => {
   console.log("🚀 Servidor rodando com sucesso!");
-  console.log("➡️  PC: http://localhost:3000");
-  console.log("➡️  Celular (mesma rede): use o IP do seu PC → http://SEU-IP:3000");
+  console.log(`➡️  PC: http://localhost:${PORT}`);
+  console.log(`➡️  Celular (mesma rede): http://SEU-IP:${PORT}`);
 
   try {
     const conn = await openConnection();

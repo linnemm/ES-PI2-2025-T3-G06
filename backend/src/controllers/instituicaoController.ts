@@ -34,6 +34,7 @@ export const cadastrarInstituicao = async (req: Request, res: Response) => {
     await conn.close();
 
     return res.status(201).json({ message: "Instituição cadastrada com sucesso!" });
+
   } catch (error) {
     console.error("Erro ao cadastrar instituição:", error);
     return res.status(500).json({ message: "Erro ao cadastrar instituição." });
@@ -47,12 +48,14 @@ export const listarInstituicoesPorUsuario = async (req: Request, res: Response) 
   try {
     const usuarioId = Number(req.params.usuarioId);
 
-    if (!usuarioId) {
+    if (!usuarioId || isNaN(usuarioId)) {
       return res.status(400).json({ message: "Usuário inválido." });
     }
 
     const instituicoes = await buscarInstituicoesPorUsuario(usuarioId);
+
     return res.status(200).json(instituicoes);
+
   } catch (error) {
     console.error("Erro ao listar instituições:", error);
     return res.status(500).json({ message: "Erro ao listar instituições." });
@@ -60,7 +63,8 @@ export const listarInstituicoesPorUsuario = async (req: Request, res: Response) 
 };
 
 // ======================================================
-//  EDITAR INSTITUIÇÃO  (BODY → ID, nome, sigla)
+//  EDITAR INSTITUIÇÃO
+//  (BODY → id, nome, sigla)
 // ======================================================
 export const atualizarInstituicao = async (req: Request, res: Response) => {
   try {
@@ -70,14 +74,16 @@ export const atualizarInstituicao = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Dados insuficientes." });
     }
 
-    const existe = await buscarInstituicaoPorId(id);
-    if (!existe) {
+    const instituicao = await buscarInstituicaoPorId(id);
+
+    if (!instituicao) {
       return res.status(404).json({ message: "Instituição não encontrada." });
     }
 
     await editarInstituicao(id, nome, sigla);
 
     return res.status(200).json({ message: "Instituição atualizada com sucesso!" });
+
   } catch (error) {
     console.error("Erro ao editar instituição:", error);
     return res.status(500).json({ message: "Erro ao editar instituição." });
@@ -85,7 +91,8 @@ export const atualizarInstituicao = async (req: Request, res: Response) => {
 };
 
 // ======================================================
-//  REMOVER INSTITUIÇÃO  (BODY → id)
+//  REMOVER INSTITUIÇÃO
+//  (BODY → id)
 // ======================================================
 export const removerInstituicao = async (req: Request, res: Response) => {
   try {
@@ -110,6 +117,7 @@ export const removerInstituicao = async (req: Request, res: Response) => {
     await excluirInstituicao(id);
 
     return res.status(200).json({ message: "Instituição removida com sucesso!" });
+
   } catch (error) {
     console.error("Erro ao excluir instituição:", error);
     return res.status(500).json({ message: "Erro ao excluir instituição." });

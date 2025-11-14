@@ -1,9 +1,27 @@
 import { Router } from "express";
-import { cadastrarCurso, listarCursos } from "../controllers/cursoController";
+import {
+  cadastrarCurso,
+  listarCursosPorInstituicao,
+  atualizarCurso,
+  removerCurso,
+  contarDisciplinasDoCurso
+} from "../controllers/cursoController";
 
 const router = Router();
 
-router.post("/", cadastrarCurso); // cadastrar curso
-router.get("/:instituicaoId", listarCursos); // listar cursos de uma instituição
+// Cadastrar curso
+router.post("/", cadastrarCurso);
+
+// Listar cursos por instituição
+router.get("/listar/:instituicaoId", listarCursosPorInstituicao);
+
+// Editar curso
+router.put("/editar/:id", atualizarCurso);
+
+// Remover curso
+router.delete("/remover/:id", removerCurso);
+
+// Quantidade de disciplinas vinculadas
+router.get("/quantidade/:id", contarDisciplinasDoCurso);
 
 export default router;

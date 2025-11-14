@@ -1,86 +1,209 @@
 // =========================================
-// LISTA DE DISCIPLINAS
+// LISTA DE DISCIPLINAS — INTEGRAÇÃO BACKEND
 // =========================================
-const LS_DISC = 'pi.disciplinas';
+
 const $ = (id) => document.getElementById(id);
 
-// Seeds mock
-if (!localStorage.getItem(LS_DISC)) {
-  localStorage.setItem(LS_DISC, JSON.stringify([
-    { id:'d1', cursoId:'1', nome:'Algoritmos e Programação', codigo:'ALG101', ch:'80h', professor:'Profa. Maria Lima' },
-    { id:'d2', cursoId:'1', nome:'Banco de Dados I',         codigo:'BDI201', ch:'60h', professor:'Prof. João Serra' },
-    { id:'d3', cursoId:'2', nome:'Engenharia de Requisitos', codigo:'ER301',  ch:'60h', professor:'Profa. Carla Sousa' },
-    { id:'d4', cursoId:'3', nome:'Estruturas de Dados',      codigo:'ED202',  ch:'80h', professor:'Prof. Ricardo Melo' },
-  ]));
+const cursoId = localStorage.getItem("cursoId");
+
+if (!cursoId) {
+  alert("⚠ Erro: curso não selecionado.");
+  window.location.href = "/gerenciar/html/listaCursos.html";
 }
 
-// Helpers
-function getParam(name){ return new URLSearchParams(window.location.search).get(name); }
+// Elementos
+const lista = $("corpoTabelaDisc");
+const vazio = $("vazioDisc");
 
-function linhaHTML(d){
-  const codigo = d.codigo || '-';
-  const ch = d.ch || '-';
-  const prof = d.professor || '-';
-  const paramsTurmas = new URLSearchParams({ disciplinaId: d.id }).toString();
+// =========================================
+// 1️⃣ CARREGAR DISCIPLINAS DO BANCO
+// =========================================
+async function carregarDisciplinas(filtro = "") {
+  lista.innerHTML = "<p>Carregando...</p>";
 
-  return `
-    <div class="tabela-row">
-      <span><strong>${d.nome}</strong></span>
-      <span>${codigo}</span>
-      <span>${ch}</span>
-      <span>${prof}</span>
-      <span class="acoes">
-        <a class="acao-btn btn-editar" href="cadastro_disciplina.html?id=${encodeURIComponent(d.id)}">
-          <i class="fa-solid fa-pen"></i> Editar
-        </a>
-        <button class="acao-btn btn-turmas" data-href="listaTurmas.html?${paramsTurmas}">
-          <i class="fa-solid fa-users"></i> Turmas
-        </button>
-        <button class="acao-btn btn-excluir" data-id="${d.id}">
-          <i class="fa-solid fa-trash"></i> Excluir
-        </button>
-      </span>
-    </div>
-  `;
+  try {
+    const resp = await fetch(`/api/disciplinas/curso/${cursoId}`);
+    const dados = await resp.json();
+
+    if (!resp.ok) {
+      lista.innerHTML = "<p>Erro ao carregar disciplinas.</p>";
+      return;
+    }
+
+    // Aplicar filtro
+    const filtradas = dados.filter((disc) =>
+      disc.NOME.toLowerCase().includes(filtro.toLowerCase()) ||
+      disc.CODIGO.toLowerCase().includes(filtro.toLowerCase()) ||
+      disc.PERIODO.toLowerCase().includes(filtro.toLowerCase()) ||
+      (disc.PROFESSOR_NOME || "").toLowerCase().includes(filtro.toLowerCase())
+    );
+
+    if (filtradas.length === 0) {
+      lista.innerHTML = "";
+      vazio.style.display = "block";
+      return;
+    }
+
+    vazio.style.display = "none";
+    lista.innerHTML = "";
+
+    filtradas.forEach((disc) => {
+      const row = document.createElement("div");
+      row.classList.add("tabela-row");
+
+      row.innerHTML = `
+        <span><strong>${disc.NOME}</strong></span>
+        <span>${disc.CODIGO}</span>
+        <span>${disc.PERIODO}</span>
+        <span>${disc.PROFESSOR_NOME || "-"}</span>
+
+        <span class="acoes">
+
+          <button class="acao-btn btn-editar" data-id="${disc.ID}">
+            <i class="fa-solid fa-pen"></i> Editar
+          </button>
+
+          <button class="acao-btn btn-excluir" data-id="${disc.ID}">
+            <i class="fa-solid fa-trash"></i> Excluir
+          </button>
+
+        </span>
+      `;
+
+      // EDITAR
+      row.querySelector(".btn-editar").addEventListener("click", () => {
+        editarDisciplina(disc);
+      });
+
+      // EXCLUIR
+      row.querySelector(".btn-excluir").addEventListener("click", () => {
+        removerDisciplina(disc.ID);
+      });
+
+      lista.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error(error);
+    lista.innerHTML = "<p>Erro ao conectar com o servidor.</p>";
+  }
 }
 
-function renderLista(){
-  const cursoId = getParam('cursoId');
-  const lista = JSON.parse(localStorage.getItem(LS_DISC) || '[]');
-  const base = cursoId ? lista.filter(d => String(d.cursoId) === String(cursoId)) : lista;
+carregarDisciplinas();
 
-  const termo = $('fBuscaDisc').value.trim().toLowerCase();
-  const filtradas = base.filter(d => {
-    const nome = (d.nome||'').toLowerCase();
-    const codigo = (d.codigo||'').toLowerCase();
-    const ch = (d.ch||'').toLowerCase();
-    const prof = (d.professor||'').toLowerCase();
-    return !termo || nome.includes(termo) || codigo.includes(termo) || ch.includes(termo) || prof.includes(termo);
-  });
+// =========================================
+// 2️⃣ EDITAR DISCIPLINA
+// =========================================
+async function editarDisciplina(disc) {
+  const nome = prompt("Novo nome da disciplina:", disc.NOME);
+  if (!nome) return;
 
-  $('corpoTabelaDisc').innerHTML = filtradas.map(linhaHTML).join('');
-  $('vazioDisc').style.display = filtradas.length ? 'none' : 'block';
+  const codigo = prompt("Novo código:", disc.CODIGO);
+  if (!codigo) return;
 
-  // handlers das ações
-  document.querySelectorAll('.btn-turmas').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{ location.href = e.currentTarget.dataset.href; });
-  });
-  document.querySelectorAll('.btn-excluir').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{ excluirDisciplina(e.currentTarget.dataset.id); });
-  });
+  const periodo = prompt("Novo período:", disc.PERIODO);
+  if (!periodo) return;
+
+  try {
+    const resp = await fetch(`/api/disciplinas/editar/${disc.ID}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome,
+        sigla: disc.SIGLA,
+        codigo,
+        periodo
+      })
+    });
+
+    const dados = await resp.json();
+
+    if (!resp.ok) {
+      alert("Erro: " + dados.message);
+      return;
+    }
+
+    alert("Disciplina atualizada!");
+    carregarDisciplinas();
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao editar disciplina.");
+  }
 }
 
-function excluirDisciplina(id){
-  if(!confirm('Deseja realmente excluir esta disciplina?')) return;
-  const lista = JSON.parse(localStorage.getItem(LS_DISC) || '[]').filter(x => x.id !== id);
-  localStorage.setItem(LS_DISC, JSON.stringify(lista));
-  renderLista();
+// =========================================
+// 3️⃣ BUSCA
+// =========================================
+$("btnBuscarDisc").addEventListener("click", () => {
+  carregarDisciplinas($("fBuscaDisc").value.trim());
+});
+
+$("fBuscaDisc").addEventListener("keyup", () => {
+  carregarDisciplinas($("fBuscaDisc").value.trim());
+});
+
+// =========================================
+// 4️⃣ REMOVER DISCIPLINA
+// =========================================
+async function removerDisciplina(id) {
+  const confirmar = confirm("Tem certeza que deseja remover esta disciplina?");
+  if (!confirmar) return;
+
+  try {
+    const resp = await fetch(`/api/disciplinas/remover/${id}`, {
+      method: "DELETE",
+    });
+
+    const dados = await resp.json();
+
+    if (!resp.ok) {
+      alert("Erro: " + dados.message);
+      return;
+    }
+
+    alert("Disciplina removida!");
+    carregarDisciplinas();
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao remover disciplina.");
+  }
 }
 
-$('btnBuscarDisc').addEventListener('click', renderLista);
-$('fBuscaDisc').addEventListener('keydown', e => { if(e.key === 'Enter') renderLista(); });
-$('btnNovaDisc').addEventListener('click', () => location.href = 'cadastro_disciplina.html');
+// =========================================
+// 5️⃣ NOVA DISCIPLINA
+// =========================================
+$("btnNovaDisc").addEventListener("click", () => {
+  window.location.href = "/gerenciar/html/cadastro_disciplina.html";
+});
 
-renderLista();
-window.excluirDisciplina = excluirDisciplina;
 
+// ============================================================
+// 6️⃣ MODAL — COMPONENTE DE NOTA
+// ============================================================
+
+const modal = $("modalComponente");
+const btnAbrir = $("btnComponenteNota");
+const btnFecharX = $("btnFecharModal");
+const btnFechar = $("btnFechar");
+
+// ABRIR MODAL
+btnAbrir.addEventListener("click", () => {
+  modal.style.display = "flex";
+});
+
+// FECHAR MODAL (botão X)
+btnFecharX.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+// FECHAR MODAL (botão Fechar)
+btnFechar.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+// FECHAR CLICANDO FORA
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) modal.style.display = "none";
+});
