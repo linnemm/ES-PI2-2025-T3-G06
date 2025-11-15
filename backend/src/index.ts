@@ -9,6 +9,7 @@ import instituicaoRoutes from "./routes/instituicaoRoutes";
 import cursoRoutes from "./routes/cursoRoutes";
 import disciplinaRoutes from "./routes/disciplinaRoutes";
 import componenteRoutes from "./routes/componenteRoutes"; // ⭐ COMPONENTES DE NOTA
+import turmaRoutes from "./routes/turmaRoutes"; // ⭐ NOVO: TURMAS
 
 const app = express();
 
@@ -45,7 +46,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/instituicoes", instituicaoRoutes);
 app.use("/api/cursos", cursoRoutes);
 app.use("/api/disciplinas", disciplinaRoutes);
-app.use("/api/componentes", componenteRoutes); // ⭐ ROTA NOVA E ATIVA
+app.use("/api/componentes", componenteRoutes);
+app.use("/api/turmas", turmaRoutes); // ⭐ ROTA NOVA
 
 // ======================================================
 // INICIAR SERVIDOR

@@ -1,12 +1,11 @@
 // ===========================================
-// componenteController.ts (VERSÃO FINAL)
+// componenteController.ts (VERSÃO FINALIZADA)
 // ===========================================
 
 import { Request, Response } from "express";
 import {
   inserirComponente,
   listarPorDisciplina,
-  editarComponente,
   removerComponente
 } from "../models/componenteModel";
 
@@ -48,7 +47,7 @@ export async function criarComponente(req: Request, res: Response) {
     }
 
     // -----------------------------
-    // TRATAR PESO (REGRA DO BANCO)
+    // TRATAR PESO DE ACORDO COM O TIPO
     // -----------------------------
     let pesoNormalizado: number | null = null;
 
@@ -65,9 +64,9 @@ export async function criarComponente(req: Request, res: Response) {
 
       const pesoConvertido = Number(peso);
 
-      if (isNaN(pesoConvertido) || pesoConvertido < 0) {
+      if (isNaN(pesoConvertido) || pesoConvertido <= 0) {
         return res.status(400).json({
-          message: "Peso inválido. Informe um número maior ou igual a 0."
+          message: "Peso inválido. Deve ser um número maior que 0."
         });
       }
 
@@ -75,7 +74,7 @@ export async function criarComponente(req: Request, res: Response) {
     }
 
     // -----------------------------
-    // INSERIR NO BANCO
+    // INSERIR NO BANCO (COM TODAS AS REGRAS NO MODEL)
     // -----------------------------
     const novoId = await inserirComponente({
       disciplinaId: Number(disciplinaId),
@@ -83,7 +82,7 @@ export async function criarComponente(req: Request, res: Response) {
       sigla,
       descricao,
       peso: pesoNormalizado,
-      tipoMedia: tipo, // <-- AGORA SEMPRE VAI “simples” OU “ponderada”
+      tipoMedia: tipo,
       usuario_id: Number(usuario_id)
     });
 
@@ -94,7 +93,9 @@ export async function criarComponente(req: Request, res: Response) {
 
   } catch (e: any) {
     console.error("Erro ao criar componente:", e);
-    return res.status(500).json({ message: e.message });
+
+    // retorna erro amigável
+    return res.status(400).json({ message: e.message });
   }
 }
 
@@ -111,26 +112,6 @@ export async function listarComponentes(req: Request, res: Response) {
 
   } catch (e: any) {
     console.error("Erro ao listar componentes:", e);
-    return res.status(500).json({ message: e.message });
-  }
-}
-
-// ===========================
-// EDITAR COMPONENTE
-// ===========================
-export async function atualizarComponente(req: Request, res: Response) {
-  try {
-    const { id } = req.params;
-    const { nome } = req.body;
-
-    await editarComponente(Number(id), nome);
-
-    return res.status(200).json({
-      message: "Componente atualizado com sucesso!"
-    });
-
-  } catch (e: any) {
-    console.error("Erro ao editar componente:", e);
     return res.status(500).json({ message: e.message });
   }
 }

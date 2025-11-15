@@ -5,18 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cadastro de Turmas — NotaDez</title>
 
-  <!-- Fontes e ícones -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="cadastro_turma.css" />
+  <link rel="stylesheet" href="/gerenciar/css/cadastro_turma.css" />
 </head>
+
 <body>
   <div class="dashboard">
-    <!-- ===== TOPBAR PADRÃO ===== -->
+
     <header class="topbar-notadez">
       <h2 class="topbar-notadez__brand">NotaDez</h2>
       <ul class="ndz-menu">
@@ -24,56 +22,55 @@
         <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
         <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
         <li><a href="#" id="btnTurmas" class="ativo"><i class="fa-solid fa-users"></i> Turmas</a></li>
-        <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
-        <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+        <li><a href="/gerenciar/html/perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
+        <li><a href="/auth/html/login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
       </ul>
     </header>
 
-    <!-- ===== ABA FLUTUANTE  ===== -->
-    <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
-      <div class="menu-conteudo">
-        <h3 id="tituloAba">Selecionar</h3>
-        <div id="selectContainer"></div>
-        <button id="btnIr" class="btn-curso" style="display:none;">Ir</button>
-      </div>
-    </div>
-
-    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
     <main class="main-content">
+
       <h1>Cadastro de Turmas</h1>
 
-      <form id="formTurma" autocomplete="off" novalidate>
-        <label for="nomeTurma">Digite a Turma:</label>
-        <input type="text" id="nomeTurma" name="nomeTurma" placeholder="Ex: Turma 001" required />
+      <form id="formTurma" autocomplete="off">
 
-        <label for="instituicao">Instituição:</label>
+        <label>Nome da Turma:</label>
+        <input id="nomeTurma" type="text" placeholder="Ex: Turma A" required>
+
+        <label>Instituição:</label>
         <select id="instituicao" required>
-          <option value="">Selecione uma instituição</option>
+          <option value="">Selecione...</option>
         </select>
 
-        <label for="curso">Curso:</label>
+        <label>Curso:</label>
         <select id="curso" required>
-          <option value="">Selecione um curso</option>
+          <option value="">Selecione...</option>
         </select>
 
-        <label for="disciplina">Digite para qual disciplina:</label>
-        <input type="text" id="disciplina" name="disciplina" placeholder="Ex: Banco de Dados I" required />
+        <label>Disciplina:</label>
+        <select id="disciplinaId" required>
+          <option value="">Selecione...</option>
+        </select>
 
-        <label for="codigo">Código:</label>
-        <input id="codigo" placeholder="Ex: AS521" required />
+        <label>Dia da Semana:</label>
+        <input id="diaSemana" type="text" placeholder="Ex: Segunda-feira" required>
 
-        <label for="periodo">Período:</label>
-        <input id="periodo" placeholder="Ex: 3º semestre" required />
+        <label>Horário:</label>
+        <input id="horario" type="text" placeholder="Ex: 19:00 - 22:30" required>
+
+        <label>Local:</label>
+        <input id="localTurma" type="text" placeholder="Ex: Sala 301" required>
 
         <div class="botoes">
           <button type="submit" class="btn-salvar">Adicionar Turma</button>
           <button type="reset" class="btn-cancelar" id="btnCancelar">Cancelar</button>
         </div>
+
       </form>
+
     </main>
+
   </div>
 
-  <!-- JS -->
-  <script src="cadastro_turma.js"></script>
+  <script src="/gerenciar/javascript/cadastro_turma.js"></script>
 </body>
 </html>

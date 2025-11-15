@@ -45,8 +45,11 @@ async function carregarDisciplinas(filtro = "") {
       const row = document.createElement("div");
       row.classList.add("tabela-row");
 
+      // 🔥 Aqui o clique na disciplina abre listaTurmas.html
       row.innerHTML = `
-        <span><strong>${disc.NOME}</strong></span>
+        <span class="disciplina-click" data-id="${disc.ID}">
+          <strong>${disc.NOME}</strong>
+        </span>
         <span>${disc.CODIGO}</span>
         <span>${disc.PERIODO}</span>
         <span>${disc.PROFESSOR_NOME || "-"}</span>
@@ -62,8 +65,17 @@ async function carregarDisciplinas(filtro = "") {
         </span>
       `;
 
-      row.querySelector(".btn-editar").addEventListener("click", () => editarDisciplina(disc));
-      row.querySelector(".btn-excluir").addEventListener("click", () => removerDisciplina(disc.ID));
+      // 🚀 Clique para abrir lista de turmas
+      row.querySelector(".disciplina-click").addEventListener("click", () => {
+        window.location.href =
+          `/gerenciar/html/listaTurmas.html?disciplinaId=${disc.ID}`;
+      });
+
+      // Botões comuns
+      row.querySelector(".btn-editar")
+        .addEventListener("click", () => editarDisciplina(disc));
+      row.querySelector(".btn-excluir")
+        .addEventListener("click", () => removerDisciplina(disc.ID));
 
       lista.appendChild(row);
     });
@@ -127,9 +139,11 @@ async function removerDisciplina(id) {
   if (!confirm("Tem certeza que deseja excluir?")) return;
 
   try {
-    const resp = await fetch(`/api/disciplinas/remover/${id}`, { method: "DELETE" });
-    const dados = await resp.json();
+    const resp = await fetch(`/api/disciplinas/remover/${id}`, {
+      method: "DELETE"
+    });
 
+    const dados = await resp.json();
     if (!resp.ok) return alert("Erro: " + dados.message);
 
     alert("Disciplina removida!");
@@ -210,7 +224,7 @@ async function carregarDisciplinasParaSelect() {
 }
 
 // =========================================
-// 🔟 SALVAR COMPONENTE DE NOTA (VERSÃO FINAL CORRIGIDA)
+// 🔟 SALVAR COMPONENTE DE NOTA
 // =========================================
 btnSalvar.addEventListener("click", async () => {
 
@@ -222,27 +236,13 @@ btnSalvar.addEventListener("click", async () => {
 
   let peso = null;
 
-  // ⭐ Correção definitiva: nunca mais envia "" ou string inválida
   if (tipoMedia === "ponderada") {
-    const valorBruto = $("cmpPeso").value;
-
-    if (valorBruto === "" || valorBruto === null || valorBruto === undefined) {
-      alert("Informe um peso válido para média PONDERADA.");
+    const v = $("cmpPeso").value;
+    if (!v || isNaN(Number(v)) || Number(v) <= 0) {
+      alert("Peso inválido. Informe um número maior que 0.");
       return;
     }
-
-    const valor = Number(valorBruto);
-
-    if (isNaN(valor) || valor < 0) {
-      alert("Peso inválido. O peso deve ser maior ou igual a 0.");
-      return;
-    }
-
-    peso = valor;
-  }
-
-  if (tipoMedia === "simples") {
-    peso = null;
+    peso = Number(v);
   }
 
   if (!disciplinaId || !nome || !sigla) {
@@ -250,34 +250,67 @@ btnSalvar.addEventListener("click", async () => {
     return;
   }
 
-  const usuarioId = localStorage.getItem("usuarioId");
+  // ============================
+  // VALIDAÇÕES FRONT-END
+  // ============================
+  try {
+    const resp = await fetch(`/api/componentes/listar/${disciplinaId}`);
+    const comps = await resp.json();
 
-  if (!usuarioId) {
-    alert("Erro: usuário não identificado.");
-    return;
+    if (comps.some(c => c.NOME === nome)) {
+      alert("Já existe um componente com esse NOME nesta disciplina.");
+      return;
+    }
+
+    if (comps.some(c => c.SIGLA === sigla)) {
+      alert("Já existe um componente com essa SIGLA nesta disciplina.");
+      return;
+    }
+
+    if (comps.length > 0) {
+      const tipoExist = comps[0].TIPO_MEDIA;
+      if (tipoExist !== tipoMedia) {
+        alert(`Esta disciplina já utiliza média '${tipoExist}'.`);
+        return;
+      }
+    }
+
+    if (tipoMedia === "ponderada") {
+      const somaAtual = comps.reduce((acc, c) => acc + (c.PESO || 0), 0);
+      const somaDepois = somaAtual + peso;
+
+      if (somaDepois > 100) {
+        alert(`A soma dos pesos ficará ${somaDepois}. O limite é 100.`);
+        return;
+      }
+    }
+
+  } catch (e) {
+    console.error("Erro na validação:", e);
   }
 
-  const dados = {
-    disciplinaId,
-    nome,
-    sigla,
-    descricao,
-    tipoMedia,
-    peso,
-    usuario_id: Number(usuarioId)
-  };
-
+  // ============================
+  // ENVIAR PARA O BACKEND
+  // ============================
   try {
     const resp = await fetch("/api/componentes/criar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dados)
+      body: JSON.stringify({
+        disciplinaId,
+        nome,
+        sigla,
+        descricao,
+        tipoMedia,
+        peso,
+        usuario_id: Number(usuarioId)
+      })
     });
 
     const resultado = await resp.json();
 
     if (!resp.ok) {
-      return alert("Erro ao criar componente:\n" + resultado.message);
+      return alert(resultado.message);
     }
 
     alert("Componente criado com sucesso!");
@@ -285,7 +318,7 @@ btnSalvar.addEventListener("click", async () => {
 
   } catch (e) {
     console.error(e);
-    alert("Erro ao criar componente!");
+    alert("Erro ao criar componente.");
   }
 });
 
@@ -315,7 +348,7 @@ subModal.onclick = (e) => {
 };
 
 // =========================================
-// 1️⃣2️⃣ CARREGAR COMPONENTES
+// 1️⃣2️⃣ CARREGAR COMPONENTES DA DISCIPLINA
 // =========================================
 async function carregarComponentesDaDisciplina(discId) {
   try {
@@ -332,14 +365,14 @@ async function carregarComponentesDaDisciplina(discId) {
       <div class="comp-item">
         <div>
           <strong>${c.NOME} (${c.SIGLA})</strong><br>
-          <small>${c.DESCRICAO || ""}</small>
+          <small>${c.DESCRICAO || ""}</small><br>
+          <small>
+            Média: <strong>${c.TIPO_MEDIA}</strong>
+            ${c.TIPO_MEDIA === "ponderada" ? ` • Peso: ${c.PESO}` : ""}
+          </small>
         </div>
 
         <div class="comp-acoes">
-          <button class="acao-btn" onclick="editarComponente(${c.ID})">
-            <i class="fa-solid fa-pen"></i>
-          </button>
-
           <button class="acao-btn" onclick="excluirComponente(${c.ID}, ${discId})">
             <i class="fa-solid fa-trash"></i>
           </button>
@@ -351,30 +384,6 @@ async function carregarComponentesDaDisciplina(discId) {
     console.error(e);
     listaCompsContainer.innerHTML =
       `<p style="text-align:center; color:#666;">Erro ao carregar.</p>`;
-  }
-}
-
-// =========================================
-// 1️⃣3️⃣ EDITAR COMPONENTE
-// =========================================
-async function editarComponente(id) {
-  const novoNome = prompt("Novo nome do componente:");
-  if (!novoNome) return;
-
-  try {
-    const resp = await fetch(`/api/componentes/editar/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome: novoNome })
-    });
-
-    if (!resp.ok) return alert("Erro ao editar componente.");
-
-    alert("Atualizado com sucesso!");
-    carregarComponentesDaDisciplina($("cmpDisc").value);
-
-  } catch (e) {
-    console.error(e);
   }
 }
 

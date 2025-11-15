@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Disciplinas - NotaDez</title>
 
-  <!-- CSS -->
+  <!-- CSS CORRETO -->
   <link rel="stylesheet" href="/gerenciar/css/listaDisciplinas.css" />
 
   <!-- Ícones e Fonte -->
@@ -30,7 +30,7 @@
     </ul>
   </nav>
 
-  <!-- ================== MENU FLUTUANTE (USADO EM OUTRAS TELAS) ================== -->
+  <!-- ================== MENU FLUTUANTE ================== -->
   <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
     <div class="menu-conteudo">
       <h3 id="tituloAba">Selecionar</h3>
@@ -119,7 +119,7 @@
           <input type="radio" name="tipoMedia" id="mediaSimples" value="simples" checked>
           <div>
             <strong>Média Simples</strong><br>
-            <span class="explica">Soma dos componentes ÷ quantidade de componentes (todos valem 0 a 10)</span>
+            <span class="explica">Soma dos componentes ÷ quantidade de componentes.</span>
           </div>
         </label>
 
@@ -127,7 +127,7 @@
           <input type="radio" name="tipoMedia" id="mediaPonderada" value="ponderada">
           <div>
             <strong>Média Ponderada</strong><br>
-            <span class="explica">Cada componente possui um peso (a soma dos pesos precisa totalizar exatamente 10)</span>
+            <span class="explica">A soma dos pesos deve totalizar <strong>100%</strong>.</span>
           </div>
         </label>
 
@@ -159,7 +159,7 @@
 
         <div class="field col-2">
           <label>Descrição</label>
-          <textarea id="cmpDesc" placeholder="Ex.: Prova teórica do 1º módulo"></textarea>
+          <textarea id="cmpDesc" placeholder="Ex.: Prova teórica"></textarea>
         </div>
 
       </div>
@@ -167,7 +167,6 @@
 
     <div class="modal-footer">
 
-      <!-- BOTÃO COMPONENTES CADASTRADOS (lado esquerdo) -->
       <button class="btn btn-ghost" id="btnVerComponentes" style="margin-right:auto;">
         <i class="fa-solid fa-list"></i> Componentes cadastrados
       </button>
