@@ -1,121 +1,241 @@
-/* ===== Base  ===== */
-* { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+/* ===== Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 
 body {
-  background-color:#f5f6fa;
-  color:#333;
-  overflow-x:hidden;
-  overflow-y:auto;
+  background-color: #f5f6fa;
+  overflow-x: hidden;
 }
 
-/* Topbar */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== Topbar ===== */
 .topbar {
-  width:100%;
-  background:linear-gradient(to right,#6ca98c,#5c8c75);
-  color:white;
-  padding:15px 40px;
-  display:flex; align-items:center; justify-content:space-between;
-  position:sticky; top:0; z-index:10;
-  box-shadow:0 2px 8px rgb(236,232,232);
+  width: 100%;
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  color: #fff;
+  padding: 15px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgb(236, 232, 232);
 }
-.topbar h2 { font-size:22px; font-weight:700; }
 
-.menu-horizontal { list-style:none; display:flex; gap:25px; flex-wrap:wrap; }
+.topbar h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.menu-horizontal {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
 .menu-horizontal li a {
-  color:white; text-decoration:none; font-size:16px;
-  display:flex; align-items:center; gap:8px;
-  padding:8px 12px; border-radius:6px;
-  transition:background-color .3s, box-shadow .2s;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
 }
+
 .menu-horizontal li a:hover,
-.menu-horizontal li a:focus { background-color:rgba(255,255,255,.2); box-shadow:0 4px 10px rgba(0,0,0,.2); }
-.menu-horizontal li a.ativo { background-color:transparent; box-shadow:none; }
-
-/* Janelinha  */
-.menu-flutuante{
-  position:absolute; top:75px; right:40px; width:280px;
-  background:#fff; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.15);
-  padding:20px; z-index:50; display:none; animation:slideDown .3s ease;
-}
-@keyframes slideDown { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
-.menu-conteudo h3{ color:#6ca98c; margin-bottom:10px; text-align:center; }
-.campo-selecao{ margin-bottom:12px; }
-.campo-selecao label{ font-size:14px; color:#444; display:block; margin-bottom:4px; }
-.campo-selecao select{ width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; }
-.menu-flutuante .btn-curso{ width:100%; background:#6ca98c; color:white; border:none; padding:8px 0; border-radius:6px; font-weight:600; cursor:pointer; }
-.menu-flutuante .btn-curso:hover{ background:#5c8c75; }
-
-/* Conteúdo */
-.main-content { display:flex; flex-direction:column; align-items:center; padding:24px; padding-top:32px; }
-h1 { color:#5c8c75; margin:10px 0 20px; }
-
-/* Filtro */
-form.filtro-card{
-  background:#fff; padding:20px; border-radius:15px; box-shadow:0 2px 8px rgba(0,0,0,.1);
-  width:900px; max-width:calc(100vw - 100px);
-}
-label{ display:block; margin-top:10px; font-weight:600; }
-input{
-  width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:8px; font-size:15px; height:42px; background:#fff;
-}
-input:focus{ outline:none; border-color:#6ca98c; box-shadow:0 0 5px rgba(108,169,140,.6); transition:.2s; }
-.botoes{ display:flex; justify-content:space-between; margin-top:18px; }
-.btn-curso{ padding:10px 20px; border:none; border-radius:10px; cursor:pointer; font-weight:bold; background:#6ca98c; color:#fff; }
-.btn-curso:hover{ background:#5c8c75; }
-
-/* Lista */
-.lista-card{
-  margin-top:18px; background:#fff; border-radius:15px; overflow:hidden;
-  width:900px; max-width:calc(100vw - 100px); box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
-.tabela-head,.tabela-row{
-  display:grid; grid-template-columns:1fr 150px 250px 220px;
-  gap:12px; align-items:center; padding:12px 16px;
-}
-.tabela-head{ background:#f7faf9; font-weight:700; }
-
-.tabela-row{
-  position:relative;
-  background:#fff;
-}
-.tabela-row + .tabela-row::before{
-  content:"";
-  position:absolute;
-  left:16px; right:16px; top:0;
-  height:2px;
-  background:linear-gradient(to right, transparent, #cfe1d8 12%, #cfe1d8 88%, transparent);
-  pointer-events:none;
-}
-.tabela-row:hover{ background:#f5fbf8; }
-
-/* === AÇÕES === */
-.acoes{
-  display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap;
+.menu-horizontal li a.ativo {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-.acao-btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:6px;
-  padding:8px 12px; border:none; border-radius:8px; cursor:pointer; line-height:1;
-  min-width:120px; height:36px; font-weight:600;
+/* ============================= */
+/* ===== Conteúdo principal ===== */
+/* ============================= */
+
+.main-content {
+  width: 90%;
+  max-width: 1000px;
+  margin: 100px auto 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+.titulo-verde {
+  font-size: 28px;
+  font-weight: 700;
+  color: #6ca98c;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ===== Filtro ===== */
+form.filtro-card {
+  background: #fff;
+  padding: 20px;
+  width: 900px;
+  max-width: calc(100vw - 100px);
+  border-radius: 15px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+form.filtro-card label {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.busca-linha {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+form.filtro-card input {
+  flex: 1;
+  padding: 10px;
+  font-size: 15px;
+  height: 42px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+form.filtro-card input:focus {
+  border-color: #6ca98c;
+  box-shadow: 0 0 5px rgba(108,169,140,0.6);
+  outline: none;
+}
+
+/* BOTÕES DO FILTRO */
+.botoes-acao {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-curso {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #6ca98c;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.btn-curso:hover {
+  background: #5c8c75;
+}
+
+/* ===== Lista / Tabela ===== */
+.lista-card {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 15px;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  overflow: hidden;
+}
+
+/* Cabeçalho */
+.tabela-head {
+  display: grid;
+  grid-template-columns:
+      1.2fr  /* Turma */
+      0.8fr  /* Código */
+      1.2fr  /* Disciplina */
+      0.8fr  /* Dia */
+      0.8fr  /* Horário */
+      1fr    /* Local */
+      0.9fr; /* Ações */
+
+  padding: 14px 20px;
+  background: #6ca98c;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* Linhas */
+.tabela-row {
+  display: grid;
+  grid-template-columns:
+      1.2fr
+      0.8fr
+      1.2fr
+      0.8fr
+      0.8fr
+      1fr
+      0.9fr;
+  padding: 14px 20px;
+  background: #fff;
+  border-top: 1px solid #dbe9e2;
+  align-items: center;
+  font-size: 15px;
+  gap: 10px;
+}
+
+.tabela-row:hover {
+  background: #f5fbf8;
+}
+
+/* AÇÕES */
+.tabela-acoes {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
 .btn-editar,
-.btn-alunos{ background:#6ca98c; color:#fff; }
-.btn-editar:hover,
-.btn-alunos:hover{ background:#5c8c75; }
-
-.btn-excluir{ background:#b33a3a; color:#fff; }
-.btn-excluir:hover{ filter:brightness(.95); }
-
-/* Vazio */
-.vazio{ padding:16px; text-align:center; color:#6b7b87; display:none; }
-
-/* Responsivo */
-@media (max-width:920px){
-  .tabela-head,.tabela-row{ grid-template-columns:1fr 110px 1fr 200px; }
-  .acao-btn{ min-width:108px; height:34px; }
+.btn-excluir {
+  min-width: 80px;
+  height: 34px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
 }
-@media (max-width:768px){
-  .topbar{ flex-direction:column; gap:10px; padding:12px 16px; }
-  .menu-horizontal{ justify-content:center; gap:15px; }
-  form.filtro-card,.lista-card{ width:100%; max-width:calc(100vw - 32px); }
+
+.btn-editar {
+  background: #6ca98c;
+  color: white;
+}
+.btn-editar:hover {
+  background: #5c8c75;
+}
+
+.btn-excluir {
+  background: #b33a3a;
+  color: white;
+}
+.btn-excluir:hover {
+  filter: brightness(0.9);
+}
+
+/* Nenhuma turma */
+.vazio {
+  text-align: center;
+  padding: 16px;
+  color: #6b7b87;
+  font-style: italic;
 }
