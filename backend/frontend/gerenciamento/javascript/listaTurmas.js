@@ -10,14 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnNovoAluno = document.getElementById("btnNovoAluno");
 
   // ============================
-  //  PEGAR ID DA URL OU STORAGE
+  // PEGAR ID DA URL OU LOCALSTORAGE
   // ============================
   const urlParams = new URLSearchParams(window.location.search);
   const disciplinaId = urlParams.get("disciplinaId") || localStorage.getItem("disciplinaId");
   const cursoId = urlParams.get("cursoId") || localStorage.getItem("cursoId");
 
   // ============================
-  //  BOTÕES DE NAVEGAÇÃO
+  // BOTÕES DE NAVEGAÇÃO
   // ============================
   btnNovaTurma.onclick = () => {
     location.href = "/gerenciar/html/cadastro_turma.html";
@@ -28,19 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ============================
-  //  BUSCAR LISTA DE TURMAS
+  // BUSCAR LISTA DE TURMAS
   // ============================
-  async function carregarTurmas(filtro = "") {
+  async function carregarTurmas() {
     corpoTabela.innerHTML = "<p>Carregando...</p>";
 
     let rota = null;
 
-    if (disciplinaId) {
-      rota = `/api/turmas/listar/${disciplinaId}`;
-    } 
-    else if (cursoId) {
-      rota = `/api/turmas/curso/${cursoId}`;
-    } 
+    if (disciplinaId) rota = `/api/turmas/listar/${disciplinaId}`;
+    else if (cursoId) rota = `/api/turmas/curso/${cursoId}`;
     else {
       corpoTabela.innerHTML = "<p>Erro: Curso ou Disciplina não selecionado.</p>";
       return;
@@ -48,31 +44,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const resp = await fetch(rota);
-
       if (!resp.ok) {
         corpoTabela.innerHTML = "<p>Erro ao carregar turmas.</p>";
         return;
       }
 
       const turmas = await resp.json();
+      const filtro = fBusca.value.toLowerCase();
 
-      // filtro
       const listaFiltrada = turmas.filter(t =>
-        t.NOME?.toLowerCase().includes(filtro.toLowerCase()) ||
-        t.CODIGO?.toLowerCase().includes(filtro.toLowerCase()) ||
-        t.DISCIPLINA_NOME?.toLowerCase().includes(filtro.toLowerCase())
+        (t.NOME || "").toLowerCase().includes(filtro) ||
+        (t.CODIGO || "").toLowerCase().includes(filtro) ||
+        (t.DISCIPLINA_NOME || "").toLowerCase().includes(filtro)
       );
 
       render(listaFiltrada);
 
     } catch (err) {
       console.error(err);
-      corpoTabela.innerHTML = "<p>Erro inesperado ao carregar turmas.</p>";
+      corpoTabela.innerHTML = "<p>Erro inesperado.</p>";
     }
   }
 
   // ============================
-  //  EXCLUIR TURMA
+  // REMOVER TURMA
   // ============================
   async function excluirTurma(id) {
     if (!confirm("Tem certeza que deseja excluir esta turma?")) return;
@@ -89,9 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      alert("Turma excluída com sucesso!");
+      alert("Turma removida!");
       carregarTurmas();
-
     } catch (err) {
       console.error(err);
       alert("Erro inesperado.");
@@ -99,9 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ============================
-  //  MODAL DE EDIÇÃO
+  // MODAL EDIÇÃO (ATUALIZADO)
   // ============================
   function abrirModalEdicao(turma) {
+
     const modal = document.createElement("div");
     modal.className = "modal-overlay";
     modal.style.display = "flex";
@@ -110,7 +105,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="modal">
         <div class="modal-header">
           <div class="modal-title">Editar Turma</div>
-          <button class="modal-close" id="btnCloseModal"><i class="fa-solid fa-xmark"></i></button>
+          <button class="modal-close" id="btnCloseModal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
 
         <div class="modal-body">
@@ -138,42 +135,43 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div class="modal-footer">
-          <button class="btn btn-ghost" id="btnCancelar">Cancelar</button>
-          <button class="btn btn-primary" id="btnSalvar">Salvar</button>
+          <button class="btn-curso" id="btnSalvar">Salvar</button>
         </div>
       </div>
     `;
 
     document.body.appendChild(modal);
 
-    // Fechar modal
-    document.getElementById("btnCloseModal").onclick = () => modal.remove();
-    document.getElementById("btnCancelar").onclick = () => modal.remove();
+    document.getElementById("btnCloseModal").onclick =
+      () => modal.remove();
 
-    // Salvar edição
     document.getElementById("btnSalvar").onclick = async () => {
-      const body = {
-        nome: document.getElementById("edNome").value,
-        diaSemana: document.getElementById("edDia").value,
-        horario: document.getElementById("edHora").value,
-        localTurma: document.getElementById("edLocal").value
-      };
+
+      const nome = document.getElementById("edNome").value;
+      const diaSemana = document.getElementById("edDia").value;
+      const horario = document.getElementById("edHora").value;
+      const localTurma = document.getElementById("edLocal").value;
+
+      if (!nome || !diaSemana || !horario || !localTurma) {
+        alert("Preencha todos os campos.");
+        return;
+      }
 
       try {
         const resp = await fetch(`/api/turmas/editar/${turma.ID}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
+          body: JSON.stringify({ nome, diaSemana, horario, localTurma })
         });
 
         const json = await resp.json();
 
         if (!resp.ok) {
-          alert(json.message || "Erro ao salvar alterações.");
+          alert(json.message || "Erro ao salvar.");
           return;
         }
 
-        alert("Turma atualizada com sucesso!");
+        alert("Turma editada com sucesso!");
         modal.remove();
         carregarTurmas();
 
@@ -182,12 +180,14 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Erro inesperado ao salvar.");
       }
     };
+
   }
 
   // ============================
-  //  RENDERIZAÇÃO NA TABELA
+  // RENDER DA TABELA
   // ============================
   function render(turmas) {
+
     corpoTabela.innerHTML = "";
 
     if (!turmas.length) {
@@ -198,6 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
     vazio.style.display = "none";
 
     turmas.forEach(t => {
+
       const row = document.createElement("div");
       row.classList.add("tabela-row");
 
@@ -215,41 +216,40 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      // Abrir detalhes ao clicar na linha (exceto nas ações)
-      row.onclick = e => {
+      // Clique na linha → Detalhes
+      row.addEventListener("click", (e) => {
         if (!e.target.closest(".tabela-acoes")) {
           location.href = `/gerenciar/html/detalhesTurma.html?turmaId=${t.ID}`;
         }
-      };
+      });
 
-      // Botão editar
-      row.querySelector(".btn-editar").onclick = e => {
-        e.stopPropagation();
+      // Botão EDITAR
+      row.querySelector(".btn-editar").addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation(); 
         abrirModalEdicao(t);
-      };
+      });
 
-      // Botão excluir
-      row.querySelector(".btn-excluir").onclick = e => {
+      // Botão EXCLUIR
+      row.querySelector(".btn-excluir").addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
         excluirTurma(t.ID);
-      };
+      });
 
       corpoTabela.appendChild(row);
     });
   }
 
   // ============================
-  // BUSCA
+  // EVENTOS DE BUSCA
   // ============================
-  btnBuscar.addEventListener("click", () =>
-    carregarTurmas(fBusca.value.trim())
-  );
+  btnBuscar.addEventListener("click", () => carregarTurmas());
+  fBusca.addEventListener("keyup", () => carregarTurmas());
 
-  fBusca.addEventListener("keyup", () =>
-    carregarTurmas(fBusca.value.trim())
-  );
-
-  // Carregar inicial
+  // ============================
+  // INICIAR
+  // ============================
   carregarTurmas();
 
 });

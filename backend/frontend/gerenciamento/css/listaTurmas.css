@@ -123,9 +123,9 @@ form.filtro-card input:focus {
 /* BOTÕES DO FILTRO */
 .botoes-acao {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  justify-content: space-between;
   margin-top: 15px;
+  width: 100%;
 }
 
 .btn-curso {
@@ -159,14 +159,13 @@ form.filtro-card input:focus {
 .tabela-head {
   display: grid;
   grid-template-columns:
-      1.2fr  /* Turma */
-      0.8fr  /* Código */
-      1.2fr  /* Disciplina */
-      0.8fr  /* Dia */
-      0.8fr  /* Horário */
-      1fr    /* Local */
-      0.9fr; /* Ações */
-
+      1.2fr
+      0.8fr
+      1.2fr
+      0.8fr
+      0.8fr
+      1fr
+      0.9fr;
   padding: 14px 20px;
   background: #6ca98c;
   color: white;
@@ -220,6 +219,7 @@ form.filtro-card input:focus {
   background: #6ca98c;
   color: white;
 }
+
 .btn-editar:hover {
   background: #5c8c75;
 }
@@ -228,6 +228,7 @@ form.filtro-card input:focus {
   background: #b33a3a;
   color: white;
 }
+
 .btn-excluir:hover {
   filter: brightness(0.9);
 }
@@ -238,4 +239,83 @@ form.filtro-card input:focus {
   padding: 16px;
   color: #6b7b87;
   font-style: italic;
+}
+
+/* ======================= */
+/* ====== MODAL ========== */
+/* ======================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.modal {
+  background: #fff;
+  width: min(500px, 90%);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  animation: modalUp .25s ease-out;
+}
+
+@keyframes modalUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  padding: 16px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-footer {
+  padding: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+
+.field input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
 }

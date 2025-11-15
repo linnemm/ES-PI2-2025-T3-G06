@@ -1,213 +1,279 @@
-// ========== Topbar e janelinha ==========
-(function initTopbar(){
-  const menuFlutuante   = document.getElementById("menuFlutuante");
+// =========================================================
+// TOPBAR
+// =========================================================
+(function initTopbar() {
+  const menuFlutuante = document.getElementById("menuFlutuante");
   const selectContainer = document.getElementById("selectContainer");
-  const tituloAba       = document.getElementById("tituloAba");
-  const btnIr           = document.getElementById("btnIr");
+  const btnIr = document.getElementById("btnIr");
 
-  const instituicoes = ["PUCCAMP","USP","UNICAMP"];
-  const cursos       = ["Engenharia","Direito","Administração"];
-  const disciplinas  = ["Cálculo I","Física","Lógica"];
-  const turmasSel    = ["Turma A","Turma B","Turma C"];
-
-  const mkSelect=(id,label,opts)=>{
-    const d=document.createElement("div");
-    d.className="campo-selecao";
-    d.innerHTML=`<label for="${id}">${label}</label>
-      <select id="${id}">
-        <option value="">Selecione...</option>
-        ${opts.map(o=>`<option>${o}</option>`).join("")}
-      </select>`;
-    return d;
-  };
-
-  function abrirMenu(tipo){
-    selectContainer.innerHTML=""; btnIr.style.display="none";
-    menuFlutuante.style.display="block";
-
-    if(tipo==="instituicao"){
-      tituloAba.textContent="Selecionar Instituição";
-      const btnTodas=document.createElement("button");
-      btnTodas.className="btn-curso"; btnTodas.style.marginBottom="10px";
-      btnTodas.textContent="Ver todas as instituições";
-      btnTodas.onclick=()=>location.href="dashboard.html";
-      selectContainer.appendChild(btnTodas);
-
-      selectContainer.appendChild(mkSelect("selInstituicao","Instituição:",instituicoes));
-      btnIr.style.display="block";
-      btnIr.onclick=()=>{
-        const v=document.getElementById("selInstituicao").value;
-        if(v) location.href="listaCursos.html"; else alert("Selecione uma instituição!");
-      };
-    }
-
-    if(tipo==="curso"){
-      tituloAba.textContent="Selecionar Curso";
-      selectContainer.appendChild(mkSelect("selInstituicao","Instituição:",instituicoes));
-      document.getElementById("selInstituicao").addEventListener("change",()=>{
-        if(!document.getElementById("selCurso")){
-          selectContainer.appendChild(mkSelect("selCurso","Curso:",cursos));
-          btnIr.style.display="block";
-          btnIr.onclick=()=>{
-            const v=document.getElementById("selCurso").value;
-            if(v) location.href="listaDisciplinas.html"; else alert("Selecione um curso!");
-          };
-        }
-      },{once:true});
-    }
-
-    if(tipo==="disciplina"){
-      tituloAba.textContent="Selecionar Disciplina";
-      selectContainer.appendChild(mkSelect("selInstituicao","Instituição:",instituicoes));
-      document.getElementById("selInstituicao").addEventListener("change",()=>{
-        if(!document.getElementById("selCurso")){
-          selectContainer.appendChild(mkSelect("selCurso","Curso:",cursos));
-          document.getElementById("selCurso").addEventListener("change",()=>{
-            if(!document.getElementById("selDisciplina")){
-              selectContainer.appendChild(mkSelect("selDisciplina","Disciplina:",disciplinas));
-              btnIr.style.display="block";
-              btnIr.onclick=()=>{
-                const v=document.getElementById("selDisciplina").value;
-                if(v) location.href="listaTurmas.html"; else alert("Selecione uma disciplina!");
-              };
-            }
-          },{once:true});
-        }
-      },{once:true});
-    }
-
-    if(tipo==="turma"){
-      tituloAba.textContent="Selecionar Turma";
-      selectContainer.appendChild(mkSelect("selInstituicao","Instituição:",instituicoes));
-      document.getElementById("selInstituicao").addEventListener("change",()=>{
-        if(!document.getElementById("selCurso")){
-          selectContainer.appendChild(mkSelect("selCurso","Curso:",cursos));
-          document.getElementById("selCurso").addEventListener("change",()=>{
-            if(!document.getElementById("selDisciplina")){
-              selectContainer.appendChild(mkSelect("selDisciplina","Disciplina:",disciplinas));
-              document.getElementById("selDisciplina").addEventListener("change",()=>{
-                if(!document.getElementById("selTurma")){
-                  selectContainer.appendChild(mkSelect("selTurma","Turma:",turmasSel));
-                  btnIr.style.display="block";
-                  btnIr.onclick=()=>{
-                    const v=document.getElementById("selTurma").value;
-                    if(v) location.href="detalhesTurma.html"; else alert("Selecione uma turma!");
-                  };
-                }
-              },{once:true});
-            }
-          },{once:true});
-        }
-      },{once:true});
-    }
+  function abrirMenu() {
+    selectContainer.innerHTML = "";
+    btnIr.style.display = "none";
+    menuFlutuante.style.display = "block";
   }
 
-  const id=s=>document.getElementById(s);
-  id("btnInstituicoes")?.addEventListener("click",(e)=>{e.preventDefault(); abrirMenu("instituicao");});
-  id("btnCursos")?.addEventListener("click",(e)=>{e.preventDefault(); abrirMenu("curso");});
-  id("btnDisciplinas")?.addEventListener("click",(e)=>{e.preventDefault(); abrirMenu("disciplina");});
-  id("btnTurmas")?.addEventListener("click",(e)=>{e.preventDefault(); abrirMenu("turma");});
+  const id = s => document.getElementById(s);
 
-  document.addEventListener("click",(e)=>{
-    if(!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")){
-      menuFlutuante.style.display="none";
+  id("btnInstituicoes")?.addEventListener("click", e => { e.preventDefault(); abrirMenu(); });
+  id("btnCursos")?.addEventListener("click", e => { e.preventDefault(); abrirMenu(); });
+  id("btnDisciplinas")?.addEventListener("click", e => { e.preventDefault(); abrirMenu(); });
+  id("btnTurmas")?.addEventListener("click", e => { e.preventDefault(); abrirMenu(); });
+
+  document.addEventListener("click", e => {
+    if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
+      menuFlutuante.style.display = "none";
     }
   });
 })();
 
-// ========== Detalhes / alunos ==========
-(function initDetalhes(){
+
+// =========================================================
+// DETALHES DA TURMA
+// =========================================================
+(function initDetalhes() {
+
+  // -------------------------------
+  // PARAMS DA URL
+  // -------------------------------
   const qs = new URLSearchParams(location.search);
-  const turmaId        = qs.get("turmaId")        || "t1";
-  const turmaNome      = qs.get("turmaNome")      || "A";
-  const turmaCodigo    = qs.get("turmaCodigo")    || "TURMA-A";
-  const disciplinaNome = qs.get("disciplinaNome") || "Engenharia de Software";
-  const disciplinaId   = qs.get("disciplinaId")   || "d1";
-  const instituicao    = qs.get("instituicaoNome")|| "PUCCAMP";
-  const periodo        = qs.get("periodo")        || "1º Semestre";
+  const turmaId = Number(qs.get("turmaId"));
+  if (!turmaId) {
+    alert("Erro: turmaId não informado.");
+    return;
+  }
 
-  // Cabeçalho
-  document.getElementById("tituloTurma").textContent = `Turma ${turmaNome} — ${disciplinaNome}`;
-  document.getElementById("subTurma").textContent    = `Código: ${turmaCodigo} | Disciplina: ${disciplinaNome} | Instituição: ${instituicao} | Período: ${periodo}`;
-
-  let alunos = [
-    { id:"11111", nome:"João Silva"  },
-    { id:"11112", nome:"Maria Souza" }
-  ];
-
+  // -------------------------------
+  // ELEMENTOS
+  // -------------------------------
+  const tituloTurma = document.getElementById("tituloTurma");
+  const subTurma = document.getElementById("subTurma");
   const tbody = document.getElementById("tbodyAlunos");
 
-  // ===== Ações =====
-  function linhaAluno(a){
-    return `<tr>
-      <td><input type="checkbox" class="chkAluno" data-id="${a.id}"></td>
-      <td>${a.id}</td>
-      <td contenteditable="true" data-id="${a.id}" class="celNome">${a.nome}</td>
-      <td>
-        <span class="acoes">
-          <a class="btn-editar" href="cadastro_aluno.html?id=${encodeURIComponent(a.id)}">
-            <i class="fa-solid fa-pen"></i> Editar
-          </a>
-          <button class="btn-excluir" data-id="${a.id}">
-            <i class="fa-solid fa-trash"></i> Excluir
-          </button>
-        </span>
-      </td>
-    </tr>`;
+  let alunos = [];
+
+  // -------------------------------
+  // CARREGAR TURMA
+  // -------------------------------
+  async function carregarTurma() {
+    const resp = await fetch(`/api/turmas/detalhes/${turmaId}`);
+    const turma = await resp.json();
+
+    tituloTurma.textContent =
+      `Turma ${turma.NOME} — ${turma.DISCIPLINA_NOME}`;
+
+    subTurma.textContent =
+      `Código: ${turma.CODIGO || "-"} | Disciplina: ${turma.DISCIPLINA_NOME}`;
   }
-  
 
-  function render(){
-    tbody.innerHTML = alunos.map(linhaAluno).join("");
+  // -------------------------------
+  // CARREGAR ALUNOS
+  // -------------------------------
+  async function carregarAlunos() {
+    const resp = await fetch(`/api/alunos/turma/${turmaId}`);
+    alunos = await resp.json();
+    render();
+  }
 
-    // excluir (classe atualizada para .btn-excluir)
-    tbody.querySelectorAll(".btn-excluir").forEach(btn=>{
-      btn.addEventListener("click",(e)=>{
-        const id = e.currentTarget.dataset.id;
-        if(confirm("Remover este aluno da turma?")){
-          alunos = alunos.filter(x=>x.id!==id);
-          render();
-        }
+  // -------------------------------
+  // MODAL EDITAR ALUNO
+  // -------------------------------
+  function abrirModalEditar(aluno) {
+    const modal = document.createElement("div");
+    modal.className = "modal-overlay";
+    modal.style.display = "flex";
+
+    modal.innerHTML = `
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-title">Editar Aluno</div>
+          <button class="modal-close" id="btnFecharModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="field">
+            <label>Matrícula</label>
+            <input id="edMatricula" value="${aluno.MATRICULA}">
+          </div>
+
+          <div class="field">
+            <label>Nome</label>
+            <input id="edNome" value="${aluno.NOME}">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-salvar" id="btnSalvarAluno">Salvar</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Fecha modal
+    document.getElementById("btnFecharModal").onclick = () => modal.remove();
+
+    // Salvar alterações
+    document.getElementById("btnSalvarAluno").onclick = async () => {
+      const novaMatricula = document.getElementById("edMatricula").value.trim();
+      const novoNome = document.getElementById("edNome").value.trim();
+
+      if (!novaMatricula || !novoNome) {
+        alert("Preencha todos os campos.");
+        return;
+      }
+
+      // Validação de matrícula duplicada
+      const duplicado = alunos.some(a =>
+        a.MATRICULA === novaMatricula && a.ID !== aluno.ID
+      );
+
+      if (duplicado) {
+        alert("Já existe um aluno com esta matrícula.");
+        return;
+      }
+
+      const resp = await fetch(`/api/alunos/editar/${aluno.ID}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ matricula: novaMatricula, nome: novoNome })
+      });
+
+      const json = await resp.json();
+
+      if (!resp.ok) {
+        alert(json.message || "Erro ao editar aluno.");
+        return;
+      }
+
+      alert("Aluno atualizado!");
+      modal.remove();
+      carregarAlunos();
+    };
+  }
+
+  // -------------------------------
+  // REMOVER UM ALUNO
+  // -------------------------------
+  async function removerAluno(id) {
+    const resp = await fetch(`/api/alunos/remover/${id}`, { method: "DELETE" });
+    return resp.ok;
+  }
+
+  // -------------------------------
+  // RENDERIZAR TABELA
+  // -------------------------------
+  function render() {
+    tbody.innerHTML = alunos.map(a => `
+      <tr>
+        <td><input type="checkbox" class="chkAluno" data-id="${a.ID}"></td>
+        <td>${a.MATRICULA}</td>
+        <td>${a.NOME}</td>
+
+        <td>
+          <div class="acoes">
+            <button class="btn-editar" data-id="${a.ID}">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button class="btn-excluir" data-id="${a.ID}">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+
+    // EDITAR
+    tbody.querySelectorAll(".btn-editar").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const aluno = alunos.find(a => a.ID == btn.dataset.id);
+        abrirModalEditar(aluno);
+      });
+    });
+
+    // EXCLUIR
+    tbody.querySelectorAll(".btn-excluir").forEach(btn => {
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!confirm("Remover aluno?")) return;
+        await removerAluno(Number(btn.dataset.id));
+        carregarAlunos();
       });
     });
   }
 
-  // ações
-  document.getElementById("btnAddAluno").addEventListener("click", () => {
-   window.location.href = "cadastro_aluno.html";
+  // -------------------------------
+  // IMPORTAR CSV
+  // -------------------------------
+  document.getElementById("btnImportar").addEventListener("click", () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".csv";
+
+    input.onchange = async () => {
+      const arquivo = input.files[0];
+      if (!arquivo) return;
+
+      const form = new FormData();
+      form.append("arquivo", arquivo);
+      form.append("turmaId", turmaId);
+
+      const respTurma = await fetch(`/api/turmas/detalhes/${turmaId}`);
+      const turma = await respTurma.json();
+
+      form.append("instituicaoId", turma.INSTITUICAO_ID);
+      form.append("cursoId", turma.CURSO_ID);
+      form.append("disciplinaId", turma.DISCIPLINA_ID);
+
+      try {
+        const resp = await fetch("/api/alunos/importar-csv", {
+          method: "POST",
+          body: form
+        });
+
+        const json = await resp.json();
+
+        if (!resp.ok) throw new Error(json.message);
+
+        alert(`Importação concluída!
+Inseridos: ${json.inseridos}
+Duplicados ignorados: ${json.ignoradosDuplicados}`);
+
+        carregarAlunos();
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao importar CSV.");
+      }
+    };
+
+    input.click();
   });
 
-  document.getElementById("btnImportar").addEventListener("click", ()=>{
-    alert("Importação de alunos (CSV/planilha) — implementar com backend.");
-  });
+  // -------------------------------
+  // EXCLUIR SELECIONADOS
+  // -------------------------------
+  document.getElementById("btnExcluirSelecionados").onclick = async () => {
+    const marcados = [...tbody.querySelectorAll(".chkAluno:checked")];
 
-  document.getElementById("btnExcluirSelecionados").addEventListener("click", ()=>{
-    const idsSel = Array.from(tbody.querySelectorAll(".chkAluno:checked")).map(c=>c.dataset.id);
-    if(!idsSel.length) return alert("Selecione pelo menos um aluno.");
-    if(confirm("Excluir os alunos selecionados?")){
-      alunos = alunos.filter(a=>!idsSel.includes(a.id));
-      render();
+    if (!marcados.length) return alert("Nenhum aluno selecionado.");
+
+    if (!confirm(`Excluir ${marcados.length} aluno(s)?`)) return;
+
+    for (const chk of marcados) {
+      await removerAluno(Number(chk.dataset.id));
     }
-  });
 
-  // Botão "Notas da Turma"
-  document.getElementById("btnNotasTurma").addEventListener("click", ()=>{
-    location.href = `notasTurma.html?disciplinaId=${encodeURIComponent(disciplinaId)}&turmaId=${encodeURIComponent(turmaId)}`;
-  });
+    alert("Alunos removidos!");
+    carregarAlunos();
+  };
 
-  document.getElementById("btnSalvar").addEventListener("click", ()=>{
-    // leitura dos nomes editados
-    tbody.querySelectorAll(".celNome").forEach(td=>{
-      const id = td.dataset.id;
-      const novoNome = td.textContent.trim();
-      const idx = alunos.findIndex(a=>a.id===id);
-      if(idx>=0) alunos[idx].nome = novoNome;
-    });
-    alert("Alterações salvas (mock).");
-  });
+  // -------------------------------
+  // INICIAR TELA
+  // -------------------------------
+  carregarTurma();
+  carregarAlunos();
 
-  document.getElementById("btnVoltar").addEventListener("click", ()=> history.back());
-
-  // inicial
-  render();
 })();

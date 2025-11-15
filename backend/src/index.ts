@@ -10,6 +10,7 @@ import cursoRoutes from "./routes/cursoRoutes";
 import disciplinaRoutes from "./routes/disciplinaRoutes";
 import componenteRoutes from "./routes/componenteRoutes";
 import turmaRoutes from "./routes/turmaRoutes";
+import alunoRoutes from "./routes/alunoRoutes";  // ⭐ NOVO — ROTAS DE ALUNOS
 
 const app = express();
 
@@ -19,21 +20,24 @@ const app = express();
 app.use(cors({ origin: "*", methods: "GET,POST,PUT,DELETE" }));
 app.use(express.json());
 
+// Para uploads de CSV (multer armazena na pasta)
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
 // ======================================================
 // SERVIR FRONTEND (AUTENTICAÇÃO + GERENCIAMENTO)
 // ======================================================
 
-// Caminhos absolutos do frontend
+// Caminhos absolutos das pastas frontend
 const authPath = path.join(__dirname, "../frontend/autenticacao");
 const gerenciamentoPath = path.join(__dirname, "../frontend/gerenciamento");
 
-// Autenticação
+// Servir autenticação
 app.use("/auth", express.static(authPath));
 
-// Gerenciamento
+// Servir gerenciamento
 app.use("/gerenciar", express.static(gerenciamentoPath));
 
-// Página inicial → vai para login
+// Página inicial → redireciona para login
 app.get("/", (req, res) => {
   return res.sendFile(path.join(authPath, "html", "telainicial.html"));
 });
@@ -47,6 +51,7 @@ app.use("/api/cursos", cursoRoutes);
 app.use("/api/disciplinas", disciplinaRoutes);
 app.use("/api/componentes", componenteRoutes);
 app.use("/api/turmas", turmaRoutes);
+app.use("/api/alunos", alunoRoutes);   // ⭐ IMPORTANTE: rotas de ALUNOS
 
 // ======================================================
 // ROTA DEFAULT (404 PARA API)
@@ -71,10 +76,10 @@ const PORT = 3000;
 app.listen(PORT, "0.0.0.0", async () => {
   console.log("🚀 Servidor iniciado com sucesso!");
   console.log(`➡️ Localhost: http://localhost:${PORT}`);
-  console.log(`➡️ Front Autenticação: http://localhost:${PORT}/auth/html/login.html`);
-  console.log(`➡️ Front Gerenciamento: http://localhost:${PORT}/gerenciar/html/home.html`);
+  console.log(`➡️ Login: http://localhost:${PORT}/auth/html/login.html`);
+  console.log(`➡️ Gerenciamento: http://localhost:${PORT}/gerenciar/html/home.html`);
 
-  // Teste de conexão Oracle
+  // Teste da conexão com Oracle
   try {
     const conn = await openConnection();
     await conn.close();
