@@ -1,3 +1,7 @@
+// ===========================================
+// componenteController.ts (VERSÃO FINAL)
+// ===========================================
+
 import { Request, Response } from "express";
 import {
   inserirComponente,
@@ -11,46 +15,76 @@ import {
 // ===========================
 export async function criarComponente(req: Request, res: Response) {
   try {
-    const {
+    let {
       disciplinaId,
       nome,
       sigla,
       descricao,
       peso,
       tipoMedia,
-      usuario_id   // ⭐ RECEBE AGORA COMO usuario_id (igual ao front)
+      usuario_id
     } = req.body;
 
     // -----------------------------
-    // VALIDAÇÕES
+    // VALIDAÇÕES BÁSICAS
     // -----------------------------
     if (!disciplinaId || !nome || !sigla || !tipoMedia) {
+      return res.status(400).json({ message: "Campos obrigatórios faltando." });
+    }
+
+    if (!usuario_id || usuario_id === "null" || usuario_id === "undefined") {
+      return res.status(400).json({ message: "Usuário não identificado." });
+    }
+
+    // -----------------------------
+    // NORMALIZAR TIPO MEDIA
+    // -----------------------------
+    const tipo = String(tipoMedia).trim().toLowerCase();
+
+    if (tipo !== "simples" && tipo !== "ponderada") {
       return res.status(400).json({
-        message: "Campos obrigatórios faltando."
+        message: "Tipo de média inválido. Use 'simples' ou 'ponderada'."
       });
     }
 
-    if (
-      !usuario_id ||
-      usuario_id === "null" ||
-      usuario_id === "undefined"
-    ) {
-      return res.status(400).json({
-        message: "Usuário não identificado."
-      });
+    // -----------------------------
+    // TRATAR PESO (REGRA DO BANCO)
+    // -----------------------------
+    let pesoNormalizado: number | null = null;
+
+    if (tipo === "simples") {
+      pesoNormalizado = null; // obrigatório ser NULL
+    }
+
+    if (tipo === "ponderada") {
+      if (peso === undefined || peso === null || peso === "") {
+        return res.status(400).json({
+          message: "Peso é obrigatório para média ponderada."
+        });
+      }
+
+      const pesoConvertido = Number(peso);
+
+      if (isNaN(pesoConvertido) || pesoConvertido < 0) {
+        return res.status(400).json({
+          message: "Peso inválido. Informe um número maior ou igual a 0."
+        });
+      }
+
+      pesoNormalizado = pesoConvertido;
     }
 
     // -----------------------------
     // INSERIR NO BANCO
     // -----------------------------
     const novoId = await inserirComponente({
-      disciplinaId,
+      disciplinaId: Number(disciplinaId),
       nome,
       sigla,
       descricao,
-      peso,
-      tipoMedia,
-      usuario_id: Number(usuario_id) // ⭐ ENVIA PRO MODEL NO PADRÃO CERTO
+      peso: pesoNormalizado,
+      tipoMedia: tipo, // <-- AGORA SEMPRE VAI “simples” OU “ponderada”
+      usuario_id: Number(usuario_id)
     });
 
     return res.status(201).json({

@@ -1,8 +1,22 @@
 import oracledb from "oracledb";
 import { openConnection } from "../config/database";
 
+// ===========================================
+// INSERIR COMPONENTE (COM LOG DE DEBUG)
+// ===========================================
 export async function inserirComponente(dados: any) {
   const conn = await openConnection();
+
+  // LOG PARA DESCOBRIR O ERRO
+  console.log("---- DADOS ENVIADOS PARA ORACLE ----");
+  console.log("disciplinaId:", dados.disciplinaId);
+  console.log("nome:", dados.nome);
+  console.log("sigla:", dados.sigla);
+  console.log("peso:", dados.peso);
+  console.log("descricao:", dados.descricao);
+  console.log("usuario:", dados.usuario_id);
+  console.log("tipo_media:", dados.tipoMedia);
+  console.log("-------------------------------------");
 
   const sql = `
     INSERT INTO COMPONENTES_NOTA
@@ -16,7 +30,7 @@ export async function inserirComponente(dados: any) {
     disciplina: dados.disciplinaId,
     nome: dados.nome,
     sigla: dados.sigla,
-    peso: dados.peso ?? null,
+    peso: dados.peso,
     descricao: dados.descricao ?? null,
     usuario: dados.usuario_id,
     tipo_media: dados.tipoMedia,
@@ -29,6 +43,10 @@ export async function inserirComponente(dados: any) {
   return result.outBinds.id[0];
 }
 
+
+// ===========================================
+// LISTAR POR DISCIPLINA
+// ===========================================
 export async function listarPorDisciplina(disciplinaId: number) {
   const conn = await openConnection();
 
@@ -45,6 +63,10 @@ export async function listarPorDisciplina(disciplinaId: number) {
   return result.rows;
 }
 
+
+// ===========================================
+// EDITAR COMPONENTE
+// ===========================================
 export async function editarComponente(id: number, nome: string) {
   const conn = await openConnection();
 
@@ -58,6 +80,10 @@ export async function editarComponente(id: number, nome: string) {
   await conn.close();
 }
 
+
+// ===========================================
+// REMOVER COMPONENTE
+// ===========================================
 export async function removerComponente(id: number) {
   const conn = await openConnection();
 

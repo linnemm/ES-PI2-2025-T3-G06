@@ -5,7 +5,7 @@ const $ = (id) => document.getElementById(id);
 
 // Curso ativo
 const cursoId = localStorage.getItem("cursoId");
-const usuarioId = localStorage.getItem("usuarioId"); // ⭐ CERTO
+const usuarioId = localStorage.getItem("usuarioId");
 
 if (!cursoId) {
   alert("⚠ Erro: curso não selecionado.");
@@ -210,7 +210,7 @@ async function carregarDisciplinasParaSelect() {
 }
 
 // =========================================
-// 🔟 SALVAR COMPONENTE DE NOTA (CORRIGIDO FINAL)
+// 🔟 SALVAR COMPONENTE DE NOTA (VERSÃO FINAL CORRIGIDA)
 // =========================================
 btnSalvar.addEventListener("click", async () => {
 
@@ -220,22 +220,29 @@ btnSalvar.addEventListener("click", async () => {
   const descricao = $("cmpDesc").value.trim();
   const tipoMedia = document.querySelector("input[name='tipoMedia']:checked").value;
 
-  // ⭐ REGRA DO ORACLE
   let peso = null;
 
+  // ⭐ Correção definitiva: nunca mais envia "" ou string inválida
   if (tipoMedia === "ponderada") {
-    const valor = $("cmpPeso").value.trim();
+    const valorBruto = $("cmpPeso").value;
 
-    if (valor === "" || isNaN(Number(valor))) {
+    if (valorBruto === "" || valorBruto === null || valorBruto === undefined) {
       alert("Informe um peso válido para média PONDERADA.");
       return;
     }
 
-    peso = Number(valor);  // Ponderada exige número
+    const valor = Number(valorBruto);
+
+    if (isNaN(valor) || valor < 0) {
+      alert("Peso inválido. O peso deve ser maior ou igual a 0.");
+      return;
+    }
+
+    peso = valor;
   }
 
   if (tipoMedia === "simples") {
-    peso = null; // Simples exige NULL
+    peso = null;
   }
 
   if (!disciplinaId || !nome || !sigla) {
@@ -256,7 +263,7 @@ btnSalvar.addEventListener("click", async () => {
     sigla,
     descricao,
     tipoMedia,
-    peso, // ⭐ Agora 100% compatível com a constraint
+    peso,
     usuario_id: Number(usuarioId)
   };
 
