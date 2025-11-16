@@ -4,25 +4,48 @@ import {
   loginUser,
   forgotPassword,
   resetPassword,
+  getMe,
+  updateEmailController,
+  updatePasswordController
 } from "../controllers/authController";
+
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-/* ====================== AUTENTICAÇÃO ====================== */
+/* ============================================
+   🔐 ROTAS DE AUTENTICAÇÃO
+   Tudo que não precisa de token
+============================================ */
 
-// 🟢 Rota de cadastro (criação de conta)
+// Criar conta
 router.post("/register", registerUser);
 
-// 🟢 Rota de login (geração de token JWT)
+// Login (gera token)
 router.post("/login", loginUser);
 
-// 🟢 Rota de recuperação de senha (envio de e-mail)
+// Esqueci minha senha (envia e-mail)
 router.post("/forgot-password", forgotPassword);
 
-// 🟢 Rota de redefinição de senha (com token)
+// Redefinir senha via token recebido por e-mail
 router.post("/reset-password", resetPassword);
 
-/* ========================================================= */
 
-// Exporta todas as rotas com o prefixo /api/auth
+/* ============================================
+   🛡 ROTAS PROTEGIDAS PELO TOKEN
+   Só funcionam se o usuário estiver logado
+============================================ */
+
+// Dados do usuário logado
+router.get("/me", authMiddleware, getMe);
+
+// Atualizar e-mail
+router.put("/update-email", authMiddleware, updateEmailController);
+
+// Atualizar senha
+router.put("/update-password", authMiddleware, updatePasswordController);
+
+
+/* ============================================ */
+
 export default router;

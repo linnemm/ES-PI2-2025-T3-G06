@@ -3,29 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Perfil do Professor</title>
+  <title>Perfil do Professor — NotaDez</title>
 
   <!-- Fontes e ícones  -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
-  <link rel="stylesheet" href="perfilProfessor.css" />
+  <link rel="stylesheet" href="../css/perfilProfessor.css" />
 </head>
+
 <body>
-  <!-- Topbar  -->
+  <!-- Topbar -->
   <nav class="topbar">
     <h2>NotaDez</h2>
     <ul class="menu-horizontal">
-      <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-      <li><a href="#" id="btnCursos"><i class="fa-solid fa-graduation-cap"></i> Cursos</a></li>
-      <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
-      <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
+      <li><a href="instituicoes.html" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+      <li><a href="cursos.html" id="btnCursos"><i class="fa-solid fa-graduation-cap"></i> Cursos</a></li>
+      <li><a href="disciplinas.html" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+      <li><a href="turmas.html" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
       <li><a class="ativo" href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
-      <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+      <li><a href="../../autenticacao/html/login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
     </ul>
   </nav>
 
-  <!-- Janelinha  -->
+  <!-- Menu Flutuante -->
   <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
     <div class="menu-conteudo">
       <h3 id="tituloAba">Selecionar</h3>
@@ -37,41 +38,45 @@
   <main class="main-content">
     <h1>Perfil do Professor</h1>
 
-    <!-- Dados do professor -->
+    <!-- Card perfil -->
     <section class="card perfil-card">
       <div class="avatar"><span id="letrasAvatar">PR</span></div>
+
       <div class="info">
-        <h2 id="nomeProfessor">Professor</h2>
-        <p class="email-atual"><strong>E-mail atual:</strong> <span id="emailProfessor">prof@exemplo.com</span></p>
+        <h2 id="nomeProfessor">Carregando...</h2>
+        <p class="email-atual"><strong>E-mail atual:</strong> <span id="emailProfessor">...</span></p>
       </div>
     </section>
 
-    <!-- Trocar e-mail -->
-    <form class="card" id="formEmail" autocomplete="off">
+    <!-- Troca e-mail -->
+    <form class="card" id="formEmail">
       <h3>Trocar e-mail</h3>
+
       <label for="novoEmail">Novo e-mail</label>
-      <input id="novoEmail" type="email" placeholder="nome@dominio.com" required />
+      <input id="novoEmail" type="email" placeholder="nome@dominio.com" required>
+
       <label for="senhaConfirmaEmail">Confirme com sua senha</label>
-      <input id="senhaConfirmaEmail" type="password" placeholder="Sua senha atual" required />
+      <input id="senhaConfirmaEmail" type="password" placeholder="Senha atual" required>
+
       <div class="botoes">
         <button class="btn-cancelar" type="button" id="cancelarEmail">Cancelar</button>
         <button class="btn-salvar" type="submit">Salvar e-mail</button>
       </div>
     </form>
 
-    <!-- Trocar senha -->
-    <form class="card" id="formSenha" autocomplete="off">
+    <!-- Troca senha -->
+    <form class="card" id="formSenha">
       <h3>Trocar senha</h3>
 
       <label for="senhaAtual">Senha atual</label>
-      <input id="senhaAtual" type="password" placeholder="Senha atual" required />
+      <input id="senhaAtual" type="password" placeholder="Senha atual" required>
 
       <label for="novaSenha">Nova senha</label>
-      <input id="novaSenha" type="password" placeholder="Mín. 6 caracteres" required />
-      <div id="forcaSenha" class="forca" aria-hidden="true"><span></span></div>
+      <input id="novaSenha" type="password" placeholder="Mín. 8 caracteres" required>
+      <div id="forcaSenha" class="forca"><span></span></div>
 
       <label for="confirmaSenha">Confirmar nova senha</label>
-      <input id="confirmaSenha" type="password" placeholder="Repita a nova senha" required />
+      <input id="confirmaSenha" type="password" placeholder="Repita a nova senha" required>
 
       <div class="botoes">
         <button class="btn-cancelar" type="button" id="cancelarSenha">Cancelar</button>
@@ -79,9 +84,10 @@
       </div>
     </form>
 
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="toast" class="toast"></div>
   </main>
 
-  <script src="perfilProfessor.js"></script>
+  <!-- JS CORRETO -->
+  <script src="../js/perfilProfessor.js"></script>
 </body>
 </html>

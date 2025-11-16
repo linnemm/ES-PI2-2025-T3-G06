@@ -1,20 +1,30 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { createUser, findUserByEmail } from "../models/userModel";
-import { enviarEmail } from "../services/emailService";
-import oracledb from "oracledb";
 
-// ============================
-// 📌 CADASTRAR USUÁRIO
-// ============================
+import {
+  createUser,
+  findUserByEmail,
+  findUserById,
+  updateUserEmail,
+  updateUserPassword
+} from "../models/userModel";
+
+import { enviarEmail } from "../services/emailService";
+
+const JWT_SECRET = process.env.JWT_SECRET || "chave_super_secreta_notadez";
+const JWT_EXPIRES = "2h";
+
+// ============================================================================
+// 📌 REGISTRAR NOVO USUÁRIO
+// ============================================================================
 export const registerUser = async (req: Request, res: Response) => {
   const { nome, email, telefone, senha } = req.body;
 
   try {
     const existe = await findUserByEmail(email);
-    if (existe && existe.length > 0) {
-      return res.status(400).json({ message: "Usuário já cadastrado" });
+    if (existe) {
+      return res.status(400).json({ message: "Usuário já cadastrado." });
     }
 
     const senhaCriptografada = await bcrypt.hash(senha, 10);
@@ -28,30 +38,28 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-// ============================
+// ============================================================================
 // 📌 LOGIN
-// ============================
+// ============================================================================
 export const loginUser = async (req: Request, res: Response) => {
   const { email, senha } = req.body;
 
   try {
-    const usuarios = await findUserByEmail(email);
+    const user = await findUserByEmail(email);
 
-    if (!usuarios || usuarios.length === 0) {
-      return res.status(401).json({ message: "Usuário não encontrado" });
+    if (!user) {
+      return res.status(401).json({ message: "Usuário não encontrado." });
     }
 
-    const user = usuarios[0];
     const senhaCorreta = await bcrypt.compare(senha, user.SENHA);
-
     if (!senhaCorreta) {
-      return res.status(401).json({ message: "Senha incorreta" });
+      return res.status(401).json({ message: "Senha incorreta." });
     }
 
     const token = jwt.sign(
       { id: user.ID, email: user.EMAIL },
-      "chave_secreta_do_token",
-      { expiresIn: "2h" }
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES }
     );
 
     return res.json({
@@ -71,28 +79,100 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-// ============================
-// 📌 ESQUECI MINHA SENHA
-// ============================
+// ============================================================================
+// 📌 PERFIL DO USUÁRIO LOGADO
+// ============================================================================
+export const getMe = async (req: any, res: Response) => {
+  try {
+    const usuarioId = req.usuarioId;
+    if (!usuarioId) return res.status(401).json({ message: "Não autenticado." });
+
+    const user = await findUserById(usuarioId);
+    if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
+
+    return res.json({
+      id: user.ID,
+      nome: user.NOME,
+      email: user.EMAIL,
+      telefone: user.TELEFONE,
+      primeiroAcesso: user.PRIMEIRO_ACESSO === 1
+    });
+
+  } catch (error) {
+    console.error("Erro no /me:", error);
+    return res.status(500).json({ message: "Erro ao carregar perfil." });
+  }
+};
+
+// ============================================================================
+// 📌 ATUALIZAR E-MAIL
+// ============================================================================
+export const updateEmailController = async (req: any, res: Response) => {
+  try {
+    const usuarioId = req.usuarioId;
+    const { novoEmail, senha } = req.body;
+
+    const user = await findUserById(usuarioId);
+    if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
+
+    const ok = await bcrypt.compare(senha, user.SENHA);
+    if (!ok) return res.status(401).json({ message: "Senha incorreta." });
+
+    await updateUserEmail(usuarioId, novoEmail);
+
+    return res.json({ message: "E-mail atualizado com sucesso!" });
+
+  } catch (error) {
+    console.error("Erro ao atualizar e-mail:", error);
+    return res.status(500).json({ message: "Erro ao atualizar e-mail." });
+  }
+};
+
+// ============================================================================
+// 📌 ATUALIZAR SENHA
+// ============================================================================
+export const updatePasswordController = async (req: any, res: Response) => {
+  try {
+    const usuarioId = req.usuarioId;
+    const { senhaAtual, novaSenha } = req.body;
+
+    const user = await findUserById(usuarioId);
+    if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
+
+    const ok = await bcrypt.compare(senhaAtual, user.SENHA);
+    if (!ok) return res.status(401).json({ message: "Senha atual incorreta." });
+
+    const hash = await bcrypt.hash(novaSenha, 10);
+    await updateUserPassword(usuarioId, hash);
+
+    return res.json({ message: "Senha alterada com sucesso!" });
+
+  } catch (error) {
+    console.error("Erro ao atualizar senha:", error);
+    return res.status(500).json({ message: "Erro ao atualizar senha." });
+  }
+};
+
+// ============================================================================
+// 📌 ESQUECI SENHA
+// ============================================================================
 export const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body;
 
   try {
-    const usuarios = await findUserByEmail(email);
-    if (!usuarios || usuarios.length === 0) {
-      return res.status(404).json({ message: "E-mail não encontrado" });
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "E-mail não encontrado." });
     }
 
-    const token = jwt.sign({ email }, "chave_secreta_do_token", {
-      expiresIn: "15m",
-    });
+    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "15m" });
 
     const host = req.headers.host || "localhost:3000";
     const link = `http://${host}/auth/html/RedefinirSenha.html?token=${token}`;
 
     const html = `
       <h2>Redefinição de senha</h2>
-      <p>Clique no link para redefinir sua senha:</p>
+      <p>Clique no link abaixo para redefinir sua senha:</p>
       <a href="${link}">${link}</a>
       <p>O link expira em 15 minutos.</p>
     `;
@@ -102,46 +182,32 @@ export const forgotPassword = async (req: Request, res: Response) => {
     return res.json({ message: "E-mail enviado com sucesso!" });
 
   } catch (error) {
-    console.error("Erro ao enviar email:", error);
-    return res.status(500).json({ message: "Erro ao enviar email" });
+    console.error("Erro forgot-password:", error);
+    return res.status(500).json({ message: "Erro ao enviar e-mail." });
   }
 };
 
-// ============================
+// ============================================================================
 // 📌 REDEFINIR SENHA
-// ============================
+// ============================================================================
 export const resetPassword = async (req: Request, res: Response) => {
   const { token, novaSenha } = req.body;
 
   try {
-    const decoded: any = jwt.verify(token, "chave_secreta_do_token");
+    const decoded: any = jwt.verify(token, JWT_SECRET);
     const email = decoded.email;
 
-    const usuarios = await findUserByEmail(email);
-    if (!usuarios || usuarios.length === 0) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
-    }
+    const user = await findUserByEmail(email);
+    if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
 
-    const novaSenhaCriptografada = await bcrypt.hash(novaSenha, 10);
+    const hash = await bcrypt.hash(novaSenha, 10);
 
-    const connection = await oracledb.getConnection({
-      user: "PROJETO",
-      password: "projeto",
-      connectString: "localhost:1521/XEPDB1",
-    });
-
-    await connection.execute(
-      `UPDATE usuarios SET senha = :senha WHERE email = :email`,
-      [novaSenhaCriptografada, email],
-      { autoCommit: true }
-    );
-
-    await connection.close();
+    await updateUserPassword(user.ID, hash);
 
     return res.json({ message: "Senha redefinida com sucesso!" });
 
   } catch (error) {
-    console.error("Erro ao redefinir senha:", error);
+    console.error("Erro reset-password:", error);
     return res.status(400).json({ message: "Token inválido ou expirado" });
   }
 };

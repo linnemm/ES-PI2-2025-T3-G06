@@ -1,107 +1,234 @@
-* { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins", sans-serif; }
-body { background-color:#f5f6fa; overflow-x:hidden; }
-.dashboard { display:flex; flex-direction:column; min-height:100vh; }
+/* ==========================
+   Estilos Gerais
+========================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 
-/* Topbar */
+body {
+  background-color: #f5f6fa;
+  overflow-x: hidden;
+  color: #333;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ==========================
+   Topbar
+========================== */
 .topbar {
-  width:100%; background:linear-gradient(to right,#6ca98c,#5c8c75); color:white;
-  padding:15px 40px; display:flex; align-items:center; justify-content:space-between;
-  position:sticky; top:0; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  width: 100%;
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  color: white;
+  padding: 15px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgb(236, 232, 232);
 }
-.topbar h2 { font-size:22px; font-weight:700; }
-.menu-horizontal { list-style:none; display:flex; gap:25px; flex-wrap:wrap; }
-.menu-horizontal li a {
-  color:white; text-decoration:none; font-size:16px; display:flex; align-items:center; gap:8px;
-  padding:8px 12px; border-radius:6px; transition: background-color 0.3s;
-}
-.menu-horizontal li a:hover { background-color: rgba(255,255,255,0.2); }
-.menu-horizontal li a.ativo { background-color: rgba(255,255,255,0.2); }
 
-/* Aba flutuante */
+.topbar h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.menu-horizontal {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.menu-horizontal li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.menu-horizontal li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================
+   Menu Flutuante
+========================== */
 .menu-flutuante {
-  position: fixed;
-  top: 80px;
+  position: absolute;
+  top: 75px;
   right: 40px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   padding: 20px;
   width: 280px;
-  z-index: 9999;
+  z-index: 50;
   animation: slideDown 0.3s ease;
-  display: none;
-}
-@keyframes slideDown { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
-.menu-conteudo h3 { color:#6ca98c; margin-bottom:10px; text-align:center; }
-.campo-selecao { margin-bottom:12px; }
-.campo-selecao label { font-size:14px; color:#444; display:block; margin-bottom:4px; }
-.campo-selecao select { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; }
-.menu-flutuante .btn-curso { width:100%; background-color:#6ca98c; color:white; border:none; padding:8px 0; border-radius:6px; font-weight:600; cursor:pointer; }
-.menu-flutuante .btn-curso:hover { background-color:#5c8c75; }
-
-/* Conteúdo principal */
-.container { 
-  width:90%; 
-  max-width:1100px; 
-  margin:50px auto 40px;  
 }
 
-.turma-header { text-align:center; margin-bottom:25px; }
-.turma-header h1 { color:#6ca98c; font-size:28px; font-weight:700; }
-.turma-header p { color:#555; font-size:16px; margin-top:5px; }
-
-/* Botões principais (topo) */
-.turma-acoes { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:25px; }
-.turma-acoes button {
-  background-color:#6ca98c; color:white; border:none; padding:10px 16px; border-radius:8px; font-weight:600;
-  cursor:pointer; display:flex; align-items:center; gap:8px; transition:0.3s;
+@keyframes slideDown {
+  from {opacity: 0; transform: translateY(-10px);}
+  to {opacity: 1; transform: translateY(0);}
 }
-.turma-acoes button:hover { background-color:#5c8c75; transform:scale(1.03); }
 
-/* Tabela de notas */
-.tabela-notas { background:white; border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,0.15); overflow-x:auto; padding:20px; }
-table { width:100%; border-collapse:collapse; font-size:15px; min-width:700px; }
-th,td { padding:12px; text-align:left; border-bottom:none; } /* sem border-bottom; usaremos divisória entre TRs */
-th { background-color:#6ca98c; color:white; font-weight:600; position:sticky; top:0; z-index:2; }
-
-/* Divisória mais visível entre itens e hover */
-tbody tr + tr { border-top:2px solid #cfe1d8; }
-tbody tr:hover { background-color:#f5fbf8; }
-
-/* Ações dentro da tabela  */
-td.acoes {
-  display:flex; align-items:center; justify-content:flex-end; gap:10px; white-space:nowrap;
+.menu-conteudo h3 {
+  color: #6ca98c;
+  margin-bottom: 10px;
+  text-align: center;
 }
-.acao-btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:6px;
-  padding:8px 12px; border:none; border-radius:8px; cursor:pointer; line-height:1;
-  min-width:120px; height:36px; font-weight:600;
-}
-.btn-editar{ background:#6ca98c; color:#fff; }
-.btn-editar:hover{ background:#5c8c75; }
-.btn-excluir{ background:#b33a3a; color:#fff; }
-.btn-excluir:hover{ filter:brightness(.95); }
 
-/* Botões inferiores */
-.footer-acoes { display:flex; justify-content:space-between; margin-top:25px; flex-wrap:wrap; gap:10px; }
-.footer-acoes button {
-  background-color:#6ca98c; color:white; border:none; padding:10px 18px; border-radius:8px; font-weight:600;
-  cursor:pointer; display:flex; align-items:center; gap:6px; transition:0.3s;
+.campo-selecao {
+  margin-bottom: 12px;
 }
-.footer-acoes button:hover { background-color:#5c8c75; transform:scale(1.03); }
 
-/* Responsivo */
-@media (max-width:768px) {
-  .topbar { flex-direction:column; gap:10px; }
-  .menu-horizontal { justify-content:center; gap:15px; }
-  .container { width:95%; }
-  table { font-size:14px; }
-  th,td { padding:8px; }
-  .footer-acoes, .turma-acoes { flex-direction:column; align-items:center; }
-  .acao-btn{ min-width:108px; height:34px; }
+.campo-selecao label {
+  font-size: 14px;
+  color: #444;
+  display: block;
+  margin-bottom: 4px;
 }
-/* Ajuste de alinhamento do cabeçalho "Ações" */
-table thead th:last-child {
-  text-align: right;
-  padding-right: 10px; /* encosta com os botões */
+
+.campo-selecao select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.campo-selecao select:hover,
+.campo-selecao select:focus {
+  border-color: #6ca98c;
+  box-shadow: 0 5px 12px rgba(108,169,140,0.3);
+  outline: none;
+}
+
+/* Botão Ir do menu flutuante */
+.menu-flutuante .btn-curso {
+  width: 100%;
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  color: white;
+  border: none;
+  padding: 10px 0;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.menu-flutuante .btn-curso:hover {
+  background: linear-gradient(to right, #5c8c75, #4f7862);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+}
+
+/* ==========================
+   Conteúdo Principal
+========================== */
+main {
+  padding: 30px 10%;
+}
+
+.info-turma h2 {
+  color: #6ca98c;
+  margin-bottom: 15px;
+}
+
+.info-turma p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* ==========================
+   Botões principais
+========================== */
+.botoes {
+  margin-bottom: 20px;
+}
+
+.botoes button,
+.voltar,
+.excluir {
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.botoes button:hover,
+.voltar:hover {
+  background: linear-gradient(to right, #5c8c75, #4f7862);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+}
+
+/* Botão Excluir da tabela */
+.excluir {
+  background: linear-gradient(to right, #fa5252, #e03131);
+  padding: 6px 12px;
+}
+
+.excluir:hover {
+  background: linear-gradient(to right, #e03131, #c22525);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+}
+
+/* ==========================
+   Tabela de Notas
+========================== */
+.tabela-notas {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  margin: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #dfe8df;
+  padding: 10px;
+  color: #333;
+}
+
+td {
+  text-align: center;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Container do botão voltar fora da tabela */
+.voltar-container {
+  margin-top: 20px;
+  text-align: center;
 }

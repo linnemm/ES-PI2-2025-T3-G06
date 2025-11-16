@@ -1,183 +1,194 @@
-document.addEventListener("DOMContentLoaded", async () => {
+// ===============================
+// CONFIGURAÇÕES
+// ===============================
+const API = "http://localhost:3000/api";
 
-  const API = "http://localhost:3000/api";
+// pega a turma e disciplina selecionadas anteriormente
+const turmaId = localStorage.getItem("turmaSelecionada");
+const disciplinaId = localStorage.getItem("disciplinaSelecionada");
 
-  const tabela = document.getElementById("tabelaNotas");
-  const tbody = tabela.querySelector("tbody");
+const tabela = document.querySelector("table");
+const tbody = document.getElementById("tabelaAlunos");
 
-  const getParam = n => new URLSearchParams(location.search).get(n);
-  const disciplinaId = getParam("disciplinaId");
-  const turmaId = getParam("turmaId");
+// ===============================
+// CARREGAR CABECALHO DA TURMA
+// ===============================
+async function carregarCabecalho() {
+  const resp = await fetch(`${API}/turmas/${turmaId}`);
+  const dados = await resp.json();
 
-  let alunosGlobal = [];
+  document.querySelector(".info-turma h2")
+    .innerText = `Notas da ${dados.nome}`;
 
-  // =====================================================
-  // 1. CARREGAR COMPONENTES DA DISCIPLINA
-  // =====================================================
-  async function carregarComponentes() {
-    const resp = await fetch(`${API}/componentes/disciplina/${disciplinaId}`);
-    const comps = await resp.json();
+  document.querySelector(".info-turma p").innerHTML =
+    `<strong>Disciplina:</strong> ${dados.disciplina} |  
+     <strong>Instituição:</strong> ${dados.instituicao} | 
+     <strong>Período:</strong> ${dados.periodo}`;
+}
 
-    const head = tabela.tHead.rows[0];
+// ===============================
+// CARREGAR COMPONENTES (P1, P2…)
+// ===============================
+async function carregarComponentes() {
+  const resp = await fetch(`${API}/componentes/disciplina/${disciplinaId}`);
+  return await resp.json();
+}
 
-    // remove colunas dinâmicas (mantém Matrícula, Aluno, Ações)
-    while (head.cells.length > 3) {
-      head.deleteCell(2);
-    }
+// ===============================
+// CARREGAR ALUNOS DA TURMA
+// ===============================
+async function carregarAlunos() {
+  const resp = await fetch(`${API}/turmas/${turmaId}/alunos`);
+  return await resp.json();
+}
 
-    const thAcoes = head.lastElementChild;
+// ===============================
+// CARREGAR NOTAS DA TURMA
+// ===============================
+async function carregarNotas() {
+  const resp = await fetch(`${API}/notas/${turmaId}/${disciplinaId}`);
+  return await resp.json();
+}
 
-    // adiciona componentes dinamicamente
-    comps.forEach(c => {
-      const th = document.createElement("th");
-      th.textContent = c.sigla;
-      head.insertBefore(th, thAcoes);
-    });
+// ===============================
+// MONTAR TABELA
+// ===============================
+async function montarTabela() {
+  const alunos = await carregarAlunos();
+  const componentes = await carregarComponentes();
+  const notas = await carregarNotas();
 
-    return comps;
-  }
+  // MONTAR O CABEÇALHO DINÂMICO
+  const header = `
+    <tr>
+      <th>Matrícula</th>
+      <th>Aluno</th>
+      ${componentes.map(c => `<th>${c.sigla}</th>`).join("")}
+      <th>Ações</th>
+    </tr>
+  `;
+  tabela.querySelector("thead").innerHTML = header;
 
-  // =====================================================
-  // 2. CARREGAR ALUNOS DA TURMA
-  // =====================================================
-  async function carregarAlunos() {
-    const resp = await fetch(`${API}/turmas/${turmaId}/alunos`);
-    const alunos = await resp.json();
-    alunosGlobal = alunos;
+  // CORPO DA TABELA
+  tbody.innerHTML = "";
 
-    tbody.innerHTML = "";
+  alunos.forEach(aluno => {
+    const tr = document.createElement("tr");
+    tr.dataset.alunoId = aluno.id;
 
-    alunos.forEach(a => {
-      const tr = document.createElement("tr");
-      tr.dataset.alunoId = a.id; // usa ID real do backend
+    const celulasNotas = componentes.map(c => {
+      const nota = notas.find(n =>
+        n.ALUNO_ID == aluno.id && n.COMPONENTE_ID == c.id
+      );
 
-      tr.innerHTML = `
-        <td>${a.ra}</td>
-        <td>${a.nome}</td>
-        <td class="acoes">
-          <button class="acao-btn btn-excluir" onclick="excluirAluno(${a.id})">
-            <i class="fa-solid fa-trash"></i> Excluir
-          </button>
+      return `
+        <td contenteditable="true" 
+            class="nota"
+            data-comp-id="${c.id}">
+          ${nota ? Number(nota.VALOR).toFixed(2) : "-"}
         </td>
       `;
+    }).join("");
 
-      tbody.appendChild(tr);
-    });
+    tr.innerHTML = `
+      <td>${aluno.ra}</td>
+      <td>${aluno.nome}</td>
+      ${celulasNotas}
+      <td><button class="excluir" data-id="${aluno.id}">🗑</button></td>
+    `;
 
-    return alunos;
-  }
+    tbody.appendChild(tr);
+  });
 
-  // =====================================================
-  // 3. MONTAR COLUNAS DE NOTA
-  // =====================================================
-  function montarColunas(componentes) {
-    tbody.querySelectorAll("tr").forEach(tr => {
+  ativarExclusoes();
+}
 
-      // remove colunas anteriores de nota
-      while (tr.cells.length > 3) {
-        tr.deleteCell(2);
+// ===============================
+// SALVAR NOTAS NO BACKEND
+// ===============================
+async function salvarNotas() {
+  const lista = [];
+
+  document.querySelectorAll("tbody tr").forEach(tr => {
+    const alunoId = tr.dataset.alunoId;
+
+    tr.querySelectorAll("td.nota").forEach(td => {
+      const componenteId = td.dataset.compId;
+      const valor = parseFloat(td.innerText.replace(",", "."));
+
+      if (!isNaN(valor)) {
+        lista.push({
+          turmaId,
+          alunoId,
+          disciplinaId,
+          componenteId,
+          valor,
+        });
       }
-
-      const acoes = tr.lastElementChild;
-
-      // cria TD para cada componente
-      componentes.forEach(c => {
-        const td = document.createElement("td");
-        td.classList.add("celula-nota");
-        td.dataset.compId = c.id;
-        td.contentEditable = "true";
-        td.textContent = "-";
-        tr.insertBefore(td, acoes);
-      });
     });
-  }
+  });
 
-  // =====================================================
-  // 4. CARREGAR NOTAS DO BACKEND
-  // =====================================================
-  async function carregarNotas() {
-    const resp = await fetch(`${API}/notas/${turmaId}/${disciplinaId}`);
-    return await resp.json();
-  }
+  await fetch(`${API}/notas`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(lista),
+  });
 
-  // =====================================================
-  // 5. APLICAR NOTAS NA TABELA
-  // =====================================================
-  function aplicarNotas(componentes, notas) {
-    tbody.querySelectorAll("tr").forEach(tr => {
-      const alunoId = tr.dataset.alunoId;
+  alert("Notas salvas com sucesso!");
+}
 
-      componentes.forEach(c => {
-        const td = tr.querySelector(`td[data-comp-id="${c.id}"]`);
-        const reg = notas.find(n =>
-          n.ALUNO_ID == alunoId &&
-          n.COMPONENTE_ID == c.id
-        );
+// ===============================
+// EXCLUIR ALUNO
+// ===============================
+function ativarExclusoes() {
+  document.querySelectorAll(".excluir").forEach(btn => {
+    btn.onclick = async () => {
+      if (!confirm("Tem certeza que deseja excluir este aluno?")) return;
 
-        if (reg) {
-          td.textContent = Number(reg.VALOR).toFixed(2);
-        }
-      });
-    });
-  }
+      const id = btn.dataset.id;
+      await fetch(`${API}/alunos/${id}`, { method: "DELETE" });
 
-  // =====================================================
-  // 6. SALVAR NOTAS NO BACKEND
-  // =====================================================
-  async function salvarNotas() {
-    const lista = [];
+      alert("Aluno removido.");
+      montarTabela();
+    };
+  });
+}
 
-    tbody.querySelectorAll("tr").forEach(tr => {
-      const alunoId = tr.dataset.alunoId;
+// ===============================
+// EXPORTAR CSV
+// ===============================
+async function exportar() {
+  const resp = await fetch(`${API}/notas/exportar/${turmaId}`);
+  const blob = await resp.blob();
 
-      tr.querySelectorAll("td[data-comp-id]").forEach(td => {
-        const componenteId = td.dataset.compId;
-        const valor = parseFloat(td.textContent.replace(",", "."));
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
 
-        if (!isNaN(valor)) {
-          lista.push({
-            turmaId,
-            disciplinaId,
-            alunoId,
-            componenteId,
-            valor
-          });
-        }
-      });
-    });
+  a.href = url;
+  a.download = `notas_${Date.now()}.csv`;
+  a.click();
+}
 
-    await fetch(`${API}/notas`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(lista)
-    });
+// ===============================
+// VOLTAR
+// ===============================
+function voltar() {
+  window.location.href = "detalhesTurma.html";
+}
 
-    alert("Notas salvas com sucesso!");
-  }
+// ===============================
+// EVENTOS
+// ===============================
+document.getElementById("exportarNotas").onclick = exportar;
+document.getElementById("novoComponente").onclick = () =>
+  alert("Implementar criação de componente.");
 
-  // =====================================================
-  // 7. EXCLUIR ALUNO
-  // =====================================================
-  window.excluirAluno = async function (idAluno) {
-    if (!confirm("Deseja excluir este aluno da turma?")) return;
+document.querySelector(".voltar").onclick = voltar;
 
-    await fetch(`${API}/alunos/${idAluno}`, { method: "DELETE" });
-
-    alert("Aluno removido.");
-    await carregarAlunos();
-    montarColunas(await carregarComponentes());
-  }
-
-  // =====================================================
-  // 8. EXECUÇÃO INICIAL
-  // =====================================================
-  const componentes = await carregarComponentes();
-  await carregarAlunos();
-  montarColunas(componentes);
-
-  const notas = await carregarNotas();
-  aplicarNotas(componentes, notas);
-
-  document.getElementById("btnSalvar").onclick = salvarNotas;
-
-});
+// ===============================
+// INICIALIZAÇÃO
+// ===============================
+(async () => {
+  await carregarCabecalho();
+  await montarTabela();
+})();
