@@ -15,9 +15,9 @@ import { enviarEmail } from "../services/emailService";
 const JWT_SECRET = process.env.JWT_SECRET || "chave_super_secreta_notadez";
 const JWT_EXPIRES = "2h";
 
-// ============================================================================
-// 📌 REGISTRAR NOVO USUÁRIO
-// ============================================================================
+/* ========================================================================
+   📌 REGISTRAR NOVO USUÁRIO
+   ======================================================================== */
 export const registerUser = async (req: Request, res: Response) => {
   const { nome, email, telefone, senha } = req.body;
 
@@ -28,19 +28,21 @@ export const registerUser = async (req: Request, res: Response) => {
     }
 
     const senhaCriptografada = await bcrypt.hash(senha, 10);
+
     await createUser(nome, email, telefone, senhaCriptografada);
 
     return res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
 
   } catch (error) {
     console.error("Erro ao cadastrar:", error);
-    return res.status(500).json({ message: "Erro ao cadastrar usuário" });
+    return res.status(500).json({ message: "Erro ao cadastrar usuário." });
   }
 };
 
-// ============================================================================
-// 📌 LOGIN
-// ============================================================================
+
+/* ========================================================================
+   📌 LOGIN
+   ======================================================================== */
 export const loginUser = async (req: Request, res: Response) => {
   const { email, senha } = req.body;
 
@@ -75,20 +77,21 @@ export const loginUser = async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error("Erro no login:", error);
-    return res.status(500).json({ message: "Erro ao fazer login" });
+    return res.status(500).json({ message: "Erro ao fazer login." });
   }
 };
 
-// ============================================================================
-// 📌 PERFIL DO USUÁRIO LOGADO
-// ============================================================================
+
+/* ========================================================================
+   📌 PERFIL DO USUÁRIO LOGADO
+   ======================================================================== */
 export const getMe = async (req: any, res: Response) => {
   try {
-    const usuarioId = req.usuarioId;
+    const usuarioId = req.usuarioId; // vem do middleware
     if (!usuarioId) return res.status(401).json({ message: "Não autenticado." });
 
     const user = await findUserById(usuarioId);
-    if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
+    if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
 
     return res.json({
       id: user.ID,
@@ -104,9 +107,10 @@ export const getMe = async (req: any, res: Response) => {
   }
 };
 
-// ============================================================================
-// 📌 ATUALIZAR E-MAIL
-// ============================================================================
+
+/* ========================================================================
+   📌 ATUALIZAR E-MAIL
+   ======================================================================== */
 export const updateEmailController = async (req: any, res: Response) => {
   try {
     const usuarioId = req.usuarioId;
@@ -128,9 +132,10 @@ export const updateEmailController = async (req: any, res: Response) => {
   }
 };
 
-// ============================================================================
-// 📌 ATUALIZAR SENHA
-// ============================================================================
+
+/* ========================================================================
+   📌 ATUALIZAR SENHA
+   ======================================================================== */
 export const updatePasswordController = async (req: any, res: Response) => {
   try {
     const usuarioId = req.usuarioId;
@@ -153,9 +158,10 @@ export const updatePasswordController = async (req: any, res: Response) => {
   }
 };
 
-// ============================================================================
-// 📌 ESQUECI SENHA
-// ============================================================================
+
+/* ========================================================================
+   📌 ESQUECI SENHA
+   ======================================================================== */
 export const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body;
 
@@ -167,17 +173,18 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
     const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "15m" });
 
-    const host = req.headers.host || "localhost:3000";
-    const link = `http://${host}/auth/html/RedefinirSenha.html?token=${token}`;
+    const link = `http://${req.headers.host}/auth/html/RedefinirSenha.html?token=${token}`;
 
-    const html = `
+    await enviarEmail(
+      email,
+      "Redefinição de senha - NotaDez",
+      `
       <h2>Redefinição de senha</h2>
-      <p>Clique no link abaixo para redefinir sua senha:</p>
+      <p>Clique no link abaixo:</p>
       <a href="${link}">${link}</a>
-      <p>O link expira em 15 minutos.</p>
-    `;
-
-    await enviarEmail(email, "Redefinição de senha - NotaDez", html);
+      <p>Expira em 15 minutos.</p>
+    `
+    );
 
     return res.json({ message: "E-mail enviado com sucesso!" });
 
@@ -187,27 +194,26 @@ export const forgotPassword = async (req: Request, res: Response) => {
   }
 };
 
-// ============================================================================
-// 📌 REDEFINIR SENHA
-// ============================================================================
+
+/* ========================================================================
+   📌 REDEFINIR SENHA
+   ======================================================================== */
 export const resetPassword = async (req: Request, res: Response) => {
   const { token, novaSenha } = req.body;
 
   try {
     const decoded: any = jwt.verify(token, JWT_SECRET);
-    const email = decoded.email;
 
-    const user = await findUserByEmail(email);
+    const user = await findUserByEmail(decoded.email);
     if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
 
     const hash = await bcrypt.hash(novaSenha, 10);
-
     await updateUserPassword(user.ID, hash);
 
     return res.json({ message: "Senha redefinida com sucesso!" });
 
   } catch (error) {
     console.error("Erro reset-password:", error);
-    return res.status(400).json({ message: "Token inválido ou expirado" });
+    return res.status(400).json({ message: "Token inválido ou expirado." });
   }
 };

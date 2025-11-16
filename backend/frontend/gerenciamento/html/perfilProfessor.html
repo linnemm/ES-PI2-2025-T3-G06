@@ -5,24 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Perfil do Professor — NotaDez</title>
 
-  <!-- Fontes e ícones  -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
   <link rel="stylesheet" href="../css/perfilProfessor.css" />
 </head>
 
 <body>
+
   <!-- Topbar -->
   <nav class="topbar">
     <h2>NotaDez</h2>
     <ul class="menu-horizontal">
-      <li><a href="instituicoes.html" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-      <li><a href="cursos.html" id="btnCursos"><i class="fa-solid fa-graduation-cap"></i> Cursos</a></li>
-      <li><a href="disciplinas.html" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
-      <li><a href="turmas.html" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
-      <li><a class="ativo" href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
-      <li><a href="../../autenticacao/html/login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+
+      <!-- 👇 IGUAIS AO DASHBOARD AGORA -->
+      <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+      <li><a href="#" id="btnCursos"><i class="fa-solid fa-graduation-cap"></i> Cursos</a></li>
+      <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+      <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
+
+      <li><a class="ativo" href="#" id="btnPerfil"><i class="fa-solid fa-user"></i> Perfil</a></li>
+      <li><a href="#" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+
     </ul>
   </nav>
 
@@ -48,15 +51,15 @@
       </div>
     </section>
 
-    <!-- Troca e-mail -->
+    <!-- Trocar e-mail -->
     <form class="card" id="formEmail">
       <h3>Trocar e-mail</h3>
 
       <label for="novoEmail">Novo e-mail</label>
-      <input id="novoEmail" type="email" placeholder="nome@dominio.com" required>
+      <input id="novoEmail" type="email" placeholder="nome@dominio.com">
 
       <label for="senhaConfirmaEmail">Confirme com sua senha</label>
-      <input id="senhaConfirmaEmail" type="password" placeholder="Senha atual" required>
+      <input id="senhaConfirmaEmail" type="password" placeholder="Senha atual">
 
       <div class="botoes">
         <button class="btn-cancelar" type="button" id="cancelarEmail">Cancelar</button>
@@ -64,19 +67,19 @@
       </div>
     </form>
 
-    <!-- Troca senha -->
+    <!-- Trocar senha -->
     <form class="card" id="formSenha">
       <h3>Trocar senha</h3>
 
       <label for="senhaAtual">Senha atual</label>
-      <input id="senhaAtual" type="password" placeholder="Senha atual" required>
+      <input id="senhaAtual" type="password">
 
       <label for="novaSenha">Nova senha</label>
-      <input id="novaSenha" type="password" placeholder="Mín. 8 caracteres" required>
+      <input id="novaSenha" type="password">
       <div id="forcaSenha" class="forca"><span></span></div>
 
       <label for="confirmaSenha">Confirmar nova senha</label>
-      <input id="confirmaSenha" type="password" placeholder="Repita a nova senha" required>
+      <input id="confirmaSenha" type="password">
 
       <div class="botoes">
         <button class="btn-cancelar" type="button" id="cancelarSenha">Cancelar</button>
@@ -87,7 +90,8 @@
     <div id="toast" class="toast"></div>
   </main>
 
-  <!-- JS CORRETO -->
-  <script src="../js/perfilProfessor.js"></script>
+
+  <!-- JS COMPLETO -->
+  <script src="/gerenciar/javascript/perfilProfessor.js"></script>
 </body>
 </html>

@@ -1,42 +1,46 @@
+// ============================================================
+//  ROTAS DE AUTENTICAÇÃO — NotaDez
+//  Organização, padronização e proteção via token
+// ============================================================
+
 import express from "express";
+
 import {
-  registerUser,
-  loginUser,
-  forgotPassword,
-  resetPassword,
-  getMe,
-  updateEmailController,
-  updatePasswordController
+  registerUser,             // Criar usuário
+  loginUser,                // Login + token
+  forgotPassword,           // Enviar e-mail de redefinição
+  resetPassword,            // Redefinir senha com token
+  getMe,                    // Dados do usuário logado
+  updateEmailController,    // Atualizar e-mail
+  updatePasswordController  // Atualizar senha
 } from "../controllers/authController";
 
 import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-/* ============================================
-   🔐 ROTAS DE AUTENTICAÇÃO
-   Tudo que não precisa de token
-============================================ */
+/* ============================================================
+   🔓 ROTAS PÚBLICAS (Não exigem token)
+   ============================================================ */
 
 // Criar conta
 router.post("/register", registerUser);
 
-// Login (gera token)
+// Login — gera token JWT
 router.post("/login", loginUser);
 
-// Esqueci minha senha (envia e-mail)
+// Enviar e-mail de recuperação de senha
 router.post("/forgot-password", forgotPassword);
 
-// Redefinir senha via token recebido por e-mail
+// Redefinir senha através do link enviado para o e-mail
 router.post("/reset-password", resetPassword);
 
 
-/* ============================================
-   🛡 ROTAS PROTEGIDAS PELO TOKEN
-   Só funcionam se o usuário estiver logado
-============================================ */
+/* ============================================================
+   🔐 ROTAS PROTEGIDAS (Exigem token JWT)
+   ============================================================ */
 
-// Dados do usuário logado
+// Recuperar dados do usuário logado
 router.get("/me", authMiddleware, getMe);
 
 // Atualizar e-mail
@@ -46,6 +50,6 @@ router.put("/update-email", authMiddleware, updateEmailController);
 router.put("/update-password", authMiddleware, updatePasswordController);
 
 
-/* ============================================ */
+/* ============================================================ */
 
 export default router;
