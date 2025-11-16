@@ -1,176 +1,130 @@
-// =========================================
-// LISTA DE DISCIPLINAS — INTEGRAÇÃO BACKEND
-// =========================================
+// ===========================================================
+// CADASTRO DE INSTITUIÇÃO — JS DEFINITIVO
+// ===========================================================
 
-const $ = (id) => document.getElementById(id);
+// Inputs
+const form = document.getElementById("formInstituicao");
+const nomeInput = document.getElementById("nome");
+const siglaInput = document.getElementById("sigla");
 
-const cursoId = localStorage.getItem("cursoId");
+// Usuário logado
+const usuarioId = localStorage.getItem("usuarioId");
 
-if (!cursoId) {
-  alert("⚠ Erro: curso não selecionado.");
-  window.location.href = "/gerenciar/html/listaCursos.html";
+// Se não tiver usuário
+if (!usuarioId) {
+  alert("Erro: usuário não identificado.");
+  window.location.href = "/auth/html/login.html";
 }
 
-// Elementos da página
-const lista = $("corpoTabelaDisc");
-const vazio = $("vazioDisc");
-
-// =========================================
-// 1️⃣ CARREGAR DISCIPLINAS DO BANCO
-// =========================================
-async function carregarDisciplinas(filtro = "") {
-  lista.innerHTML = "<p>Carregando...</p>";
-
+// ===========================================================
+// VERIFICAR SE SIGLA JÁ EXISTE
+// ===========================================================
+async function siglaJaExiste(sigla) {
   try {
-    const resp = await fetch(`/api/disciplinas/curso/${cursoId}`);
-    const dados = await resp.json();
+    const resp = await fetch(`/api/instituicoes/listar/${usuarioId}`);
+    const instituicoes = await resp.json();
+    if (!resp.ok) return false;
 
-    if (!resp.ok) {
-      lista.innerHTML = "<p>Erro ao carregar disciplinas.</p>";
-      return;
-    }
+    return instituicoes.some(inst => inst.SIGLA.toLowerCase() === sigla.toLowerCase());
 
-    // Aplicar filtro
-    const filtradas = dados.filter((disc) =>
-      disc.NOME.toLowerCase().includes(filtro.toLowerCase()) ||
-      disc.CODIGO.toLowerCase().includes(filtro.toLowerCase()) ||
-      disc.PERIODO.toLowerCase().includes(filtro.toLowerCase()) ||
-      (disc.PROFESSOR_NOME || "").toLowerCase().includes(filtro.toLowerCase())
-    );
-
-    if (filtradas.length === 0) {
-      lista.innerHTML = "";
-      vazio.style.display = "block";
-      return;
-    }
-
-    vazio.style.display = "none";
-    lista.innerHTML = "";
-
-    filtradas.forEach(disc => {
-      const row = document.createElement("div");
-      row.classList.add("tabela-row");
-
-      row.innerHTML = `
-        <span><strong>${disc.NOME}</strong></span>
-        <span>${disc.CODIGO}</span>
-        <span>${disc.PERIODO}</span>
-        <span>${disc.PROFESSOR_NOME || "-"}</span>
-
-        <span class="acoes">
-
-          <button class="acao-btn btn-editar" data-id="${disc.ID}">
-            <i class="fa-solid fa-pen"></i> Editar
-          </button>
-
-          <button class="acao-btn btn-excluir" data-id="${disc.ID}">
-            <i class="fa-solid fa-trash"></i> Excluir
-          </button>
-        </span>
-      `;
-
-      // EDITAR → sem redirecionar
-      row.querySelector(".btn-editar").addEventListener("click", (e) => {
-        e.stopPropagation();
-        editarDisciplina(disc);
-      });
-
-      // EXCLUIR
-      row.querySelector(".btn-excluir").addEventListener("click", (e) => {
-        e.stopPropagation();
-        removerDisciplina(disc.ID);
-      });
-
-      lista.appendChild(row);
-    });
-
-  } catch (error) {
-    console.error(error);
-    lista.innerHTML = "<p>Erro ao conectar com o servidor.</p>";
+  } catch (e) {
+    console.error(e);
+    return false;
   }
 }
 
-carregarDisciplinas();
+// ===========================================================
+// SUBMIT DO FORMULÁRIO
+// ===========================================================
+form.addEventListener("submit", async e => {
+  e.preventDefault();
 
-// =========================================
-// 2️⃣ FUNÇÃO EDITAR DISCIPLINA — prompts
-// =========================================
-async function editarDisciplina(disc) {
+  const nome = nomeInput.value.trim();
+  const sigla = siglaInput.value.trim();
 
-  const nome = prompt("Novo nome da disciplina:", disc.NOME);
-  if (!nome) return;
+  if (!nome || !sigla) return alert("Preencha todos os campos!");
 
-  const codigo = prompt("Novo código:", disc.CODIGO);
-  if (!codigo) return;
-
-  const periodo = prompt("Novo período:", disc.PERIODO);
-  if (!periodo) return;
+  if (await siglaJaExiste(sigla)) {
+    return alert("⚠ Já existe uma instituição com essa sigla.");
+  }
 
   try {
-    const resp = await fetch(`/api/disciplinas/editar/${disc.ID}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, sigla: disc.SIGLA, codigo, periodo })
+    const resp = await fetch("/api/instituicoes", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        nome,
+        sigla,
+        usuarioId: Number(usuarioId)
+      })
     });
 
     const dados = await resp.json();
 
     if (!resp.ok) {
-      alert("Erro: " + dados.message);
+      alert(dados.message || "Erro ao cadastrar.");
       return;
     }
 
-    alert("Disciplina atualizada com sucesso!");
-    carregarDisciplinas();
+    alert("Instituição cadastrada!");
 
-  } catch (error) {
-    console.error(error);
-    alert("Erro ao editar disciplina.");
+    verificarProximoPasso();
+
+  } catch (erro) {
+    console.error(erro);
+    alert("Erro ao conectar ao servidor.");
   }
-}
-
-// =========================================
-// 3️⃣ BUSCA
-// =========================================
-$("btnBuscarDisc").addEventListener("click", () => {
-  carregarDisciplinas($("fBuscaDisc").value.trim());
 });
 
-$("fBuscaDisc").addEventListener("keyup", () => {
-  carregarDisciplinas($("fBuscaDisc").value.trim());
+// ===========================================================
+// ENTER para mudar de campo
+// ===========================================================
+const inputs = document.querySelectorAll("#formInstituicao input");
+inputs.forEach((input, i) => {
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (i === inputs.length - 1) form.requestSubmit();
+      else inputs[i + 1].focus();
+    }
+  });
 });
 
-// =========================================
-// 4️⃣ REMOVER DISCIPLINA
-// =========================================
-async function removerDisciplina(id) {
-  const confirmar = confirm("Tem certeza que deseja remover esta disciplina?");
-  if (!confirmar) return;
-
+// ===========================================================
+// DEFINIR PROXIMA TELA
+// ===========================================================
+async function verificarProximoPasso() {
   try {
-    const resp = await fetch(`/api/disciplinas/remover/${id}`, {
-      method: "DELETE",
-    });
+    // Buscar instituições
+    const respInst = await fetch(`/api/instituicoes/listar/${usuarioId}`);
+    const instituicoes = await respInst.json();
 
-    const dados = await resp.json();
-
-    if (!resp.ok) {
-      alert("Erro: " + dados.message);
+    if (!respInst.ok) {
+      alert("Erro ao verificar instituições.");
       return;
     }
 
-    alert("Disciplina removida!");
-    carregarDisciplinas();
+    const inst = instituicoes[instituicoes.length - 1]; // pega a última criada
+    localStorage.setItem("instituicaoId", inst.ID);
 
-  } catch (error) {
-    console.error(error);
-    alert("Erro ao remover disciplina.");
+    // Buscar cursos desta instituição (ROTA CORRETA!)
+    const respCurso = await fetch(`/api/cursos/listar/${inst.ID}`);
+    const cursos = await respCurso.json();
+
+    if (!respCurso.ok) {
+      alert("Erro ao verificar cursos.");
+      return;
+    }
+
+    if (cursos.length === 0) {
+      window.location.href = "/gerenciar/html/cadastro_curso.html";
+      return;
+    }
+
+    window.location.href = "/gerenciar/html/dashboard.html";
+
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao continuar o fluxo.");
   }
 }
-
-// =========================================
-// 5️⃣ NOVA DISCIPLINA
-// =========================================
-$("btnNovaDisc").addEventListener("click", () => {
-  window.location.href = "/gerenciar/html/cadastro_disciplina.html";
-});

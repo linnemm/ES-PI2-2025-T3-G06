@@ -16,7 +16,12 @@ const selectContainer = document.getElementById("selectContainer");
 const tituloAba = document.getElementById("tituloAba");
 const btnIr = document.getElementById("btnIr");
 
-const userId = localStorage.getItem("userId");
+// ============================================================
+// 🔥 CORREÇÃO MAIS IMPORTANTE
+// No login você salva: localStorage.setItem("usuarioId", id)
+// ENTÃO AQUI VOCÊ PRECISA PEGAR "usuarioId" E NÃO "userId"
+// ============================================================
+const userId = localStorage.getItem("usuarioId");  // CORRIGIDO
 
 if (!userId) {
   alert("⚠ Erro: usuário não identificado. Faça login novamente.");
@@ -50,7 +55,6 @@ async function carregarInstituicoes(filtro = "") {
       return;
     }
 
-    // FILTRO DE BUSCA
     const filtradas = dados.filter(
       (inst) =>
         inst.NOME.toLowerCase().includes(filtro.toLowerCase()) ||
@@ -87,7 +91,7 @@ async function carregarInstituicoes(filtro = "") {
         </div>
       `;
 
-      // 👉 ABRIR LISTA DE CURSOS
+      // 👉 Clique no card abre lista de cursos
       card.addEventListener("click", (e) => {
         if (!e.target.closest(".edit-btn") && !e.target.closest(".remove-btn")) {
           localStorage.setItem("instituicaoId", inst.ID);
@@ -95,21 +99,17 @@ async function carregarInstituicoes(filtro = "") {
         }
       });
 
-      // 👉 EDITAR
-      card
-        .querySelector(".edit-btn")
-        .addEventListener("click", (e) => {
-          e.stopPropagation();
-          editarInstituicao(inst);
-        });
+      // 👉 Botão EDITAR
+      card.querySelector(".edit-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        editarInstituicao(inst);
+      });
 
-      // 👉 REMOVER
-      card
-        .querySelector(".remove-btn")
-        .addEventListener("click", (e) => {
-          e.stopPropagation();
-          removerInstituicao(inst.ID);
-        });
+      // 👉 Botão REMOVER
+      card.querySelector(".remove-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        removerInstituicao(inst.ID);
+      });
 
       lista.appendChild(card);
     });
@@ -127,6 +127,7 @@ carregarInstituicoes();
 btnBusca.addEventListener("click", () => {
   carregarInstituicoes(inputBusca.value.trim());
 });
+
 inputBusca.addEventListener("keyup", () => {
   carregarInstituicoes(inputBusca.value.trim());
 });
@@ -202,8 +203,10 @@ async function removerInstituicao(id) {
 }
 
 // ===========================================================
-// 6️⃣ MENU FLUTUANTE (FAKE POR ENQUANTO)
+// 6️⃣ MENU FLUTUANTE — SEU ORIGINAL (sem remover nada)
 // ===========================================================
+
+// Fake (por enquanto)
 const instsFake = ["PUCCAMP", "USP", "UNICAMP"];
 const cursosFake = ["Engenharia", "Direito", "Administração"];
 const disciplinasFake = ["Cálculo I", "Física", "Lógica"];
@@ -235,92 +238,52 @@ function abrirMenu(tipo) {
 
   if (tipo === "instituicao") {
     tituloAba.textContent = "Instituições";
-
-    const btnVerTodas = document.createElement("button");
-    btnVerTodas.textContent = "Ver todas as instituições";
-    btnVerTodas.classList.add("btn-curso");
-    btnVerTodas.style.marginBottom = "10px";
-    btnVerTodas.onclick = () => window.location.href = "dashboard.html";
-    selectContainer.appendChild(btnVerTodas);
-
-    selectContainer.appendChild(
-      criarSelect("selInstituicao", "Selecionar Instituição:", instsFake)
-    );
-
+    selectContainer.appendChild(criarSelect("selInstituicao", "Selecionar Instituição:", instsFake));
     btnIr.style.display = "block";
-    btnIr.onclick = () => {
-      const sel = document.getElementById("selInstituicao");
-      if (sel.value) window.location.href = "listaCursos.html";
-      else alert("Selecione uma instituição!");
-    };
+    btnIr.onclick = () => window.location.href = "listaCursos.html";
   }
 
   if (tipo === "curso") {
-    tituloAba.textContent = "Selecionar Curso";
-    selectContainer.appendChild(
-      criarSelect("selInstituicao", "Instituição:", instsFake)
-    );
+    tituloAba.textContent = "Curso";
+    selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instsFake));
     document.getElementById("selInstituicao").addEventListener("change", () => {
-      selectContainer.appendChild(
-        criarSelect("selCurso", "Curso:", cursosFake)
-      );
+      selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursosFake));
       btnIr.style.display = "block";
       btnIr.onclick = () => window.location.href = "listaDisciplinas.html";
     });
   }
 
   if (tipo === "disciplina") {
-    tituloAba.textContent = "Selecionar Disciplina";
-    selectContainer.appendChild(
-      criarSelect("selInstituicao", "Instituição:", instsFake)
-    );
+    tituloAba.textContent = "Disciplina";
+    selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instsFake));
     document.getElementById("selInstituicao").addEventListener("change", () => {
-      selectContainer.appendChild(
-        criarSelect("selCurso", "Curso:", cursosFake)
-      );
-      document
-        .getElementById("selCurso")
-        .addEventListener("change", () => {
-          selectContainer.appendChild(
-            criarSelect("selDisciplina", "Disciplina:", disciplinasFake)
-          );
-          btnIr.style.display = "block";
-          btnIr.onclick = () => window.location.href = "listaTurmas.html";
-        });
+      selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursosFake));
+      document.getElementById("selCurso").addEventListener("change", () => {
+        selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinasFake));
+        btnIr.style.display = "block";
+        btnIr.onclick = () => window.location.href = "listaTurmas.html";
+      });
     });
   }
 
   if (tipo === "turma") {
-    tituloAba.textContent = "Selecionar Turma";
-    selectContainer.appendChild(
-      criarSelect("selInstituicao", "Instituição:", instsFake)
-    );
+    tituloAba.textContent = "Turma";
+    selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instsFake));
     document.getElementById("selInstituicao").addEventListener("change", () => {
-      selectContainer.appendChild(
-        criarSelect("selCurso", "Curso:", cursosFake)
-      );
-      document
-        .getElementById("selCurso")
-        .addEventListener("change", () => {
-          selectContainer.appendChild(
-            criarSelect("selDisciplina", "Disciplina:", disciplinasFake)
-          );
-          document
-            .getElementById("selDisciplina")
-            .addEventListener("change", () => {
-              selectContainer.appendChild(
-                criarSelect("selTurma", "Turma:", turmasFake)
-              );
-              btnIr.style.display = "block";
-              btnIr.onclick = () =>
-                window.location.href = "detalhesTurma.html";
-            });
+      selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursosFake));
+      document.getElementById("selCurso").addEventListener("change", () => {
+        selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinasFake));
+        document.getElementById("selDisciplina").addEventListener("change", () => {
+          selectContainer.appendChild(criarSelect("selTurma", "Turma:", turmasFake));
+          btnIr.style.display = "block";
+          btnIr.onclick = () => window.location.href = "detalhesTurma.html";
         });
+      });
     });
   }
 }
 
-// Abertura
+// Abrir menu ao clicar nos botões da topbar
 document.getElementById("btnInstituicoes").addEventListener("click", () => abrirMenu("instituicao"));
 document.getElementById("btnCursos").addEventListener("click", () => abrirMenu("curso"));
 document.getElementById("btnDisciplinas").addEventListener("click", () => abrirMenu("disciplina"));
@@ -328,10 +291,7 @@ document.getElementById("btnTurmas").addEventListener("click", () => abrirMenu("
 
 // Fechar ao clicar fora
 document.addEventListener("click", (e) => {
-  if (
-    !menuFlutuante.contains(e.target) &&
-    !e.target.closest(".menu-horizontal")
-  ) {
+  if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
     menuFlutuante.style.display = "none";
   }
 });

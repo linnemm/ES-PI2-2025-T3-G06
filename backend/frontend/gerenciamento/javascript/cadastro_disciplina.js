@@ -2,11 +2,15 @@
 //  CADASTRO DE DISCIPLINA — BACKEND INTEGRADO
 // ======================================================
 
-// Helper
+// Helper para pegar elementos
 const $ = (id) => document.getElementById(id);
 
-// Recuperar usuário logado
-const userId = localStorage.getItem("userId");
+// ------------------------------------------------------
+// 🔥 CORREÇÃO IMPORTANTE
+// Você salvou no login: localStorage.setItem("usuarioId", id)
+// Portanto o correto é buscar "usuarioId", NÃO "userId"
+// ------------------------------------------------------
+const userId = localStorage.getItem("usuarioId");
 
 if (!userId) {
   alert("⚠ Erro: usuário não identificado. Faça login novamente.");
@@ -30,6 +34,7 @@ async function carregarInstituicoes() {
       return;
     }
 
+    // Preencher o select
     lista.forEach(inst => {
       const opt = document.createElement("option");
       opt.value = inst.ID;
@@ -43,11 +48,14 @@ async function carregarInstituicoes() {
   }
 }
 
-// Quando selecionar uma instituição → carregar cursos reais do banco
+// ======================================================
+// QUANDO SELECT DE INSTITUIÇÃO MUDAR → CARREGAR CURSOS
+// ======================================================
 $("instituicao").addEventListener("change", async () => {
   instituicaoId = $("instituicao").value;
   cursoId = null;
 
+  // Reseta o select
   $("curso").innerHTML = `<option value="">Selecione um curso</option>`;
 
   if (!instituicaoId) return;
@@ -61,6 +69,7 @@ $("instituicao").addEventListener("change", async () => {
       return;
     }
 
+    // Preencher select de cursos
     cursos.forEach(c => {
       const opt = document.createElement("option");
       opt.value = c.ID;
@@ -70,11 +79,11 @@ $("instituicao").addEventListener("change", async () => {
 
   } catch (erro) {
     console.error("Erro ao carregar cursos:", erro);
-    alert("Erro ao carregar cursos.");
+    alert("Erro ao carregar cursos");
   }
 });
 
-// Quando escolher o curso
+// Quando selecionar curso
 $("curso").addEventListener("change", () => {
   cursoId = $("curso").value;
 });
@@ -109,7 +118,7 @@ $("formDisciplina").addEventListener("submit", async (e) => {
         sigla,
         codigo,
         periodo,
-        usuarioId: userId,
+        usuarioId: Number(userId),
         instituicaoId,
         cursoId
       })
@@ -137,7 +146,7 @@ $("formDisciplina").addEventListener("submit", async (e) => {
 $("btnCancelar").addEventListener("click", () => history.back());
 
 // ======================================================
-// 4️⃣ MENU FLUTUANTE — igual outras telas
+// 4️⃣ MENU FLUTUANTE — padrão das telas
 // ======================================================
 const menuFlutuante = $("menuFlutuante");
 const selectContainer = $("selectContainer");

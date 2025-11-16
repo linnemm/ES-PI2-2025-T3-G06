@@ -1,7 +1,12 @@
 // ==================== MOSTRAR / OCULTAR SENHA ====================
+
+// Seleciona o input da senha no HTML
 const senha = document.getElementById("senha");
+
+// Seleciona o ícone que alterna a visibilidade da senha
 const toggle = document.getElementById("togglePassword");
 
+// Verifica se ambos existem antes de adicionar eventos
 if (toggle && senha) {
   toggle.addEventListener("click", () => {
     const isPassword = senha.type === "password";
@@ -10,15 +15,20 @@ if (toggle && senha) {
   });
 }
 
+
+
 // ==================== ENVIO DO FORMULÁRIO (LOGIN) ====================
+
+// Seleciona o formulário de login
 const form = document.getElementById("formLogin");
 
+// Se o formulário existir...
 if (form) {
   form.addEventListener("submit", async (e) => {
-    e.preventDefault(); // impede recarregar a página
+    e.preventDefault(); // impede recarregar a página automaticamente
 
     const email = form.querySelector('input[type="email"]').value.trim();
-    const senhaValor = document.getElementById("senha").value.trim();
+    const senhaValor = senha.value.trim();
 
     if (!email || !senhaValor) {
       alert("⚠️ Preencha todos os campos!");
@@ -30,6 +40,7 @@ if (form) {
     botao.innerText = "Entrando...";
 
     try {
+      // 🔥 LOGIN
       const resposta = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -38,46 +49,72 @@ if (form) {
 
       const dados = await resposta.json();
 
-      if (resposta.ok) {
-
-        // ================================
-        // 🔥 SALVAR TOKEN
-        // ================================
-        if (dados.token) {
-          localStorage.setItem("token", dados.token);
-        }
-
-        // ================================
-        // 🔥 SALVAR O USUÁRIO COMPLETO
-        // PARA COMPONENTE DE NOTA FUNCIONAR
-        // ================================
-        if (dados.usuario) {
-          localStorage.setItem("usuarioId", dados.usuario.id);
-          localStorage.setItem("usuarioNome", dados.usuario.nome);
-          localStorage.setItem("usuarioEmail", dados.usuario.email);
-        }
-
-        // ================================
-        // 🔥 SALVAR PRIMEIRO ACESSO
-        // ================================
-        if (dados.primeiroAcesso === true) {
-          localStorage.setItem("primeiroAcesso", "true");
-        } else {
-          localStorage.setItem("primeiroAcesso", "false");
-        }
-
-        // ================================
-        // 🔥 REDIRECIONAMENTO
-        // ================================
-        if (dados.primeiroAcesso === true) {
-          window.location.href = "/gerenciar/html/cadastro_instituicao.html";
-        } else {
-          window.location.href = "/gerenciar/html/dashboard.html";
-        }
-
-      } else {
+      if (!resposta.ok) {
         alert("❌ " + (dados.message || "Erro ao fazer login."));
+        return;
       }
+
+      // SALVAR TOKEN
+      if (dados.token) {
+        localStorage.setItem("token", dados.token);
+      }
+
+      // SALVAR DADOS DO USUÁRIO
+      if (dados.usuario) {
+        localStorage.setItem("usuarioId", dados.usuario.id);
+        localStorage.setItem("usuarioNome", dados.usuario.nome);
+        localStorage.setItem("usuarioEmail", dados.usuario.email);
+      }
+
+      // DEFINIR PRIMEIRO ACESSO
+      const primeiroAcesso = dados.primeiroAcesso === true;
+      localStorage.setItem("primeiroAcesso", primeiroAcesso ? "true" : "false");
+
+      // REDIRECIONAMENTO 1 → PRIMEIRO ACESSO = CADASTRAR INSTITUIÇÃO
+      if (primeiroAcesso) {
+        window.location.href = "/gerenciar/html/cadastro_instituicao.html";
+        return;
+      }
+
+      // 🔥 SE NÃO FOR PRIMEIRO ACESSO → VERIFICAR INSTITUIÇÃO
+      const usuarioId = dados.usuario.id;
+      const respInst = await fetch(`/api/instituicoes/listar/${usuarioId}`);
+      let instituicoes = [];
+
+      try {
+        instituicoes = await respInst.json();
+      } catch (e) {
+        instituicoes = [];
+      }
+
+      // ERRO OU NENHUMA INSTITUIÇÃO → REDIRECIONAR
+      if (!respInst.ok || instituicoes.length === 0) {
+        window.location.href = "/gerenciar/html/cadastro_instituicao.html";
+        return;
+      }
+
+      // Pegamos a primeira instituição cadastrada
+      const instituicaoId = instituicoes[0].ID;
+      localStorage.setItem("instituicaoId", instituicaoId);
+
+      // 🔥 VERIFICAR SE EXISTE CURSO
+      const respCursos = await fetch(`/api/cursos/listar/${instituicaoId}`);
+
+      let cursos = [];
+      try {
+        cursos = await respCursos.json();
+      } catch (e) {
+        cursos = [];
+      }
+
+      // ERRO ou Nenhum curso → cadastrar curso
+      if (!respCursos.ok || !Array.isArray(cursos) || cursos.length === 0) {
+        window.location.href = "/gerenciar/html/cadastro_curso.html";
+        return;
+      }
+
+      // SE TUDO OK → IR PARA DASHBOARD
+      window.location.href = "/gerenciar/html/dashboard.html";
 
     } catch (erro) {
       console.error("Erro ao conectar com o servidor:", erro);
@@ -85,6 +122,55 @@ if (form) {
     } finally {
       botao.disabled = false;
       botao.innerText = "Entrar";
+    }
+  });
+}
+
+
+
+// ========================================================
+// ENTER vai para o próximo campo e, no último, envia o form
+// ========================================================
+
+// Seleciona todos os inputs dentro do formulário de login
+const inputsLogin = document.querySelectorAll("#formLogin input");
+
+if (inputsLogin) {
+  inputsLogin.forEach((input, index) => {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+
+        const isLast = index === inputsLogin.length - 1;
+
+        if (isLast) {
+          form.requestSubmit();
+        } else {
+          inputsLogin[index + 1].focus();
+        }
+      }
+    });
+  });
+}
+
+
+
+// ===============================
+// VALIDAÇÃO DE EMAIL AO SAIR DO CAMPO (BLUR)
+// ===============================
+
+// Seleciona o input de email
+const emailInput = document.getElementById("email");
+
+if (emailInput) {
+  emailInput.addEventListener("blur", () => {
+    const valor = emailInput.value.trim();
+
+    const ehEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+
+    if (valor !== "" && !ehEmail) {
+      alert("⚠️ Digite um e-mail válido.");
+      emailInput.focus();
     }
   });
 }
