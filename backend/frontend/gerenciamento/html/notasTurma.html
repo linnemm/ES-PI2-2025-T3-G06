@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Notas da Turma - NotaDez</title>
 
-  <link rel="stylesheet" href="notasTurma.css" />
+  <!-- CSS correto -->
+  <link rel="stylesheet" href="../css/notasTurma.css" />
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Poppins Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 
@@ -17,12 +22,12 @@
   <nav class="topbar">
     <h2>NotaDez</h2>
     <ul class="menu-horizontal">
-      <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-      <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
-      <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
-      <li><a href="#" id="btnTurmas" class="ativo"><i class="fa-solid fa-users"></i> Turmas</a></li>
+      <li><a href="instituicoes.html" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
+      <li><a href="cursos.html" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
+      <li><a href="disciplinas.html" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
+      <li><a href="turmas.html" id="btnTurmas" class="ativo"><i class="fa-solid fa-users"></i> Turmas</a></li>
       <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
-      <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+      <li><a href="../autenticacao/html/login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
     </ul>
   </nav>
 
@@ -38,44 +43,33 @@
   <!-- Conteúdo principal -->
   <main class="container">
     <div class="turma-header">
-      <h1 id="hdrTurma">Turma - Engenharia de Software</h1>
+      <h1 id="hdrTurma">Turma — Carregando...</h1>
       <p id="hdrDesc">Disciplina: — | Instituição: — | Período: —</p>
     </div>
 
     <!-- Botões  -->
     <div class="turma-acoes">
       <button id="btnExportar"><i class="fa-solid fa-file-export"></i> Exportar Notas</button>
-      <button id="btnExcluirSelecionados"><i class="fa-solid fa-trash"></i> Excluir Selecionados</button>
+      <button id="btnExcluirSelecionados" style="display:none;">
+        <i class="fa-solid fa-trash"></i> Excluir Selecionados
+      </button>
     </div>
 
     <!-- Tabela de notas -->
     <div class="tabela-notas">
       <h2 style="color:#6ca98c; margin-bottom:10px;">Notas da Turma</h2>
+
       <table id="tabelaNotas">
         <thead>
           <tr>
             <th>Matrícula</th>
             <th>Aluno</th>
-            <th></th>
+            <th>Ações</th>
           </tr>
         </thead>
+
         <tbody>
-          <tr>
-            <td>11111</td>
-            <td>João Silva</td>
-            <td class="acoes">
-              <button class="acao-btn btn-editar" title="Editar"><i class="fa-solid fa-pen"></i> Editar</button>
-              <button class="acao-btn btn-excluir" title="Excluir"><i class="fa-solid fa-trash"></i> Excluir</button>
-            </td>
-          </tr>
-          <tr>
-            <td>11112</td>
-            <td>Maria Souza</td>
-            <td class="acoes">
-              <button class="acao-btn btn-editar" title="Editar"><i class="fa-solid fa-pen"></i> Editar</button>
-              <button class="acao-btn btn-excluir" title="Excluir"><i class="fa-solid fa-trash"></i> Excluir</button>
-            </td>
-          </tr>
+          <!-- Preenchido via JavaScript -->
         </tbody>
       </table>
     </div>
@@ -88,6 +82,8 @@
   </main>
 </div>
 
-<script src="notasTurma.js"></script>
+<!-- JS correto -->
+<script src="../js/notas/notasTurma.js"></script>
+
 </body>
 </html>

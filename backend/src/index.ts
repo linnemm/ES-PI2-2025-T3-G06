@@ -10,7 +10,8 @@ import cursoRoutes from "./routes/cursoRoutes";
 import disciplinaRoutes from "./routes/disciplinaRoutes";
 import componenteRoutes from "./routes/componenteRoutes";
 import turmaRoutes from "./routes/turmaRoutes";
-import alunoRoutes from "./routes/alunoRoutes";  // ⭐ NOVO — ROTAS DE ALUNOS
+import alunoRoutes from "./routes/alunoRoutes"; 
+import notasRoutes from "./routes/notasRoutes"; // ⭐ ADICIONADO — ROTAS DE NOTAS
 
 const app = express();
 
@@ -20,30 +21,28 @@ const app = express();
 app.use(cors({ origin: "*", methods: "GET,POST,PUT,DELETE" }));
 app.use(express.json());
 
-// Para uploads de CSV (multer armazena na pasta)
+// Para uploads de CSV
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 // ======================================================
-// SERVIR FRONTEND (AUTENTICAÇÃO + GERENCIAMENTO)
+// SERVIR FRONTEND
 // ======================================================
-
-// Caminhos absolutos das pastas frontend
 const authPath = path.join(__dirname, "../frontend/autenticacao");
 const gerenciamentoPath = path.join(__dirname, "../frontend/gerenciamento");
 
-// Servir autenticação
+// Autenticação
 app.use("/auth", express.static(authPath));
 
-// Servir gerenciamento
+// Gerenciamento
 app.use("/gerenciar", express.static(gerenciamentoPath));
 
-// Página inicial → redireciona para login
+// Página padrão → tela inicial
 app.get("/", (req, res) => {
   return res.sendFile(path.join(authPath, "html", "telainicial.html"));
 });
 
 // ======================================================
-// ROTAS API — BACKEND
+// ROTAS DO BACKEND (API)
 // ======================================================
 app.use("/api/auth", authRoutes);
 app.use("/api/instituicoes", instituicaoRoutes);
@@ -51,17 +50,18 @@ app.use("/api/cursos", cursoRoutes);
 app.use("/api/disciplinas", disciplinaRoutes);
 app.use("/api/componentes", componenteRoutes);
 app.use("/api/turmas", turmaRoutes);
-app.use("/api/alunos", alunoRoutes);   // ⭐ IMPORTANTE: rotas de ALUNOS
+app.use("/api/alunos", alunoRoutes);
+app.use("/api/notas", notasRoutes);  // ⭐ NOVO — NECESSÁRIO PARA A PÁGINA DE NOTAS
 
 // ======================================================
-// ROTA DEFAULT (404 PARA API)
+// 404 DAS ROTAS DA API
 // ======================================================
 app.use("/api", (_, res) => {
   return res.status(404).json({ message: "Rota API não encontrada." });
 });
 
 // ======================================================
-// ERRO GLOBAL — EVITA QUE O SERVIDOR CAIA
+// ERRO GLOBAL
 // ======================================================
 app.use((err: any, req: any, res: any, next: any) => {
   console.error("🔥 ERRO GLOBAL:", err);
@@ -74,17 +74,16 @@ app.use((err: any, req: any, res: any, next: any) => {
 const PORT = 3000;
 
 app.listen(PORT, "0.0.0.0", async () => {
-  console.log("🚀 Servidor iniciado com sucesso!");
-  console.log(`➡️ Localhost: http://localhost:${PORT}`);
+  console.log("🚀 Servidor iniciado!");
+  console.log(`➡️ http://localhost:${PORT}`);
   console.log(`➡️ Login: http://localhost:${PORT}/auth/html/login.html`);
-  console.log(`➡️ Gerenciamento: http://localhost:${PORT}/gerenciar/html/home.html`);
+  console.log(`➡️ Painel: http://localhost:${PORT}/gerenciar/html/home.html`);
 
-  // Teste da conexão com Oracle
   try {
     const conn = await openConnection();
     await conn.close();
-    console.log("🔗 Oracle conectado com sucesso!");
+    console.log("🔗 Conectado ao Oracle com sucesso!");
   } catch (err) {
-    console.error("❌ Falha ao conectar no Oracle:", err);
+    console.error("❌ Erro ao conectar ao Oracle:", err);
   }
 });

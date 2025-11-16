@@ -1,362 +1,183 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const LS_COMP_DISC = 'pi.componentesDisc'; // componentes por disciplina
-  const LS_NOTAS     = 'pi.notas';           // notas por turma/aluno/componente
-  const LS_AUDIT     = 'pi.audit';           // logs de alteração
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const API = "http://localhost:3000/api";
 
   const tabela = document.getElementById("tabelaNotas");
-  const tbody  = tabela.querySelector("tbody");
+  const tbody = tabela.querySelector("tbody");
 
-  // ===== helpers =====
-  const $  = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-  const getParam = (name)=> new URLSearchParams(window.location.search).get(name);
+  const getParam = n => new URLSearchParams(location.search).get(n);
+  const disciplinaId = getParam("disciplinaId");
+  const turmaId = getParam("turmaId");
 
-  const disciplinaId = getParam('disciplinaId') || 'd1';
-  const turmaId      = getParam('turmaId')      || 't1';
+  let alunosGlobal = [];
 
-  // ============ Cabeçalho dinâmico ============
-  function carregarComponentes() {
-    const comps = JSON.parse(localStorage.getItem(LS_COMP_DISC) || '[]')
-      .filter(c => String(c.disciplinaId) === String(disciplinaId));
+  // =====================================================
+  // 1. CARREGAR COMPONENTES DA DISCIPLINA
+  // =====================================================
+  async function carregarComponentes() {
+    const resp = await fetch(`${API}/componentes/disciplina/${disciplinaId}`);
+    const comps = await resp.json();
 
-    const theadRow = tabela.tHead.rows[0];
+    const head = tabela.tHead.rows[0];
 
-    // limpa (mantém as duas primeiras e a última "Ações")
-    while (theadRow.cells.length > 3) {
-      theadRow.deleteCell(2);
+    // remove colunas dinâmicas (mantém Matrícula, Aluno, Ações)
+    while (head.cells.length > 3) {
+      head.deleteCell(2);
     }
 
-    // insere cada componente antes de "Ações"
-    const thAcoes = theadRow.lastElementChild;
+    const thAcoes = head.lastElementChild;
+
+    // adiciona componentes dinamicamente
     comps.forEach(c => {
       const th = document.createElement("th");
       th.textContent = c.sigla;
-      theadRow.insertBefore(th, thAcoes);
+      head.insertBefore(th, thAcoes);
     });
 
-    const thNF = document.createElement("th");
-    thNF.textContent = "Nota Final";
-    theadRow.insertBefore(thNF, thAcoes);
-
-    // cria/ajusta células nas linhas de aluno
-    tbody.querySelectorAll("tr").forEach(tr => {
-      // remove células dinâmicas antigas (entre aluno e ações)
-      while (tr.cells.length > 3) {
-        tr.deleteCell(2);
-      }
-      const tdAcoes = tr.lastElementChild;
-
-      // células por componente (contentEditable)
-      comps.forEach(c => {
-        const td = document.createElement("td");
-        td.setAttribute("data-componente", c.sigla);
-        td.contentEditable = "true";
-        td.textContent = "-";
-        tr.insertBefore(td, tdAcoes);
-      });
-
-      // célula Nota Final 
-      const tdNF = document.createElement("td");
-      tdNF.setAttribute("data-nota-final", "1");
-      tdNF.textContent = "-";
-      tr.insertBefore(tdNF, tdAcoes);
-    });
-
-    // preencher valores existentes e recalcular
-    aplicarNotasExistentes(comps);
-    recalcularNotasFinais(comps);
     return comps;
   }
 
-  function aplicarNotasExistentes(comps){
-    const notas = JSON.parse(localStorage.getItem(LS_NOTAS) || '[]')
-      .filter(n => n.turmaId === turmaId && n.disciplinaId === disciplinaId);
+  // =====================================================
+  // 2. CARREGAR ALUNOS DA TURMA
+  // =====================================================
+  async function carregarAlunos() {
+    const resp = await fetch(`${API}/turmas/${turmaId}/alunos`);
+    const alunos = await resp.json();
+    alunosGlobal = alunos;
 
-    tbody.querySelectorAll("tr").forEach(tr => {
-      const ra = tr.cells[0].textContent.trim();
-      comps.forEach(c => {
-        const td = $$('td[data-componente="'+c.sigla+'"]', tr)[0];
-        const registro = notas.find(n => n.alunoId === ra && n.componenteSigla === c.sigla);
-        if (registro) td.textContent = Number(registro.valor).toFixed(2);
-      });
+    tbody.innerHTML = "";
+
+    alunos.forEach(a => {
+      const tr = document.createElement("tr");
+      tr.dataset.alunoId = a.id; // usa ID real do backend
+
+      tr.innerHTML = `
+        <td>${a.ra}</td>
+        <td>${a.nome}</td>
+        <td class="acoes">
+          <button class="acao-btn btn-excluir" onclick="excluirAluno(${a.id})">
+            <i class="fa-solid fa-trash"></i> Excluir
+          </button>
+        </td>
+      `;
+
+      tbody.appendChild(tr);
     });
+
+    return alunos;
   }
 
-  // média ponderada se houver pesos, senão média simples
-  function calcularFinal(notas, comps){
-    const nums = notas.filter(v => v !== null && !isNaN(v));
-    if (!nums.length) return null;
+  // =====================================================
+  // 3. MONTAR COLUNAS DE NOTA
+  // =====================================================
+  function montarColunas(componentes) {
+    tbody.querySelectorAll("tr").forEach(tr => {
 
-    const pesos = comps.map(c => (typeof c.peso === "number" ? c.peso : null));
-    const temPeso = pesos.some(p => p !== null);
-    if (temPeso) {
-      const w = pesos.map(p => (p ?? 0));
-      const soma = w.reduce((a,b)=>a+b,0);
-      if (soma <= 0) {
-        const m = nums.reduce((a,b)=>a+b,0) / nums.length;
-        return Number(m.toFixed(2));
+      // remove colunas anteriores de nota
+      while (tr.cells.length > 3) {
+        tr.deleteCell(2);
       }
-      let acc = 0;
-      comps.forEach((c, idx) => {
-        const v = notas[idx];
-        const peso = w[idx];
-        acc += ((isNaN(v)||v===null) ? 0 : v) * peso;
-      });
-      return Number((acc / soma).toFixed(2));
-    } else {
-      const m = nums.reduce((a,b)=>a+b,0) / nums.length;
-      return Number(m.toFixed(2));
-    }
-  }
 
-  function parseValor(txt){
-    const v = parseFloat(String(txt).replace(",", "."));
-    if (isNaN(v)) return null;
-    if (v < 0 || v > 10) return null;
-    return Number(v.toFixed(2));
-  }
+      const acoes = tr.lastElementChild;
 
-  function recalcularNotasFinais(comps){
-    tbody.querySelectorAll("tr").forEach(tr => {
-      const valores = comps.map(c => {
-        const td = $$('td[data-componente="'+c.sigla+'"]', tr)[0];
-        const v = parseValor(td?.textContent);
-        return v;
+      // cria TD para cada componente
+      componentes.forEach(c => {
+        const td = document.createElement("td");
+        td.classList.add("celula-nota");
+        td.dataset.compId = c.id;
+        td.contentEditable = "true";
+        td.textContent = "-";
+        tr.insertBefore(td, acoes);
       });
-      const nf = calcularFinal(valores, comps);
-      const tdNF = $('[data-nota-final]', tr);
-      tdNF.textContent = (nf===null ? '-' : nf.toFixed(2));
     });
   }
 
-  // salva todas as células na tabela pi.notas + log
-  function salvarAlteracoes(){
-    const now = new Date();
-    const notas = JSON.parse(localStorage.getItem(LS_NOTAS) || '[]');
-    const audit = JSON.parse(localStorage.getItem(LS_AUDIT) || '[]');
+  // =====================================================
+  // 4. CARREGAR NOTAS DO BACKEND
+  // =====================================================
+  async function carregarNotas() {
+    const resp = await fetch(`${API}/notas/${turmaId}/${disciplinaId}`);
+    return await resp.json();
+  }
 
-    const key = (ra, sigla) => `${turmaId}|${disciplinaId}|${ra}|${sigla}`;
-    const atual = new Map(notas.map(n => [ key(n.alunoId, n.componenteSigla), n ]));
-
-    // componentes atuais no header (entre "Aluno" e "Nota Final")
-    const ths = Array.from(tabela.tHead.rows[0].cells);
-    const idxAluno = 1; // col 0=matrícula, 1=aluno
-    const idxNotaFinal = ths.findIndex(th => th.textContent.trim() === "Nota Final");
-    const componentesSiglas = ths.slice(idxAluno+1, idxNotaFinal).map(th => th.textContent.trim());
-
-    // percorre linhas de aluno
+  // =====================================================
+  // 5. APLICAR NOTAS NA TABELA
+  // =====================================================
+  function aplicarNotas(componentes, notas) {
     tbody.querySelectorAll("tr").forEach(tr => {
-      const ra = tr.cells[0].textContent.trim();
-      componentesSiglas.forEach((sigla, i) => {
-        const td = tr.cells[idxAluno+1+i];
-        const val = parseValor(td.textContent);
-        const k = key(ra, sigla);
+      const alunoId = tr.dataset.alunoId;
 
-        const anterior = atual.get(k)?.valor ?? null;
-        const novo = (val===null ? null : Number(val.toFixed(2)));
+      componentes.forEach(c => {
+        const td = tr.querySelector(`td[data-comp-id="${c.id}"]`);
+        const reg = notas.find(n =>
+          n.ALUNO_ID == alunoId &&
+          n.COMPONENTE_ID == c.id
+        );
 
-        if (anterior !== novo) {
-          if (novo === null) {
-            if (atual.has(k)) {
-              const idxNota = notas.findIndex(n => key(n.alunoId, n.componenteSigla) === k);
-              if (idxNota >= 0) notas.splice(idxNota, 1);
-            }
-          } else {
-            const reg = { turmaId, disciplinaId, alunoId: ra, componenteSigla: sigla, valor: novo };
-            if (atual.has(k)) {
-              const idxNota = notas.findIndex(n => key(n.alunoId, n.componenteSigla) === k);
-              notas[idxNota] = reg;
-            } else {
-              notas.push(reg);
-            }
-          }
+        if (reg) {
+          td.textContent = Number(reg.VALOR).toFixed(2);
+        }
+      });
+    });
+  }
 
-          audit.push({
-            ts: now.toISOString(),
-            turmaId, disciplinaId, alunoId: ra, componenteSigla: sigla,
-            de: (anterior===null ? null : Number(anterior)),
-            para: novo
+  // =====================================================
+  // 6. SALVAR NOTAS NO BACKEND
+  // =====================================================
+  async function salvarNotas() {
+    const lista = [];
+
+    tbody.querySelectorAll("tr").forEach(tr => {
+      const alunoId = tr.dataset.alunoId;
+
+      tr.querySelectorAll("td[data-comp-id]").forEach(td => {
+        const componenteId = td.dataset.compId;
+        const valor = parseFloat(td.textContent.replace(",", "."));
+
+        if (!isNaN(valor)) {
+          lista.push({
+            turmaId,
+            disciplinaId,
+            alunoId,
+            componenteId,
+            valor
           });
         }
       });
     });
 
-    localStorage.setItem(LS_NOTAS, JSON.stringify(notas));
-    localStorage.setItem(LS_AUDIT, JSON.stringify(audit));
+    await fetch(`${API}/notas`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(lista)
+    });
+
     alert("Notas salvas com sucesso!");
   }
 
-  // ----------------- eventos da página -----------------
-  document.getElementById("btnExportar").addEventListener("click", () => {
-    alert("Notas exportadas com sucesso (simulação)!");
-  });
+  // =====================================================
+  // 7. EXCLUIR ALUNO
+  // =====================================================
+  window.excluirAluno = async function (idAluno) {
+    if (!confirm("Deseja excluir este aluno da turma?")) return;
 
-  document.getElementById("btnExcluirSelecionados").addEventListener("click", () => {
-    alert("Seleção múltipla não implementada neste protótipo.");
-  });
+    await fetch(`${API}/alunos/${idAluno}`, { method: "DELETE" });
 
-  document.getElementById("btnSalvar").addEventListener("click", () => {
-    salvarAlteracoes();
-    const comps = JSON.parse(localStorage.getItem(LS_COMP_DISC) || '[]')
-      .filter(c => String(c.disciplinaId) === String(disciplinaId));
-    recalcularNotasFinais(comps);
-  });
-
-  document.getElementById("btnVoltar").addEventListener("click", () => {
-    window.location.href = "detalhesTurma.html";
-  });
-
-  // Delegação: ações por linha (Editar / Excluir)
-  tbody.addEventListener("click", (e) => {
-    const btn = e.target.closest(".acao-btn");
-    if(!btn) return;
-
-    const tr = e.target.closest("tr");
-    const ra = tr?.cells?.[0]?.textContent?.trim() ?? "(?)";
-    if(btn.classList.contains("btn-editar")){
-      alert(`Editar registro do aluno ${ra} (exemplo).`);
-    }
-    if(btn.classList.contains("btn-excluir")){
-      if(confirm(`Excluir registro do aluno ${ra}?`)){
-        tr.remove();
-      }
-    }
-  });
-
-  // validação e recálculo on-blur
-  tbody.addEventListener("blur", (e) => {
-    const td = e.target.closest('td[data-componente]');
-    if (!td) return;
-    const v = parseValor(td.textContent);
-    td.textContent = (v===null ? '-' : v.toFixed(2));
-
-    const comps = JSON.parse(localStorage.getItem(LS_COMP_DISC) || '[]')
-      .filter(c => String(c.disciplinaId) === String(disciplinaId));
-    recalcularNotasFinais(comps);
-  }, true);
-
-  // ====== Menu flutuante  ======
-  const menuFlutuante = document.getElementById("menuFlutuante");
-  const selectContainer = document.getElementById("selectContainer");
-  const tituloAba = document.getElementById("tituloAba");
-  const btnIr = document.getElementById("btnIr");
-  menuFlutuante.style.display = "none";
-
-  const instituicoes = ["PUCCAMP", "USP", "UNICAMP"];
-  const cursos = ["Engenharia", "Direito", "Administração"];
-  const disciplinas = ["Cálculo I", "Física", "Lógica"];
-  const turmas = ["Turma A", "Turma B", "Turma C"];
-
-  function criarSelect(id, label, opcoes) {
-    const div = document.createElement("div");
-    div.classList.add("campo-selecao");
-    const lbl = document.createElement("label");
-    lbl.textContent = label;
-    lbl.htmlFor = id;
-    const select = document.createElement("select");
-    select.id = id;
-    select.innerHTML = `<option value="">Selecione...</option>` + opcoes.map(o => `<option>${o}</option>`).join("");
-    div.appendChild(lbl); div.appendChild(select);
-    return div;
+    alert("Aluno removido.");
+    await carregarAlunos();
+    montarColunas(await carregarComponentes());
   }
 
-  function abrirMenu(tipo) {
-    selectContainer.innerHTML = "";
-    btnIr.style.display = "none";
-    menuFlutuante.style.display = "block";
+  // =====================================================
+  // 8. EXECUÇÃO INICIAL
+  // =====================================================
+  const componentes = await carregarComponentes();
+  await carregarAlunos();
+  montarColunas(componentes);
 
-    if (tipo === "instituicao") {
-      tituloAba.textContent = "Selecionar Instituição";
-      const btnVerTodas = document.createElement("button");
-      btnVerTodas.textContent = "Ver todas as instituições";
-      btnVerTodas.classList.add("btn-curso");
-      btnVerTodas.style.marginBottom = "10px";
-      btnVerTodas.onclick = () => window.location.href = "listaCursos.html";
-      selectContainer.appendChild(btnVerTodas);
-      selectContainer.appendChild(criarSelect("selInstituicao", "Selecionar Instituição:", instituicoes));
-      btnIr.style.display = "block";
-      btnIr.onclick = () => {
-        const sel = document.getElementById("selInstituicao");
-        if (sel.value) window.location.href = "listaCursos.html";
-        else alert("Selecione uma instituição!");
-      };
-    }
+  const notas = await carregarNotas();
+  aplicarNotas(componentes, notas);
 
-    if (tipo === "curso") {
-      tituloAba.textContent = "Selecionar Curso";
-      selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
-      document.getElementById("selInstituicao").addEventListener("change", () => {
-        if (!document.getElementById("selCurso")) {
-          selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
-          btnIr.style.display = "block";
-          btnIr.onclick = () => {
-            const sel = document.getElementById("selCurso");
-            if (sel.value) window.location.href = "listaDisciplinas.html";
-            else alert("Selecione um curso!");
-          };
-        }
-      }, { once: true });
-    }
+  document.getElementById("btnSalvar").onclick = salvarNotas;
 
-    if (tipo === "disciplina") {
-      tituloAba.textContent = "Selecionar Disciplina";
-      selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
-      document.getElementById("selInstituicao").addEventListener("change", () => {
-        if (!document.getElementById("selCurso")) {
-          selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
-          document.getElementById("selCurso").addEventListener("change", () => {
-            if (!document.getElementById("selDisciplina")) {
-              selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
-              btnIr.style.display = "block";
-              btnIr.onclick = () => {
-                const sel = document.getElementById("selDisciplina");
-                if (sel.value) window.location.href = "listaTurmas.html";
-                else alert("Selecione uma disciplina!");
-              };
-            }
-          }, { once: true });
-        }
-      }, { once: true });
-    }
-
-    if (tipo === "turma") {
-      tituloAba.textContent = "Selecionar Turma";
-      selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
-      document.getElementById("selInstituicao").addEventListener("change", () => {
-        if (!document.getElementById("selCurso")) {
-          selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
-          document.getElementById("selCurso").addEventListener("change", () => {
-            if (!document.getElementById("selDisciplina")) {
-              selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
-              document.getElementById("selDisciplina").addEventListener("change", () => {
-                if (!document.getElementById("selTurma")) {
-                  selectContainer.appendChild(criarSelect("selTurma", "Turma:", turmas));
-                  btnIr.style.display = "block";
-                  btnIr.onclick = () => {
-                    const sel = document.getElementById("selTurma");
-                    if (sel.value) window.location.href = "detalhesTurma.html";
-                    else alert("Selecione uma turma!");
-                  };
-                }
-              }, { once: true });
-            }
-          }, { once: true });
-        }
-      }, { once: true });
-    }
-  }
-
-  document.getElementById("btnInstituicoes").onclick = () => abrirMenu("instituicao");
-  document.getElementById("btnCursos").onclick = () => abrirMenu("curso");
-  document.getElementById("btnDisciplinas").onclick = () => abrirMenu("disciplina");
-  document.getElementById("btnTurmas").onclick = () => abrirMenu("turma");
-
-  document.addEventListener("click", e => {
-    if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
-      menuFlutuante.style.display = "none";
-    }
-  });
-
-  // carrega componentes e injeta a estrutura
-  carregarComponentes();
 });
