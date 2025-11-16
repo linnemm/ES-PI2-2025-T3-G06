@@ -60,7 +60,8 @@ body {
   transition: background-color 0.3s;
 }
 
-.menu-horizontal li a:hover {
+.menu-horizontal li a:hover,
+.menu-horizontal li a.ativo {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -81,8 +82,8 @@ body {
 }
 
 @keyframes slideDown {
-  from {opacity: 0; transform: translateY(-10px);}
-  to {opacity: 1; transform: translateY(0);}
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .menu-conteudo h3 {
@@ -98,8 +99,6 @@ body {
 .campo-selecao label {
   font-size: 14px;
   color: #444;
-  display: block;
-  margin-bottom: 4px;
 }
 
 .campo-selecao select {
@@ -109,7 +108,6 @@ body {
   border-radius: 10px;
   font-size: 15px;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
   cursor: pointer;
 }
 
@@ -120,7 +118,6 @@ body {
   outline: none;
 }
 
-/* Botão Ir do menu flutuante */
 .menu-flutuante .btn-curso {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
@@ -131,12 +128,10 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
 
 .menu-flutuante .btn-curso:hover {
   background: linear-gradient(to right, #5c8c75, #4f7862);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
 }
 
 /* ==========================
@@ -146,26 +141,29 @@ main {
   padding: 30px 10%;
 }
 
-.info-turma h2 {
+.info-turma h1 {
   color: #6ca98c;
-  margin-bottom: 15px;
+  font-size: 26px;
+  margin-bottom: 10px;
 }
 
 .info-turma p {
   font-size: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 /* ==========================
    Botões principais
 ========================== */
-.botoes {
-  margin-bottom: 20px;
+.botoes-topo {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
-.botoes button,
-.voltar,
-.excluir {
+.botoes-topo button,
+.btn-salvar,
+.voltar {
   background: linear-gradient(to right, #6ca98c, #5c8c75);
   color: white;
   border: none;
@@ -178,24 +176,46 @@ main {
   box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   display: inline-flex;
   align-items: center;
+  gap: 8px;
+}
+
+.botoes-topo button:hover,
+.btn-salvar:hover,
+.voltar:hover {
+  background: linear-gradient(to right, #5c8c75, #4f7862);
+}
+
+/* ==========================
+   Controle de edição
+========================== */
+.controle-edicao {
+  background: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 35px;
+  margin-bottom: 25px;
+}
+
+.controle-edicao .campo {
+  display: flex;
+  flex-direction: column;
   gap: 5px;
 }
 
-.botoes button:hover,
-.voltar:hover {
-  background: linear-gradient(to right, #5c8c75, #4f7862);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+.controle-edicao select {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  min-width: 200px;
 }
 
-/* Botão Excluir da tabela */
-.excluir {
-  background: linear-gradient(to right, #fa5252, #e03131);
-  padding: 6px 12px;
-}
-
-.excluir:hover {
-  background: linear-gradient(to right, #e03131, #c22525);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+#chkEdicaoCompleta {
+  transform: scale(1.2);
+  cursor: pointer;
 }
 
 /* ==========================
@@ -206,8 +226,6 @@ main {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  width: 100%;
-  margin: auto;
 }
 
 table {
@@ -219,6 +237,8 @@ th {
   background-color: #dfe8df;
   padding: 10px;
   color: #333;
+  font-weight: 600;
+  text-align: center;
 }
 
 td {
@@ -227,8 +247,33 @@ td {
   border-bottom: 1px solid #ddd;
 }
 
-/* Container do botão voltar fora da tabela */
-.voltar-container {
-  margin-top: 20px;
+.campo-nota {
+  width: 75px;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
   text-align: center;
+}
+
+.campo-nota:disabled {
+  background: #ececec;
+  color: #666;
+}
+
+.nota-final {
+  font-weight: 600;
+  color: #3c5e4e;
+  font-size: 15px;
+}
+
+/* ==========================
+   Botão Voltar
+========================== */
+.voltar-container {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.voltar {
+  margin-top: 10px;
 }
