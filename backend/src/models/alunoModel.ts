@@ -1,8 +1,9 @@
-// src/models/alunoModel.ts
-// Autor: (coloque seu nome aqui)
-// Descrição: Acesso à tabela ALUNOS (cadastro e importação via CSV)
+// ======================================================
+// MODEL — ALUNOS  (VERSÃO FINAL E CORRIGIDA)
+// ======================================================
 
 import { openConnection } from "../config/database";
+import oracledb from "oracledb";
 
 // Representa uma linha da tabela ALUNOS
 export interface Aluno {
@@ -16,7 +17,6 @@ export interface Aluno {
   TURMA_ID: number;
 }
 
-// Dados necessários para criar um aluno na turma
 export interface NovoAlunoInput {
   matricula: string;
   nome: string;
@@ -26,14 +26,52 @@ export interface NovoAlunoInput {
   turmaId: number;
 }
 
-// Para importação via CSV: só matrícula e nome vêm do arquivo
 export interface ImportAlunoCsv {
   matricula: string;
   nome: string;
 }
 
 /* ======================================================
-   1) Criar aluno (cadastro individual)
+   1) Verificar matrícula duplicada
+   ====================================================== */
+export async function verificarMatriculaDuplicada(
+  matricula: string,
+  turmaId: number,
+  ignorarAlunoId?: number
+): Promise<boolean> {
+
+  const conn = await openConnection();
+
+  try {
+    let sql = `
+      SELECT COUNT(*) AS TOTAL
+      FROM ALUNOS
+      WHERE MATRICULA = :matricula
+        AND TURMA_ID = :turmaId
+    `;
+
+    const binds: any = { matricula, turmaId };
+
+    if (ignorarAlunoId) {
+      sql += ` AND ID <> :ignorarAlunoId`;
+      binds.ignorarAlunoId = ignorarAlunoId;
+    }
+
+    const result = await conn.execute(
+      sql,
+      binds,
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    return (result.rows as any)[0].TOTAL > 0;
+
+  } finally {
+    await conn.close();
+  }
+}
+
+/* ======================================================
+   2) Criar aluno
    ====================================================== */
 export async function criarAluno(dados: NovoAlunoInput): Promise<void> {
   const conn = await openConnection();
@@ -56,19 +94,20 @@ export async function criarAluno(dados: NovoAlunoInput): Promise<void> {
       },
       { autoCommit: true }
     );
+
   } catch (error: any) {
-    // ORA-00001 = violação de UNIQUE (UK_ALUNOS_MATRICULA)
-    if (error && error.errorNum === 1) {
+    if (error.errorNum === 1) {
       throw new Error("Já existe um aluno com essa matrícula.");
     }
     throw error;
+
   } finally {
     await conn.close();
   }
 }
 
 /* ======================================================
-   2) Listar alunos por turma
+   3) Listar alunos por turma
    ====================================================== */
 export async function listarAlunosPorTurma(turmaId: number): Promise<Aluno[]> {
   const conn = await openConnection();
@@ -90,19 +129,18 @@ export async function listarAlunosPorTurma(turmaId: number): Promise<Aluno[]> {
       ORDER BY NOME
       `,
       { turmaId },
-      {
-        outFormat: (require("oracledb").OUT_FORMAT_OBJECT || undefined)
-      }
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
-    return (result.rows || []) as Aluno[];
+    return result.rows as Aluno[];
+
   } finally {
     await conn.close();
   }
 }
 
 /* ======================================================
-   3) Buscar aluno por ID (se precisar em edição detalhada)
+   4) Buscar aluno por ID
    ====================================================== */
 export async function buscarAlunoPorId(id: number): Promise<Aluno | null> {
   const conn = await openConnection();
@@ -123,38 +161,32 @@ export async function buscarAlunoPorId(id: number): Promise<Aluno | null> {
       WHERE ID = :id
       `,
       { id },
-      {
-        outFormat: (require("oracledb").OUT_FORMAT_OBJECT || undefined)
-      }
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
-    if (!result.rows || result.rows.length === 0) {
-      return null;
-    }
+    return result.rows?.[0] as Aluno || null;
 
-    return result.rows[0] as Aluno;
   } finally {
     await conn.close();
   }
 }
 
 /* ======================================================
-   4) Editar aluno
-   - Você pode decidir se a matrícula pode mudar ou não.
-   - Aqui deixei possível editar nome + matrícula.
+   5) Editar aluno
    ====================================================== */
 export async function editarAluno(
   id: number,
   nome: string,
   matricula: string
 ): Promise<void> {
+
   const conn = await openConnection();
 
   try {
     await conn.execute(
       `
       UPDATE ALUNOS
-      SET
+      SET 
         NOME = :nome,
         MATRICULA = :matricula
       WHERE ID = :id
@@ -162,19 +194,20 @@ export async function editarAluno(
       { id, nome, matricula },
       { autoCommit: true }
     );
+
   } catch (error: any) {
-    if (error && error.errorNum === 1) {
-      // Bateu na UNIQUE da matrícula
+    if (error.errorNum === 1) {
       throw new Error("Já existe outro aluno com essa matrícula.");
     }
     throw error;
+
   } finally {
     await conn.close();
   }
 }
 
 /* ======================================================
-   5) Remover aluno (um único)
+   6) Remover aluno
    ====================================================== */
 export async function removerAluno(id: number): Promise<void> {
   const conn = await openConnection();
@@ -185,15 +218,14 @@ export async function removerAluno(id: number): Promise<void> {
       { id },
       { autoCommit: true }
     );
+
   } finally {
     await conn.close();
   }
 }
 
 /* ======================================================
-   6) Importar lista de alunos (CSV)
-   - Recebe o contexto da turma (ids) + array de {matricula, nome}
-   - Ignora duplicatas de matrícula (não sobrescreve, como diz o escopo)
+   7) Importação CSV
    ====================================================== */
 export async function importarAlunosCsv(
   contexto: {
@@ -204,26 +236,24 @@ export async function importarAlunosCsv(
   },
   alunosCsv: ImportAlunoCsv[]
 ): Promise<{ inseridos: number; ignoradosDuplicados: number }> {
+
   const conn = await openConnection();
-
-  const sql = `
-    INSERT INTO ALUNOS
-      (MATRICULA, NOME, INSTITUICAO_ID, CURSO_ID, DISCIPLINA_ID, TURMA_ID)
-    VALUES
-      (:matricula, :nome, :instituicaoId, :cursoId, :disciplinaId, :turmaId)
-  `;
-
   let inseridos = 0;
   let ignoradosDuplicados = 0;
 
   try {
     for (const aluno of alunosCsv) {
-      // garante que tem algo nas duas colunas
+
       if (!aluno.matricula || !aluno.nome) continue;
 
       try {
         await conn.execute(
-          sql,
+          `
+          INSERT INTO ALUNOS
+            (MATRICULA, NOME, INSTITUICAO_ID, CURSO_ID, DISCIPLINA_ID, TURMA_ID)
+          VALUES
+            (:matricula, :nome, :instituicaoId, :cursoId, :disciplinaId, :turmaId)
+          `,
           {
             matricula: aluno.matricula,
             nome: aluno.nome,
@@ -234,25 +264,25 @@ export async function importarAlunosCsv(
           },
           { autoCommit: false }
         );
+
         inseridos++;
-      } catch (error: any) {
-        if (error && error.errorNum === 1) {
-          // ORA-00001 → matrícula já existe: ignorar e seguir
+
+      } catch (err: any) {
+        if (err.errorNum === 1) {
           ignoradosDuplicados++;
           continue;
         }
-        throw error;
+        throw err;
       }
     }
 
     await conn.commit();
     return { inseridos, ignoradosDuplicados };
-  } catch (error) {
-    // se algo MUITO errado acontecer, desfaz
-    try {
-      await conn.rollback();
-    } catch {}
-    throw error;
+
+  } catch (err) {
+    try { await conn.rollback(); } catch {}
+    throw err;
+
   } finally {
     await conn.close();
   }

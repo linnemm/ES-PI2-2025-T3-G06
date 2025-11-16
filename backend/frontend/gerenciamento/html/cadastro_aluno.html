@@ -11,25 +11,32 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="cadastro_aluno.css" />
+  <!-- CSS FINAL -->
+  <link rel="stylesheet" href="/gerenciar/css/cadastro_aluno.css" />
 </head>
+
 <body>
   <div class="dashboard">
-    <!-- ===== TOPBAR ===== -->
+
+    <!-- ========================================================= -->
+    <!--                          TOPBAR                           -->
+    <!-- ========================================================= -->
     <header class="topbar-notadez">
       <h2 class="topbar-notadez__brand">NotaDez</h2>
+
       <ul class="ndz-menu">
         <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
         <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
         <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
         <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
-        <li><a href="perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
-        <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+        <li><a href="/gerenciar/html/perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
+        <li><a href="/auth/html/login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
       </ul>
     </header>
 
-    <!-- ===== ABA FLUTUANTE ===== -->
+    <!-- ========================================================= -->
+    <!--                      MENU FLUTUANTE                       -->
+    <!-- ========================================================= -->
     <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
       <div class="menu-conteudo">
         <h3 id="tituloAba">Selecionar</h3>
@@ -38,30 +45,65 @@
       </div>
     </div>
 
-    <!-- ===== CONTEÚDO ===== -->
+    <!-- ========================================================= -->
+    <!--                      FORMULÁRIO ALUNO                     -->
+    <!-- ========================================================= -->
     <main class="main-content">
       <h1>Cadastro de Aluno</h1>
 
       <form id="formAluno" autocomplete="off" novalidate>
+
+        <!-- ≡≡≡≡≡ SELEÇÃO DO BANCO ≡≡≡≡≡ -->
+
+        <label for="instituicao">Instituição:</label>
+        <select id="instituicao" required>
+          <option value="">Carregando...</option>
+        </select>
+
+        <label for="curso">Curso:</label>
+        <select id="curso" required disabled>
+          <option value="">Selecione uma instituição</option>
+        </select>
+
+        <label for="disciplina">Disciplina:</label>
+        <select id="disciplina" required disabled>
+          <option value="">Selecione um curso</option>
+        </select>
+
+        <label for="turma">Turma:</label>
+        <select id="turma" required disabled>
+          <option value="">Selecione uma disciplina</option>
+        </select>
+
+        <!-- ≡≡≡≡≡ CAMPOS DO ALUNO ≡≡≡≡≡ -->
+
         <label for="nome">Nome do Aluno:</label>
-        <input type="text" id="nome" name="nome" placeholder="Ex: João da Silva" required />
+        <input type="text" id="nome" name="nome" placeholder="Ex: João da Silva" required>
 
-        <label for="matricula">RA:</label>
-        <input type="text" id="matricula" name="matricula" placeholder="Ex: 20251234" required />
+        <label for="matricula">RA (Matrícula):</label>
+        <input type="text" id="matricula" name="matricula" placeholder="Ex: 20251234" required>
 
+
+        <!-- BOTÕES -->
         <div class="botoes">
           <button type="submit" class="btn-salvar">
             <i class="fa-solid fa-floppy-disk"></i> Salvar
           </button>
+
           <button type="button" class="btn-curso" id="btnImportar">
             <i class="fa-solid fa-file-import"></i> Importar por arquivo
           </button>
         </div>
+
       </form>
     </main>
+
   </div>
 
-  <!-- JS -->
-  <script src="cadastro_aluno.js"></script>
+  <!-- ========================================================= -->
+  <!--                          JAVASCRIPT                        -->
+  <!-- ========================================================= -->
+  <script src="/gerenciar/javascript/cadastro_aluno.js"></script>
+
 </body>
 </html>

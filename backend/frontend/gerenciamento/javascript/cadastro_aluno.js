@@ -1,134 +1,251 @@
+// =========================================================
+//  CADASTRO DE ALUNO — VERSÃO FINAL E CORRIGIDA
+// =========================================================
+
 document.addEventListener("DOMContentLoaded", () => {
+
+  // =========================================================
+  // 1) VALIDAR LOGIN
+  // =========================================================
+  const usuarioId = localStorage.getItem("usuarioId");
+
+  if (!usuarioId) {
+    alert("Erro: usuário não encontrado. Faça login novamente.");
+    window.location.href = "/auth/html/login.html";
+    return;
+  }
+
+  // =========================================================
+  // ELEMENTOS
+  // =========================================================
+  const selInstituicao = document.getElementById("instituicao");
+  const selCurso       = document.getElementById("curso");
+  const selDisciplina  = document.getElementById("disciplina");
+  const selTurma       = document.getElementById("turma");
+
   const form = document.getElementById("formAluno");
   const btnImportar = document.getElementById("btnImportar");
 
-  form.addEventListener("submit", (e) => {
+
+  // =========================================================
+  // 2) CARREGAR INSTITUIÇÕES DO USUÁRIO
+  // =========================================================
+  async function carregarInstituicoes() {
+    console.log("🔍 Carregando instituições...");
+
+    const resp = await fetch(`/api/instituicoes/listar/${usuarioId}`);
+
+    if (!resp.ok) {
+      alert("Erro ao carregar instituições.");
+      return;
+    }
+
+    const data = await resp.json();
+    console.log("📌 Instituições carregadas:", data);
+
+    selInstituicao.innerHTML = `<option value="">Selecione...</option>`;
+
+    data.forEach(inst => {
+      selInstituicao.innerHTML += `
+        <option value="${inst.ID}">${inst.NOME}</option>
+      `;
+    });
+
+    selInstituicao.disabled = false;
+  }
+
+
+  // =========================================================
+  // 3) CARREGAR CURSOS
+  // =========================================================
+  async function carregarCursos(instituicaoId) {
+    console.log("🔍 Carregando cursos...");
+
+    selCurso.disabled = false;
+    selCurso.innerHTML = `<option>Carregando...</option>`;
+
+    selDisciplina.disabled = true;
+    selDisciplina.innerHTML = `<option value="">Selecione...</option>`;
+
+    selTurma.disabled = true;
+    selTurma.innerHTML = `<option value="">Selecione...</option>`;
+
+    const resp = await fetch(`/api/cursos/listar/${instituicaoId}`);
+    const data = await resp.json();
+
+    console.log("📘 Cursos:", data);
+
+    selCurso.innerHTML = `<option value="">Selecione...</option>`;
+    data.forEach(curso => {
+      selCurso.innerHTML += `<option value="${curso.ID}">${curso.NOME}</option>`;
+    });
+  }
+
+
+  // =========================================================
+  // 4) CARREGAR DISCIPLINAS
+  // =========================================================
+  async function carregarDisciplinas(cursoId) {
+    console.log("🔍 Carregando disciplinas...");
+
+    selDisciplina.disabled = false;
+    selDisciplina.innerHTML = `<option>Carregando...</option>`;
+
+    selTurma.disabled = true;
+    selTurma.innerHTML = `<option value="">Selecione...</option>`;
+
+    const resp = await fetch(`/api/disciplinas/curso/${cursoId}`);
+    const data = await resp.json();
+
+    console.log("📗 Disciplinas:", data);
+
+    selDisciplina.innerHTML = `<option value="">Selecione...</option>`;
+    data.forEach(dis => {
+      selDisciplina.innerHTML += `<option value="${dis.ID}">${dis.NOME}</option>`;
+    });
+  }
+
+
+  // =========================================================
+  // 5) CARREGAR TURMAS
+  // =========================================================
+  async function carregarTurmas(disciplinaId) {
+    console.log("🔍 Carregando turmas...");
+
+    selTurma.disabled = false;
+    selTurma.innerHTML = `<option>Carregando...</option>`;
+
+    const resp = await fetch(`/api/turmas/listar/${disciplinaId}`);
+    const data = await resp.json();
+
+    console.log("👥 Turmas:", data);
+
+    selTurma.innerHTML = `<option value="">Selecione...</option>`;
+    data.forEach(t => {
+      selTurma.innerHTML += `<option value="${t.ID}">${t.NOME}</option>`;
+    });
+  }
+
+
+  // =========================================================
+  // 6) EVENTOS — QUANDO ALTERAR OS SELECTS
+  // =========================================================
+
+  selInstituicao.addEventListener("change", () => {
+    const id = selInstituicao.value;
+    console.log("➡ Instituição selecionada:", id);
+    if (id) carregarCursos(id);
+  });
+
+  selCurso.addEventListener("change", () => {
+    const id = selCurso.value;
+    console.log("➡ Curso selecionado:", id);
+    if (id) carregarDisciplinas(id);
+  });
+
+  selDisciplina.addEventListener("change", () => {
+    const id = selDisciplina.value;
+    console.log("➡ Disciplina selecionada:", id);
+    if (id) carregarTurmas(id);
+  });
+
+
+  // =========================================================
+  // 7) CADASTRAR ALUNO (COM REDIRECIONAMENTO)
+  // =========================================================
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const nome = document.getElementById("nome").value.trim();
     const matricula = document.getElementById("matricula").value.trim();
 
-    if (!nome || !matricula) {
-      alert("Preencha todos os campos!");
-      return;
+    if (!nome || !matricula ||
+        !selInstituicao.value ||
+        !selCurso.value ||
+        !selDisciplina.value ||
+        !selTurma.value) 
+    {
+      return alert("⚠ Preencha todos os campos!");
     }
 
-    const lista = JSON.parse(localStorage.getItem("listaAlunos")) || [];
-    lista.push({ nome, matricula });
-    localStorage.setItem("listaAlunos", JSON.stringify(lista));
+    const body = {
+      nome,
+      matricula,
+      instituicaoId: Number(selInstituicao.value),
+      cursoId: Number(selCurso.value),
+      disciplinaId: Number(selDisciplina.value),
+      turmaId: Number(selTurma.value)
+    };
 
-    alert("Aluno salvo com sucesso!");
-    form.reset();
+    console.log("📤 Enviando dados:", body);
+
+    const resp = await fetch("/api/alunos/criar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+
+    const json = await resp.json();
+
+    if (!resp.ok) {
+      return alert("❌ Erro: " + json.message);
+    }
+
+    alert("✅ Aluno cadastrado com sucesso!");
+
+    // ⭐ REDIRECIONAR AUTOMÁTICO PARA DETALHES DA TURMA
+    const turmaId = selTurma.value;
+    window.location.href = `/gerenciar/html/detalhesTurma.html?turmaId=${turmaId}`;
   });
 
+
+  // =========================================================
+  // 8) IMPORTAR CSV
+  // =========================================================
   btnImportar.addEventListener("click", () => {
-    alert("Aqui você pode implementar a importação por arquivo (CSV/Excel).");
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".csv";
+
+    input.onchange = () => {
+      const arquivo = input.files[0];
+      if (!arquivo) return;
+
+      if (!selInstituicao.value || !selCurso.value || !selDisciplina.value || !selTurma.value) {
+        return alert("Selecione todos os filtros antes de importar.");
+      }
+
+      const formData = new FormData();
+      formData.append("arquivo", arquivo);
+      formData.append("instituicaoId", selInstituicao.value);
+      formData.append("cursoId", selCurso.value);
+      formData.append("disciplinaId", selDisciplina.value);
+      formData.append("turmaId", selTurma.value);
+
+      fetch("/api/alunos/importar-csv", {
+        method: "POST",
+        body: formData
+      })
+      .then(r => r.json())
+      .then(j => {
+        alert(`📥 Importação concluída:
+Inseridos: ${j.inseridos}
+Duplicados: ${j.ignoradosDuplicados}`);
+
+        // 🔥 REDIRECIONAR APÓS IMPORTAÇÃO
+        const turmaId = selTurma.value;
+        window.location.href = `/gerenciar/html/detalhesTurma.html?turmaId=${turmaId}`;
+      })
+      .catch(() => alert("Erro ao importar CSV."));
+    };
+
+    input.click();
   });
 
-  // ===== ABA FLUTUANTE =====
-  const menuFlutuante = document.getElementById("menuFlutuante");
-  const selectContainer = document.getElementById("selectContainer");
-  const tituloAba = document.getElementById("tituloAba");
-  const btnIr = document.getElementById("btnIr");
 
-  const instituicoes = ["PUCCAMP", "USP", "UNICAMP"];
-  const cursos = ["Engenharia", "Direito", "Administração"];
-  const disciplinas = ["Cálculo I", "Física", "Lógica"];
-  const turmas = ["Turma A", "Turma B", "Turma C"];
+  // =========================================================
+  // 9) INICIAR
+  // =========================================================
+  carregarInstituicoes();
 
-  function criarSelect(id, label, opcoes) {
-    const div = document.createElement("div");
-    div.classList.add("campo-selecao");
-
-    const lbl = document.createElement("label");
-    lbl.textContent = label;
-    lbl.htmlFor = id;
-
-    const select = document.createElement("select");
-    select.id = id;
-    select.innerHTML =
-      `<option value="">Selecione...</option>` +
-      opcoes.map(o => `<option>${o}</option>`).join("");
-
-    div.appendChild(lbl);
-    div.appendChild(select);
-    return div;
-  }
-
-  function abrirMenu(tipo) {
-    selectContainer.innerHTML = "";
-    btnIr.style.display = "none";
-    menuFlutuante.style.display = "block";
-
-    if (tipo === "instituicao") {
-      tituloAba.textContent = "Instituições";
-
-      const btnVerTodas = document.createElement("button");
-      btnVerTodas.textContent = "Ver todas as instituições";
-      btnVerTodas.classList.add("btn-curso");
-      btnVerTodas.style.marginBottom = "10px";
-      btnVerTodas.onclick = () => window.location.href = "dashboard.html";
-      selectContainer.appendChild(btnVerTodas);
-
-      selectContainer.appendChild(criarSelect("selInstituicao", "Selecionar Instituição:", instituicoes));
-      btnIr.style.display = "block";
-      btnIr.onclick = () => {
-        const sel = document.getElementById("selInstituicao");
-        if (sel.value) window.location.href = "listaCursos.html";
-        else alert("Selecione uma instituição!");
-      };
-    }
-
-    if (tipo === "curso") {
-      tituloAba.textContent = "Selecionar Curso";
-      selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
-      document.getElementById("selInstituicao").addEventListener("change", () => {
-        selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
-        btnIr.style.display = "block";
-        btnIr.onclick = () => window.location.href = "listaDisciplinas.html";
-      });
-    }
-
-    if (tipo === "disciplina") {
-      tituloAba.textContent = "Selecionar Disciplina";
-      selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
-      document.getElementById("selInstituicao").addEventListener("change", () => {
-        selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
-        document.getElementById("selCurso").addEventListener("change", () => {
-          selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
-          btnIr.style.display = "block";
-          btnIr.onclick = () => window.location.href = "listaTurmas.html";
-        });
-      });
-    }
-
-    if (tipo === "turma") {
-      tituloAba.textContent = "Selecionar Turma";
-      selectContainer.appendChild(criarSelect("selInstituicao", "Instituição:", instituicoes));
-      document.getElementById("selInstituicao").addEventListener("change", () => {
-        selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursos));
-        document.getElementById("selCurso").addEventListener("change", () => {
-          selectContainer.appendChild(criarSelect("selDisciplina", "Disciplina:", disciplinas));
-          document.getElementById("selDisciplina").addEventListener("change", () => {
-            selectContainer.appendChild(criarSelect("selTurma", "Turma:", turmas));
-            btnIr.style.display = "block";
-            btnIr.onclick = () => window.location.href = "detalhesTurma.html";
-          });
-        });
-      });
-    }
-  }
-
-  // Abridores 
-  document.getElementById("btnInstituicoes")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("instituicao"); });
-  document.getElementById("btnCursos")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("curso"); });
-  document.getElementById("btnDisciplinas")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("disciplina"); });
-  document.getElementById("btnTurmas")?.addEventListener("click", (e) => { e.preventDefault(); abrirMenu("turma"); });
-
-  // Fechar ao clicar fora
-  document.addEventListener("click", (e) => {
-    const dentro = menuFlutuante.contains(e.target);
-    const ehTopbar = e.target.closest(".ndz-menu");
-    if (!dentro && !ehTopbar) menuFlutuante.style.display = "none";
-  });
 });
