@@ -37,10 +37,25 @@
   // -------------------------------
   const qs = new URLSearchParams(location.search);
   const turmaId = Number(qs.get("turmaId"));
+
   if (!turmaId) {
     alert("Erro: turmaId não informado.");
     return;
   }
+
+  // =========================================================
+  // ⭐ BOTÃO: NOTAS DA TURMA
+  // =========================================================
+  document.getElementById("btnNotasTurma")?.addEventListener("click", () => {
+    window.location.href = `/gerenciar/html/notasTurma.html?turmaId=${turmaId}`;
+  });
+
+  // =========================================================
+  // ⭐ BOTÃO: ADICIONAR ALUNO → CADASTRO  (CORRIGIDO)
+  // =========================================================
+  document.getElementById("btnAddAluno")?.addEventListener("click", () => {
+    window.location.href = `/gerenciar/html/cadastro_aluno.html?turmaId=${turmaId}`;
+  });
 
   // -------------------------------
   // ELEMENTOS
@@ -58,11 +73,8 @@
     const resp = await fetch(`/api/turmas/detalhes/${turmaId}`);
     const turma = await resp.json();
 
-    tituloTurma.textContent =
-      `Turma ${turma.NOME} — ${turma.DISCIPLINA_NOME}`;
-
-    subTurma.textContent =
-      `Código: ${turma.CODIGO || "-"} | Disciplina: ${turma.DISCIPLINA_NOME}`;
+    tituloTurma.textContent = `Turma ${turma.NOME} — ${turma.DISCIPLINA_NOME}`;
+    subTurma.textContent = `Código: ${turma.CODIGO || "-"} | Disciplina: ${turma.DISCIPLINA_NOME}`;
   }
 
   // -------------------------------
@@ -109,10 +121,8 @@
 
     document.body.appendChild(modal);
 
-    // Fecha modal
     document.getElementById("btnFecharModal").onclick = () => modal.remove();
 
-    // Salvar alterações
     document.getElementById("btnSalvarAluno").onclick = async () => {
       const novaMatricula = document.getElementById("edMatricula").value.trim();
       const novoNome = document.getElementById("edNome").value.trim();
@@ -122,7 +132,6 @@
         return;
       }
 
-      // Validação de matrícula duplicada
       const duplicado = alunos.some(a =>
         a.MATRICULA === novaMatricula && a.ID !== aluno.ID
       );

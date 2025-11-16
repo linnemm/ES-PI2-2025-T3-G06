@@ -6,7 +6,7 @@
 const $ = (id) => document.getElementById(id);
 
 // IDs essenciais
-const userId = localStorage.getItem("userId");
+const userId = localStorage.getItem("usuarioId");   // CORRIGIDO ✔
 const instituicaoId = localStorage.getItem("instituicaoId");
 
 // Verificações
@@ -31,6 +31,7 @@ async function carregarCursos(filtro = "") {
   lista.innerHTML = "<p>Carregando...</p>";
 
   try {
+    // ROTA CORRETA DO BACKEND ✔
     const resp = await fetch(`/api/cursos/listar/${instituicaoId}`);
     const dados = await resp.json();
 
@@ -39,7 +40,7 @@ async function carregarCursos(filtro = "") {
       return;
     }
 
-    // Filtro de busca
+    // 🔍 Filtro de busca
     const filtrados = dados.filter((curso) =>
       curso.NOME.toLowerCase().includes(filtro.toLowerCase()) ||
       curso.SIGLA.toLowerCase().includes(filtro.toLowerCase()) ||
@@ -55,7 +56,7 @@ async function carregarCursos(filtro = "") {
     vazio.style.display = "none";
     lista.innerHTML = "";
 
-    filtrados.forEach(curso => {
+    filtrados.forEach((curso) => {
       const div = document.createElement("div");
       div.classList.add("tabela-row");
 
@@ -141,7 +142,7 @@ async function editarCurso(curso) {
     const resp = await fetch(`/api/cursos/editar/${curso.ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, sigla, coordenador })
+      body: JSON.stringify({ nome, sigla, coordenador }),
     });
 
     const dados = await resp.json();
@@ -152,7 +153,6 @@ async function editarCurso(curso) {
 
     alert("Curso atualizado!");
     carregarCursos();
-
   } catch (error) {
     console.error(error);
     alert("Erro ao editar curso.");
@@ -194,7 +194,6 @@ async function removerCurso(id) {
 
     alert("Curso removido!");
     carregarCursos();
-
   } catch (error) {
     console.error(error);
     alert("Erro ao remover curso.");
@@ -202,17 +201,12 @@ async function removerCurso(id) {
 }
 
 // ===========================================================
-// 6️⃣ MENU FLUTUANTE (mesma lógica das outras telas)
+// 6️⃣ MENU FLUTUANTE
 // ===========================================================
 const menuFlutuante = $("menuFlutuante");
 const selectContainer = $("selectContainer");
 const tituloAba = $("tituloAba");
 const btnIr = $("btnIr");
-
-const instsFake = ["PUCCAMP", "USP", "UNICAMP"];
-const cursosFake = ["Engenharia", "Direito", "Administração"];
-const disciplinasFake = ["Cálculo I", "Física", "Lógica"];
-const turmasFake = ["Turma A", "Turma B", "Turma C"];
 
 function criarSelect(id, label, opcoes) {
   const div = document.createElement("div");
@@ -221,7 +215,7 @@ function criarSelect(id, label, opcoes) {
     <label>${label}</label>
     <select id="${id}">
       <option>Selecione...</option>
-      ${opcoes.map(o => `<option>${o}</option>`).join("")}
+      ${opcoes.map((o) => `<option>${o}</option>`).join("")}
     </select>
   `;
   return div;
@@ -234,30 +228,32 @@ function abrirMenu(tipo) {
 
   if (tipo === "instituicao") {
     tituloAba.textContent = "Instituições";
-    selectContainer.appendChild(criarSelect("selInst", "Instituição:", instsFake));
     btnIr.style.display = "block";
     btnIr.onclick = () => window.location.href = "/gerenciar/html/dashboard.html";
   }
 
   if (tipo === "curso") {
-    tituloAba.textContent = "Curso";
-    selectContainer.appendChild(criarSelect("selInst", "Instituição:", instsFake));
-    selectContainer.appendChild(criarSelect("selCurso", "Curso:", cursosFake));
+    tituloAba.textContent = "Cursos";
     btnIr.style.display = "block";
-    btnIr.onclick = () => window.location.href = "/gerenciar/html/listaDisciplinas.html";
+    btnIr.onclick = () => window.location.href = "/gerenciar/html/listaCursos.html";
   }
 }
 
-document.getElementById("btnInstituicoes").addEventListener("click", () => abrirMenu("instituicao"));
-document.getElementById("btnCursos").addEventListener("click", () => abrirMenu("curso"));
-document.getElementById("btnDisciplinas").addEventListener("click", () => abrirMenu("disciplina"));
-document.getElementById("btnTurmas").addEventListener("click", () => abrirMenu("turma"));
+document.getElementById("btnInstituicoes").addEventListener("click", () =>
+  abrirMenu("instituicao")
+);
+document.getElementById("btnCursos").addEventListener("click", () =>
+  abrirMenu("curso")
+);
+document.getElementById("btnDisciplinas").addEventListener("click", () =>
+  abrirMenu("disciplina")
+);
+document.getElementById("btnTurmas").addEventListener("click", () =>
+  abrirMenu("turma")
+);
 
 document.addEventListener("click", (e) => {
-  if (
-    !menuFlutuante.contains(e.target) &&
-    !e.target.closest(".menu-horizontal")
-  ) {
+  if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
     menuFlutuante.style.display = "none";
   }
 });
@@ -266,6 +262,6 @@ document.addEventListener("click", (e) => {
 // BOTÃO: NOVA DISCIPLINA
 // ===========================================================
 $("btnNovaDisciplina").addEventListener("click", () => {
-  localStorage.setItem("cursoId", ""); // limpa curso selecionado
+  localStorage.setItem("cursoId", "");
   window.location.href = "/gerenciar/html/cadastro_disciplina.html";
 });
