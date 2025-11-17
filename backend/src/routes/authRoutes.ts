@@ -1,27 +1,20 @@
-// ============================================================
-//  ROTAS DE AUTENTICAÇÃO — NotaDez
-//  Organização, padronização e proteção via token
-// ============================================================
+// Autora: Alinne
 
 import express from "express";
 
 import {
-  registerUser,             // Criar usuário
-  loginUser,                // Login + token
-  forgotPassword,           // Enviar e-mail de redefinição
-  resetPassword,            // Redefinir senha com token
-  getMe,                    // Dados do usuário logado
-  updateEmailController,    // Atualizar e-mail
-  updatePasswordController  // Atualizar senha
+  registerUser,             
+  loginUser,                
+  forgotPassword,          
+  resetPassword,            
+  getMe,                    
+  updateEmailController,    
+  updatePasswordController  
 } from "../controllers/authController";
 
 import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = express.Router();
-
-/* ============================================================
-   🔓 ROTAS PÚBLICAS (Não exigem token)
-   ============================================================ */
 
 // Criar conta
 router.post("/register", registerUser);
@@ -36,20 +29,17 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 
 
-/* ============================================================
-   🔐 ROTAS PROTEGIDAS (Exigem token JWT)
-   ============================================================ */
 
-// Recuperar dados do usuário logado
+// rota protegidas (exigem token JWT)
+
+// recuperar dados do usuário logado
 router.get("/me", authMiddleware, getMe);
 
-// Atualizar e-mail
+// atualizar e-mail
 router.put("/update-email", authMiddleware, updateEmailController);
 
-// Atualizar senha
+// atualizar senha
 router.put("/update-password", authMiddleware, updatePasswordController);
 
-
-/* ============================================================ */
 
 export default router;

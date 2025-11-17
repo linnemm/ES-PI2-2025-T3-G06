@@ -1,3 +1,5 @@
+// Autora: Alinne
+
 import { Router } from "express";
 import {
   cadastrarCurso,
