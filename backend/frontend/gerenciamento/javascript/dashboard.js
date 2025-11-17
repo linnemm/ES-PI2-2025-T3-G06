@@ -11,7 +11,6 @@ if (!usuarioId) {
   window.location.href = "/auth/html/login.html";
 }
 
-
 // =============================================
 //  BOTÃO INSTITUIÇÕES → DASHBOARD
 // =============================================
@@ -23,7 +22,6 @@ if (btnInst) {
     window.location.href = "/gerenciar/html/dashboard.html";
   });
 }
-
 
 // =============================================
 //  CARREGAR LISTA DE INSTITUIÇÕES
@@ -83,26 +81,89 @@ async function carregarInstituicoes(filtro = "") {
       `;
 
       // =============================
-      //  ABRIR LISTA DE CURSOS (AGORA PELA URL)
+      //  ABRIR LISTA DE CURSOS
       // =============================
       card.querySelector(".card-content").addEventListener("click", () => {
         window.location.href = `/gerenciar/html/listaCursos.html?inst=${inst.ID}`;
       });
 
       // =============================
-      //  EDITAR
+      //  EDITAR — VIA PROMPT
       // =============================
-      card.querySelector(".edit-btn").addEventListener("click", (e) => {
-        e.stopPropagation(); // evita abrir cursos
-        window.location.href = `/gerenciar/html/editar_instituicao.html?id=${inst.ID}`;
+      card.querySelector(".edit-btn").addEventListener("click", async (e) => {
+        e.stopPropagation();
+
+        const nomeAtual = inst.NOME;
+        const siglaAtual = inst.SIGLA;
+
+        const novoNome = prompt("Novo nome da instituição:", nomeAtual);
+        if (novoNome === null) return;
+        if (novoNome.trim() === "") {
+          alert("O nome não pode ficar vazio.");
+          return;
+        }
+
+        const novaSigla = prompt("Nova sigla:", siglaAtual);
+        if (novaSigla === null) return;
+        if (novaSigla.trim() === "") {
+          alert("A sigla não pode ficar vazia.");
+          return;
+        }
+
+        try {
+          const resp = await fetch(`/api/instituicoes/${inst.ID}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: inst.ID,  // ⭐ OBRIGATÓRIO PARA O SEU BACKEND
+              nome: novoNome.trim(),
+              sigla: novaSigla.trim()
+            })
+          });
+
+          const dados = await resp.json();
+
+          if (!resp.ok) {
+            alert("Erro ao editar: " + dados.message);
+            return;
+          }
+
+          alert("Instituição atualizada com sucesso!");
+          carregarInstituicoes();
+
+        } catch (err) {
+          console.error(err);
+          alert("Erro ao atualizar instituição.");
+        }
       });
 
       // =============================
       //  EXCLUIR
       // =============================
-      card.querySelector(".remove-btn").addEventListener("click", (e) => {
+      card.querySelector(".remove-btn").addEventListener("click", async (e) => {
         e.stopPropagation();
-        removerInstituicao(inst.ID);
+
+        if (!confirm("Tem certeza que deseja excluir esta instituição?")) return;
+
+        try {
+          const resp = await fetch(`/api/instituicoes/${inst.ID}`, {
+            method: "DELETE"
+          });
+
+          const dados = await resp.json();
+
+          if (!resp.ok) {
+            alert(dados.message);
+            return;
+          }
+
+          alert("Instituição removida com sucesso!");
+          carregarInstituicoes();
+
+        } catch (err) {
+          console.error(err);
+          alert("Erro ao remover instituição.");
+        }
       });
 
       listaContainer.appendChild(card);
@@ -114,42 +175,12 @@ async function carregarInstituicoes(filtro = "") {
   }
 }
 
-
-// =============================================
-//  REMOVER INSTITUIÇÃO — BLOQUEIO SE TIVER CURSOS
-// =============================================
-async function removerInstituicao(id) {
-  if (!confirm("Tem certeza que deseja excluir esta instituição?")) return;
-
-  try {
-    const resp = await fetch(`/api/instituicoes/${id}`, {
-      method: "DELETE"
-    });
-
-    const dados = await resp.json();
-
-    if (!resp.ok) {
-      alert(dados.message);
-      return;
-    }
-
-    alert("Instituição removida!");
-    carregarInstituicoes();
-
-  } catch (err) {
-    console.error(err);
-    alert("Erro ao excluir instituição.");
-  }
-}
-
-
 // =============================================
 //  BOTÃO — NOVA INSTITUIÇÃO
 // =============================================
 document.getElementById("addInstituicao").addEventListener("click", () => {
   window.location.href = "/gerenciar/html/cadastro_instituicao.html";
 });
-
 
 // =============================================
 //  BOTÃO DE BUSCA
@@ -159,18 +190,15 @@ document.getElementById("btnBuscarInstituicao").addEventListener("click", () => 
   carregarInstituicoes(termo);
 });
 
-
 // =============================================
 //  ENTER NA BUSCA
 // =============================================
 document.getElementById("buscaInstituicao").addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
-    const termo = e.target.value;
-    carregarInstituicoes(termo);
+    carregarInstituicoes(e.target.value);
   }
 });
-
 
 // =============================================
 //  CARREGAR AO INICIAR

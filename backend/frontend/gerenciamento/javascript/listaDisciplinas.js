@@ -110,11 +110,14 @@ carregarDisciplinas();
 
 
 // =========================================
-// 2️⃣ EDITAR DISCIPLINA
+// 2️⃣ EDITAR DISCIPLINA (CORRIGIDO)
 // =========================================
 async function editarDisciplina(disc) {
   const nome = prompt("Novo nome:", disc.NOME);
   if (!nome) return;
+
+  const sigla = prompt("Nova sigla:", disc.SIGLA);
+  if (!sigla) return;
 
   const codigo = prompt("Novo código:", disc.CODIGO);
   if (!codigo) return;
@@ -126,7 +129,12 @@ async function editarDisciplina(disc) {
     const resp = await fetch(`/api/disciplinas/editar/${disc.ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, codigo, periodo })
+      body: JSON.stringify({
+        nome,
+        sigla,     // ⭐ OBRIGATÓRIO PARA O BACKEND
+        codigo,
+        periodo
+      })
     });
 
     const dados = await resp.json();
@@ -366,7 +374,7 @@ async function carregarComponentes() {
 
       item.innerHTML = `
         <div>
-          <strong>${c.NOME}</strong> (${c.SIGLA})
+          <strong>${c.NOME}</strong> (${c.SIGLA})</strong>
           <br>
           Tipo: <b>${c.TIPO_MEDIA}</b>
           ${c.PESO !== null ? ` — Peso: ${c.PESO}%` : ""}

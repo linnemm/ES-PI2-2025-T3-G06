@@ -130,11 +130,56 @@ document.addEventListener("DOMContentLoaded", () => {
       // EDITAR
       row.querySelector(".btn-editar").addEventListener("click", (e) => {
         e.stopPropagation();
-        abrirModalEdicao(t);
+        editarTurma(t);
       });
 
       corpoTabela.appendChild(row);
     });
+  }
+
+  // =====================================================
+  // EDITAR TURMA  (⭐ VIA PROMPT — SIMPLES E RÁPIDO)
+  // =====================================================
+  async function editarTurma(turma) {
+
+    const nome = prompt("Novo nome da turma:", turma.NOME);
+    if (!nome) return;
+
+    const diaSemana = prompt("Novo dia da semana:", turma.DIA_SEMANA);
+    if (!diaSemana) return;
+
+    const horario = prompt("Novo horário (ex: 19:00):", turma.HORARIO);
+    if (!horario) return;
+
+    const localTurma = prompt("Novo local da turma:", turma.LOCAL_TURMA);
+    if (!localTurma) return;
+
+    try {
+      const resp = await fetch(`/api/turmas/editar/${turma.ID}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome,
+          diaSemana,
+          horario,
+          localTurma
+        })
+      });
+
+      const dados = await resp.json();
+
+      if (!resp.ok) {
+        alert("Erro: " + dados.message);
+        return;
+      }
+
+      alert("Turma atualizada com sucesso!");
+      carregarTurmas();
+
+    } catch (e) {
+      console.error("Erro ao editar turma:", e);
+      alert("Erro ao editar turma.");
+    }
   }
 
   // =====================================================
