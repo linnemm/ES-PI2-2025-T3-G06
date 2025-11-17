@@ -1,8 +1,11 @@
 // =========================================================
-// NOTAS DA TURMA — LÓGICA PRINCIPAL
+//  NOTAS DA TURMA — VERSÃO FINAL SEM PARÂMETROS EXTRAS
 // =========================================================
 (function initNotasTurma() {
 
+  // --------------------------------------------
+  // PEGAR SOMENTE TURMA ID
+  // --------------------------------------------
   const qs = new URLSearchParams(location.search);
   const turmaId = Number(qs.get("turmaId"));
 
@@ -11,15 +14,15 @@
     return;
   }
 
-  // ELEMENTOS
-  const tituloTurma = document.getElementById("tituloTurma");
-  const subTurma = document.getElementById("subTurma");
-  const tipoMediaTexto = document.getElementById("tipoMediaTexto");
-  const selComponente = document.getElementById("selComponente");
-  const chkEdicaoCompleta = document.getElementById("chkEdicaoCompleta");
-  const btnSalvar = document.getElementById("btnSalvar");
-  const btnVoltar = document.getElementById("btnVoltar");
-  const btnExportar = document.getElementById("exportarNotas");
+  // ELEMENTOS HTML
+  const tituloTurma      = document.getElementById("tituloTurma");
+  const subTurma         = document.getElementById("subTurma");
+  const tipoMediaTexto   = document.getElementById("tipoMediaTexto");
+  const selComponente    = document.getElementById("selComponente");
+  const chkEdicaoCompleta= document.getElementById("chkEdicaoCompleta");
+  const btnSalvar        = document.getElementById("btnSalvar");
+  const btnVoltar        = document.getElementById("btnVoltar");
+  const btnExportar      = document.getElementById("exportarNotas");
 
   const thead = document.querySelector("#tabelaNotas thead");
   const tbody = document.getElementById("tbodyNotas");
@@ -39,65 +42,54 @@
   function getNota(alunoId, compId) {
     const k = keyNota(alunoId, compId);
     if (notasAlteradas.has(k)) return notasAlteradas.get(k);
-    if (mapaNotas.has(k)) return mapaNotas.get(k);
+    if (mapaNotas.has(k))      return mapaNotas.get(k);
     return "";
   }
 
-  function setNota(alunoId, compId, valor) {
+  function setNota(alunoId, compId, v) {
     const k = keyNota(alunoId, compId);
-
-    if (valor === "" || isNaN(Number(valor))) {
-      notasAlteradas.set(k, "");
-      return;
-    }
-
-    const numero = Number(valor);
-    if (numero < 0 || numero > 10) return;
-
-    notasAlteradas.set(k, numero);
+    if (v === "" || isNaN(Number(v))) return notasAlteradas.set(k, "");
+    const n = Number(v);
+    if (n < 0 || n > 10) return;
+    notasAlteradas.set(k, n);
   }
 
   // ======================================================
   // CÁLCULO DA NOTA FINAL
   // ======================================================
   function calcularNotaFinal(alunoId) {
-    if (componentes.length === 0) return "-";
+    if (!componentes.length) return "-";
 
     for (const c of componentes) {
       const v = getNota(alunoId, c.ID);
-      if (v === "" || v === undefined || v === null) return "-";
+      if (v === "" || v === undefined) return "-";
     }
 
-    // MÉDIA PONDERADA
     if (tipoMedia === "PONDERADA") {
       let soma = 0;
-      let totalPesos = 0;
+      let tot = 0;
 
-      for (const c of componentes) {
-        const v = Number(getNota(alunoId, c.ID));
-        const p = Number(c.PESO);
-        soma += v * (p / 100);
-        totalPesos += p;
-      }
+      componentes.forEach(c => {
+        soma += Number(getNota(alunoId, c.ID)) * (c.PESO / 100);
+        tot  += c.PESO;
+      });
 
-      if (totalPesos !== 100) soma *= (100 / totalPesos);
+      if (tot !== 100) soma *= (100 / tot);
+
       return soma.toFixed(2);
     }
 
-    // MÉDIA SIMPLES
     let soma = 0;
     componentes.forEach(c => soma += Number(getNota(alunoId, c.ID)));
+
     return (soma / componentes.length).toFixed(2);
   }
 
   // ======================================================
-  // MONTAR CABEÇALHO
+  // CABEÇALHO DA TABELA
   // ======================================================
   function montarCabecalho() {
-    let html = `
-      <th>Matrícula</th>
-      <th>Aluno</th>
-    `;
+    let html = `<th>Matrícula</th><th>Aluno</th>`;
 
     componentes.forEach(c => {
       let label = c.SIGLA;
@@ -110,7 +102,7 @@
   }
 
   // ======================================================
-  // MONTAR TABELA
+  // LINHAS
   // ======================================================
   function montarLinhas() {
     tbody.innerHTML = alunos.map(aluno => {
@@ -125,19 +117,18 @@
           <td>
             <input 
               type="number"
-              step="0.01"
               class="campo-nota"
               data-aluno="${aluno.ID}"
               data-comp="${c.ID}"
-              value="${v !== "" ? v : ""}"
+              step="0.01"
+              value="${v}"
               disabled
             >
           </td>
         `;
       });
 
-      const final = calcularNotaFinal(aluno.ID);
-      html += `<td class="nota-final" data-aluno="${aluno.ID}">${final}</td>`;
+      html += `<td class="nota-final" data-aluno="${aluno.ID}">${calcularNotaFinal(aluno.ID)}</td>`;
 
       return `<tr>${html}</tr>`;
     }).join("");
@@ -151,41 +142,35 @@
     const compSel = Number(selComponente.value || 0);
     const full = chkEdicaoCompleta.checked;
 
-    campos.forEach(input => {
-      const comp = Number(input.dataset.comp);
-      input.disabled = !full && comp !== compSel;
+    campos.forEach(inp => {
+      const comp = Number(inp.dataset.comp);
+      inp.disabled = !full && comp !== compSel;
     });
   }
 
   // ======================================================
-  // INPUT + ENTER PARA IR PARA O PRÓXIMO CAMPO
+  // ENTER PARA IR DESCENDO
   // ======================================================
   function ligarEventosEntrada() {
     const campos = [...document.querySelectorAll(".campo-nota")];
 
-    campos.forEach((input, index) => {
-
-      input.addEventListener("input", () => {
-        const alunoId = Number(input.dataset.aluno);
-        const compId = Number(input.dataset.comp);
-
-        setNota(alunoId, compId, input.value);
-
-        const finalCell = document.querySelector(`.nota-final[data-aluno="${alunoId}"]`);
-        finalCell.textContent = calcularNotaFinal(alunoId);
+    campos.forEach((inp, i) => {
+      inp.addEventListener("input", () => {
+        const alunoId = Number(inp.dataset.aluno);
+        const compId  = Number(inp.dataset.comp);
+        setNota(alunoId, compId, inp.value);
+        document.querySelector(`.nota-final[data-aluno="${alunoId}"]`)
+          .textContent = calcularNotaFinal(alunoId);
       });
 
-      input.addEventListener("keydown", (e) => {
+      inp.addEventListener("keydown", e => {
         if (e.key === "Enter") {
           e.preventDefault();
-
           if (!chkEdicaoCompleta.checked) return;
-
-          const proximo = campos[index + 1];
-
-          if (proximo && !proximo.disabled) {
-            proximo.focus();
-            proximo.select();
+          const nxt = campos[i + 1];
+          if (nxt && !nxt.disabled) {
+            nxt.focus();
+            nxt.select();
           }
         }
       });
@@ -196,118 +181,97 @@
   // SALVAR NOTAS
   // ======================================================
   async function salvarNotas() {
-    if (notasAlteradas.size === 0) {
+    if (!notasAlteradas.size) {
       alert("Nenhuma nota alterada!");
       return;
     }
 
     const lista = [];
 
-    notasAlteradas.forEach((valor, chave) => {
-      if (valor === "") return;
+    notasAlteradas.forEach((v, chave) => {
+      if (v === "") return;
       const [alunoId, compId] = chave.split("-");
       lista.push({
         turmaId,
         alunoId: Number(alunoId),
         componenteId: Number(compId),
-        valor: Number(valor)
+        valor: Number(v)
       });
     });
 
-    try {
-      const resp = await fetch("/api/notas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(lista)
-      });
+    const resp = await fetch("/api/notas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(lista)
+    });
 
-      if (!resp.ok) {
-        const j = await resp.json();
-        throw new Error(j.message);
-      }
+    if (!resp.ok) return alert("Erro ao salvar notas.");
 
-      alert("Notas salvas!");
+    alert("Notas salvas!");
 
-      lista.forEach(n => mapaNotas.set(keyNota(n.alunoId, n.componenteId), n.valor));
-      notasAlteradas.clear();
+    lista.forEach(n =>
+      mapaNotas.set(keyNota(n.alunoId, n.componenteId), n.valor)
+    );
 
-    } catch (e) {
-      alert("Erro ao salvar notas.");
-      console.error(e);
-    }
+    notasAlteradas.clear();
   }
 
   // ======================================================
-  // EXPORTAR CSV
+  // EXPORTAÇÃO COMPLETA — TODAS AS NOTAS OBRIGATÓRIAS
   // ======================================================
   function exportarCSV() {
 
     for (const aluno of alunos) {
       for (const c of componentes) {
-        const valor = getNota(aluno.ID, c.ID);
-        if (valor === "" || valor === null || valor === undefined) {
-          alert("Só é possível exportar quando TODAS as notas estiverem preenchidas.");
+        const v = getNota(aluno.ID, c.ID);
+        if (v === "" || v === undefined) {
+          alert("⛔ Preencha TODAS as notas antes de exportar.");
           return;
         }
       }
+
+      const media = calcularNotaFinal(aluno.ID);
+      if (media === "-" || media === "" || isNaN(Number(media))) {
+        alert("⛔ Algumas médias finais não foram calculadas.");
+        return;
+      }
     }
 
-    let csv = "";
-    csv += "matricula;aluno;";
-
+    let csv = "matricula;aluno;";
     componentes.forEach(c => csv += `${c.SIGLA};`);
-
     csv += "nota_final\n";
 
-    alunos.forEach(aluno => {
-      let linha = `${aluno.MATRICULA};${aluno.NOME};`;
-      componentes.forEach(c => { linha += `${getNota(aluno.ID, c.ID)};`; });
-      linha += `${calcularNotaFinal(aluno.ID)}\n`;
+    alunos.forEach(a => {
+      let linha = `${a.MATRICULA};${a.NOME};`;
+      componentes.forEach(c => linha += `${getNota(a.ID, c.ID)};`);
+      linha += `${calcularNotaFinal(a.ID)}\n`;
       csv += linha;
     });
 
-    const agora = new Date();
-    const nomeArq =
-      `${agora.getFullYear()}-${String(agora.getMonth()+1).padStart(2,"0")}-${String(agora.getDate()).padStart(2,"0")}_` +
-      `${String(agora.getHours()).padStart(2,"0")}${String(agora.getMinutes()).padStart(2,"0")}${String(agora.getSeconds()).padStart(2,"0")}000-` +
-      `${turma.NOME}-${turma.DISCIPLINA_SIGLA}.csv`;
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = nomeArq;
-    a.click();
-    URL.revokeObjectURL(url);
+    const blob = new Blob([csv], { type: "text/csv" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `notas_turma_${turma.NOME}.csv`;
+    link.click();
   }
 
   // ======================================================
-  // CARREGAR TUDO
+  // CARREGAR TUDO USANDO APENAS turmaId
   // ======================================================
   async function carregarTudo() {
     try {
       const respT = await fetch(`/api/turmas/detalhes/${turmaId}`);
       turma = await respT.json();
 
-      // REMOVIDO "Turma"
       tituloTurma.textContent = `Notas — ${turma.NOME}`;
-      subTurma.textContent = `Disciplina: ${turma.DISCIPLINA_NOME}`;
+      subTurma.textContent = turma.DISCIPLINA_NOME;
 
       const respC = await fetch(`/api/componentes/listar/${turma.DISCIPLINA_ID}`);
       componentes = await respC.json();
 
-      if (componentes.length > 0) {
-        tipoMedia =
-          componentes[0].TIPO_MEDIA?.toUpperCase() === "PONDERADA"
-            ? "PONDERADA"
-            : "SIMPLES";
-      }
-
+      tipoMedia = componentes[0]?.TIPO_MEDIA?.toUpperCase() || "SIMPLES";
       tipoMediaTexto.textContent =
-        tipoMedia === "PONDERADA"
-          ? "Média da Disciplina: Ponderada"
-          : "Média da Disciplina: Simples";
+        tipoMedia === "PONDERADA" ? "Média: Ponderada" : "Média: Simples";
 
       const respA = await fetch(`/api/alunos/turma/${turmaId}`);
       alunos = await respA.json();
@@ -323,9 +287,7 @@
       selComponente.innerHTML =
         `<option value="">(Selecione um componente)</option>` +
         componentes.map(c =>
-          `<option value="${c.ID}">${c.SIGLA} — ${c.NOME} ${
-            tipoMedia === "PONDERADA" ? `(${c.PESO}%)` : ""
-          }</option>`
+          `<option value="${c.ID}">${c.SIGLA} — ${c.NOME}</option>`
         ).join("");
 
       montarCabecalho();
@@ -334,7 +296,7 @@
 
     } catch (e) {
       console.error(e);
-      alert("Erro ao carregar dados.");
+      alert("Erro ao carregar dados da turma.");
     }
   }
 
@@ -344,10 +306,9 @@
     selComponente.value = "";
     aplicarModoEdicao();
   });
-
   btnSalvar.addEventListener("click", salvarNotas);
-  btnVoltar.addEventListener("click", () => history.back());
   btnExportar.addEventListener("click", exportarCSV);
+  btnVoltar.addEventListener("click", () => history.back());
 
   carregarTudo();
 

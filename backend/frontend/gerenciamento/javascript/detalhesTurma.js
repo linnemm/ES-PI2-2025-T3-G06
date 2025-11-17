@@ -1,39 +1,11 @@
 // =========================================================
-// TOPBAR
+//  DETALHES DA TURMA — VERSÃO FINAL SEM MENU FLUTUANTE
 // =========================================================
-(function initTopbar() {
-  const menuFlutuante = document.getElementById("menuFlutuante");
-  const selectContainer = document.getElementById("selectContainer");
-  const btnIr = document.getElementById("btnIr");
 
-  function abrirMenu() {
-    selectContainer.innerHTML = "";
-    btnIr.style.display = "none";
-    menuFlutuante.style.display = "block";
-  }
-
-  const id = s => document.getElementById(s);
-
-  id("btnInstituicoes")?.addEventListener("click", e => { e.preventDefault(); abrirMenu(); });
-  id("btnCursos")?.addEventListener("click", e => { e.preventDefault(); abrirMenu(); });
-  id("btnDisciplinas")?.addEventListener("click", e => { e.preventDefault(); abrirMenu(); });
-  id("btnTurmas")?.addEventListener("click", e => { e.preventDefault(); abrirMenu(); });
-
-  document.addEventListener("click", e => {
-    if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
-      menuFlutuante.style.display = "none";
-    }
-  });
-})();
-
-
-// =========================================================
-// DETALHES DA TURMA
-// =========================================================
-(function initDetalhes() {
+document.addEventListener("DOMContentLoaded", () => {
 
   // -------------------------------
-  // PARAMS DA URL
+  // PEGAR TURMA ID DA URL
   // -------------------------------
   const qs = new URLSearchParams(location.search);
   const turmaId = Number(qs.get("turmaId"));
@@ -43,38 +15,34 @@
     return;
   }
 
-  // =========================================================
-  // ⭐ BOTÃO: NOTAS DA TURMA
-  // =========================================================
-  document.getElementById("btnNotasTurma")?.addEventListener("click", () => {
-    window.location.href = `/gerenciar/html/notasTurma.html?turmaId=${turmaId}`;
-  });
-
-  // =========================================================
-  // ⭐ BOTÃO: ADICIONAR ALUNO → CADASTRO  (CORRIGIDO)
-  // =========================================================
-  document.getElementById("btnAddAluno")?.addEventListener("click", () => {
-    window.location.href = `/gerenciar/html/cadastro_aluno.html?turmaId=${turmaId}`;
-  });
+  // -------------------------------
+  // BOTÃO INSTITUIÇÕES
+  // -------------------------------
+  document.getElementById("btnInstituicoes").onclick = () => {
+    window.location.href = "/gerenciar/html/dashboard.html";
+  };
 
   // -------------------------------
   // ELEMENTOS
   // -------------------------------
   const tituloTurma = document.getElementById("tituloTurma");
-  const subTurma = document.getElementById("subTurma");
-  const tbody = document.getElementById("tbodyAlunos");
+  const subTurma    = document.getElementById("subTurma");
+  const tbody       = document.getElementById("tbodyAlunos");
 
   let alunos = [];
+  let turmaCache = null; // ⭐ aqui vamos guardar INSTITUICAO_ID, CURSO_ID, DISCIPLINA_ID
 
   // -------------------------------
   // CARREGAR TURMA
   // -------------------------------
   async function carregarTurma() {
-    const resp = await fetch(`/api/turmas/detalhes/${turmaId}`);
+    const resp  = await fetch(`/api/turmas/detalhes/${turmaId}`);
     const turma = await resp.json();
 
+    turmaCache = turma; // ⭐ guarda tudo para usar depois nos botões / import
+
     tituloTurma.textContent = `Turma ${turma.NOME} — ${turma.DISCIPLINA_NOME}`;
-    subTurma.textContent = `Código: ${turma.CODIGO || "-"} | Disciplina: ${turma.DISCIPLINA_NOME}`;
+    subTurma.textContent    = `Código: ${turma.CODIGO || "-"} | Disciplina: ${turma.DISCIPLINA_NOME}`;
   }
 
   // -------------------------------
@@ -102,15 +70,8 @@
         </div>
 
         <div class="modal-body">
-          <div class="field">
-            <label>Matrícula</label>
-            <input id="edMatricula" value="${aluno.MATRICULA}">
-          </div>
-
-          <div class="field">
-            <label>Nome</label>
-            <input id="edNome" value="${aluno.NOME}">
-          </div>
+          <div class="field"><label>Matrícula</label><input id="edMatricula" value="${aluno.MATRICULA}"></div>
+          <div class="field"><label>Nome</label><input id="edNome" value="${aluno.NOME}"></div>
         </div>
 
         <div class="modal-footer">
@@ -125,7 +86,7 @@
 
     document.getElementById("btnSalvarAluno").onclick = async () => {
       const novaMatricula = document.getElementById("edMatricula").value.trim();
-      const novoNome = document.getElementById("edNome").value.trim();
+      const novoNome      = document.getElementById("edNome").value.trim();
 
       if (!novaMatricula || !novoNome) {
         alert("Preencha todos os campos.");
@@ -161,7 +122,7 @@
   }
 
   // -------------------------------
-  // REMOVER UM ALUNO
+  // REMOVER ALUNO INDIVIDUAL
   // -------------------------------
   async function removerAluno(id) {
     const resp = await fetch(`/api/alunos/remover/${id}`, { method: "DELETE" });
@@ -169,7 +130,7 @@
   }
 
   // -------------------------------
-  // RENDERIZAR TABELA
+  // RENDERIZAÇÃO DA TABELA
   // -------------------------------
   function render() {
     tbody.innerHTML = alunos.map(a => `
@@ -177,101 +138,80 @@
         <td><input type="checkbox" class="chkAluno" data-id="${a.ID}"></td>
         <td>${a.MATRICULA}</td>
         <td>${a.NOME}</td>
-
         <td>
-          <div class="acoes">
-            <button class="btn-editar" data-id="${a.ID}">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-
-            <button class="btn-excluir" data-id="${a.ID}">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </div>
+          <button class="btn-editar" data-id="${a.ID}"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-excluir" data-id="${a.ID}"><i class="fa-solid fa-trash"></i></button>
         </td>
       </tr>
     `).join("");
 
-    // EDITAR
-    tbody.querySelectorAll(".btn-editar").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const aluno = alunos.find(a => a.ID == btn.dataset.id);
-        abrirModalEditar(aluno);
-      });
+    // editar
+    document.querySelectorAll(".btn-editar").forEach(btn => {
+      btn.onclick = () => abrirModalEditar(alunos.find(a => a.ID == btn.dataset.id));
     });
 
-    // EXCLUIR
-    tbody.querySelectorAll(".btn-excluir").forEach(btn => {
-      btn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+    // excluir
+    document.querySelectorAll(".btn-excluir").forEach(btn => {
+      btn.onclick = async () => {
         if (!confirm("Remover aluno?")) return;
         await removerAluno(Number(btn.dataset.id));
         carregarAlunos();
-      });
+      };
     });
   }
 
   // -------------------------------
   // IMPORTAR CSV
   // -------------------------------
-  document.getElementById("btnImportar").addEventListener("click", () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".csv";
+  document.getElementById("btnImportar").onclick = () => {
+    const inp = document.createElement("input");
+    inp.type = "file";
+    inp.accept = ".csv";
 
-    input.onchange = async () => {
-      const arquivo = input.files[0];
+    inp.onchange = async () => {
+      const arquivo = inp.files[0];
       if (!arquivo) return;
 
-      const form = new FormData();
-      form.append("arquivo", arquivo);
-      form.append("turmaId", turmaId);
-
-      const respTurma = await fetch(`/api/turmas/detalhes/${turmaId}`);
-      const turma = await respTurma.json();
-
-      form.append("instituicaoId", turma.INSTITUICAO_ID);
-      form.append("cursoId", turma.CURSO_ID);
-      form.append("disciplinaId", turma.DISCIPLINA_ID);
-
-      try {
-        const resp = await fetch("/api/alunos/importar-csv", {
-          method: "POST",
-          body: form
-        });
-
-        const json = await resp.json();
-
-        if (!resp.ok) throw new Error(json.message);
-
-        alert(`Importação concluída!
-Inseridos: ${json.inseridos}
-Duplicados ignorados: ${json.ignoradosDuplicados}`);
-
-        carregarAlunos();
-      } catch (err) {
-        console.error(err);
-        alert("Erro ao importar CSV.");
+      // usa turmaCache para pegar instituicao/curso/disciplina
+      if (!turmaCache) {
+        alert("Turma ainda não carregada. Tente novamente.");
+        return;
       }
+
+      const fd = new FormData();
+      fd.append("arquivo", arquivo);
+      fd.append("turmaId", turmaId);
+      fd.append("instituicaoId", turmaCache.INSTITUICAO_ID);
+      fd.append("cursoId", turmaCache.CURSO_ID);
+      fd.append("disciplinaId", turmaCache.DISCIPLINA_ID);
+
+      const resp = await fetch("/api/alunos/importar-csv", { method: "POST", body: fd });
+      const json = await resp.json();
+
+      alert(`Importação concluída!
+Inseridos: ${json.inseridos}
+Duplicados: ${json.ignoradosDuplicados}`);
+
+      carregarAlunos();
     };
 
-    input.click();
-  });
+    inp.click();
+  };
 
   // -------------------------------
   // EXCLUIR SELECIONADOS
   // -------------------------------
   document.getElementById("btnExcluirSelecionados").onclick = async () => {
-    const marcados = [...tbody.querySelectorAll(".chkAluno:checked")];
+    const checks = [...document.querySelectorAll(".chkAluno:checked")];
 
-    if (!marcados.length) return alert("Nenhum aluno selecionado.");
+    if (!checks.length) {
+      alert("Nenhum aluno selecionado.");
+      return;
+    }
 
-    if (!confirm(`Excluir ${marcados.length} aluno(s)?`)) return;
+    if (!confirm(`Excluir ${checks.length} aluno(s)?`)) return;
 
-    for (const chk of marcados) {
+    for (const chk of checks) {
       await removerAluno(Number(chk.dataset.id));
     }
 
@@ -280,9 +220,53 @@ Duplicados ignorados: ${json.ignoradosDuplicados}`);
   };
 
   // -------------------------------
-  // INICIAR TELA
+  // BOTÃO NOTAS DA TURMA
+  // (AGORA SÓ USA turmaCache, SEM URL EXTRA)
+// -------------------------------
+  document.getElementById("btnNotasTurma").onclick = () => {
+    if (!turmaCache) {
+      alert("Turma ainda não carregada. Tente novamente.");
+      return;
+    }
+
+    const instId  = turmaCache.INSTITUICAO_ID;
+    const cursoId = turmaCache.CURSO_ID;
+    const discId  = turmaCache.DISCIPLINA_ID;
+
+    window.location.href =
+      `/gerenciar/html/notasTurma.html?` +
+      `turmaId=${turmaId}&inst=${instId}&curso=${cursoId}&disc=${discId}`;
+  };
+
+  // -------------------------------
+  // BOTÃO ADICIONAR ALUNO
+  // -------------------------------
+  document.getElementById("btnAddAluno").onclick = () => {
+    if (!turmaCache) {
+      alert("Turma ainda não carregada. Tente novamente.");
+      return;
+    }
+
+    const instId  = turmaCache.INSTITUICAO_ID;
+    const cursoId = turmaCache.CURSO_ID;
+    const discId  = turmaCache.DISCIPLINA_ID;
+
+    window.location.href =
+      `/gerenciar/html/cadastro_aluno.html?` +
+      `turmaId=${turmaId}&inst=${instId}&curso=${cursoId}&disc=${discId}`;
+  };
+
+  // -------------------------------
+  // VOLTAR
+  // -------------------------------
+  document.getElementById("btnVoltar").onclick = () => {
+    window.history.back();
+  };
+
+  // -------------------------------
+  // INICIAR
   // -------------------------------
   carregarTurma();
   carregarAlunos();
 
-})();
+});

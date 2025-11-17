@@ -1,16 +1,32 @@
 // ================================================
-// CADASTRO DE TURMA — FINALIZADO E CORRIGIDO
+// CADASTRO DE TURMA — VERSÃO FINAL CORRIGIDA
 // ================================================
 document.addEventListener("DOMContentLoaded", () => {
 
-  const form = document.getElementById("formTurma");
-  const btnCancelar = document.getElementById("btnCancelar");
+  const $ = (id) => document.getElementById(id);
 
-  const selInstituicao = document.getElementById("instituicao");
-  const selCurso = document.getElementById("curso");
-  const selDisciplina = document.getElementById("disciplinaId");
+  const form = $("formTurma");
+  const selInstituicao = $("instituicao");
+  const selCurso = $("curso");
+  const selDisciplina = $("disciplinaId");
 
   const usuarioId = localStorage.getItem("usuarioId");
+
+  // Segurança
+  if (!usuarioId) {
+    alert("Erro: usuário não identificado.");
+    window.location.href = "/auth/html/login.html";
+    return;
+  }
+
+  // =====================================================
+  // PEGAR PARÂMETROS DA URL
+  // =====================================================
+  const params = new URLSearchParams(window.location.search);
+
+  let instituicaoId = params.get("inst");
+  let cursoId = params.get("curso");
+  let disciplinaId = params.get("disc");
 
   // =====================================================
   // 1) CARREGAR INSTITUIÇÕES DO USUÁRIO
@@ -29,6 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
         selInstituicao.appendChild(opt);
       });
 
+      // Se veio pela URL → selecionar automaticamente
+      if (instituicaoId) {
+        selInstituicao.value = instituicaoId;
+        carregarCursos(); // já carrega os cursos
+      }
+
     } catch (e) {
       console.error("Erro ao carregar instituições:", e);
     }
@@ -39,15 +61,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================================================
   // 2) AO SELECIONAR INSTITUIÇÃO → CARREGAR CURSOS
   // =====================================================
-  selInstituicao.addEventListener("change", async () => {
-    selCurso.innerHTML = `<option value="">Selecione...</option>`;
+  async function carregarCursos() {
+    selCurso.innerHTML = `<option value="">Carregando...</option>`;
     selDisciplina.innerHTML = `<option value="">Selecione...</option>`;
-
-    if (!selInstituicao.value) return;
 
     try {
       const resp = await fetch(`/api/cursos/listar/${selInstituicao.value}`);
       const cursos = await resp.json();
+
+      selCurso.innerHTML = `<option value="">Selecione...</option>`;
 
       cursos.forEach(curso => {
         const opt = document.createElement("option");
@@ -56,22 +78,32 @@ document.addEventListener("DOMContentLoaded", () => {
         selCurso.appendChild(opt);
       });
 
+      if (cursoId) {
+        selCurso.value = cursoId;
+        carregarDisciplinas();
+      }
+
     } catch (e) {
       console.error("Erro ao carregar cursos:", e);
     }
+  }
+
+  selInstituicao.addEventListener("change", () => {
+    instituicaoId = selInstituicao.value;
+    carregarCursos();
   });
 
   // =====================================================
   // 3) AO SELECIONAR CURSO → CARREGAR DISCIPLINAS
   // =====================================================
-  selCurso.addEventListener("change", async () => {
-    selDisciplina.innerHTML = `<option value="">Selecione...</option>`;
-
-    if (!selCurso.value) return;
+  async function carregarDisciplinas() {
+    selDisciplina.innerHTML = `<option value="">Carregando...</option>`;
 
     try {
       const resp = await fetch(`/api/disciplinas/curso/${selCurso.value}`);
       const disciplinas = await resp.json();
+
+      selDisciplina.innerHTML = `<option value="">Selecione...</option>`;
 
       disciplinas.forEach(d => {
         const opt = document.createElement("option");
@@ -80,37 +112,41 @@ document.addEventListener("DOMContentLoaded", () => {
         selDisciplina.appendChild(opt);
       });
 
+      if (disciplinaId) {
+        selDisciplina.value = disciplinaId;
+      }
+
     } catch (e) {
       console.error("Erro ao carregar disciplinas:", e);
     }
+  }
+
+  selCurso.addEventListener("change", () => {
+    cursoId = selCurso.value;
+    carregarDisciplinas();
   });
 
   // =====================================================
-  // 4) SALVAR TURMA NO BANCO
+  // 4) SALVAR TURMA
   // =====================================================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    const nome = document.getElementById("nomeTurma").value.trim();
-    const diaSemana = document.getElementById("diaSemana").value;
-    const horario = document.getElementById("horario").value;
-    const localTurma = document.getElementById("localTurma").value;
-
-    if (!nome || !diaSemana || !horario || !localTurma ||
-        !selInstituicao.value || !selCurso.value || !selDisciplina.value) {
-      alert("Preencha todos os campos!");
-      return;
-    }
 
     const dados = {
       instituicaoId: Number(selInstituicao.value),
       cursoId: Number(selCurso.value),
       disciplinaId: Number(selDisciplina.value),
-      nome,
-      diaSemana,
-      horario,
-      localTurma
+      nome: $("nomeTurma").value.trim(),
+      diaSemana: $("diaSemana").value.trim(),
+      horario: $("horario").value.trim(),
+      localTurma: $("localTurma").value.trim()
     };
+
+    if (!dados.instituicaoId || !dados.cursoId || !dados.disciplinaId ||
+        !dados.nome || !dados.diaSemana || !dados.horario || !dados.localTurma) {
+      alert("Preencha todos os campos!");
+      return;
+    }
 
     try {
       const resp = await fetch("/api/turmas/criar", {
@@ -127,7 +163,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       alert("Turma criada com sucesso!");
-      window.location.href = "/gerenciar/html/listaTurmas.html";
+
+      window.location.href =
+        `/gerenciar/html/listaTurmas.html?inst=${dados.instituicaoId}&curso=${dados.cursoId}&disc=${dados.disciplinaId}`;
 
     } catch (e) {
       console.error(e);
@@ -138,8 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================================================
   // 5) CANCELAR
   // =====================================================
-  btnCancelar?.addEventListener("click", () => {
-    window.location.href = "/gerenciar/html/listaTurmas.html";
+  $("btnCancelar").addEventListener("click", () => {
+    history.back();
   });
 
 });

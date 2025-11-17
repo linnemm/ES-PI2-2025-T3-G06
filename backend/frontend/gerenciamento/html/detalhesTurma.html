@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Alunos da Turma — NotaDez</title>
 
-  <!-- Fonte e ícones -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
-  <!-- CSS da página -->
   <link rel="stylesheet" href="/gerenciar/css/detalhesTurma.css" />
 </head>
 
@@ -17,45 +14,43 @@
 <div class="dashboard">
 
   <!-- ========================================================= -->
-  <!--                        TOPBAR                             -->
+  <!--                        TOPBAR LIMPA                       -->
   <!-- ========================================================= -->
   <nav class="topbar">
     <h2>NotaDez</h2>
-    <ul class="menu-horizontal">
-      <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-      <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
-      <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
-      <li><a href="#" id="btnTurmas" class="ativo"><i class="fa-solid fa-users"></i> Turmas</a></li>
 
-      <!-- Caminhos CORRETOS -->
-      <li><a href="/gerenciar/html/perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
-      <li><a href="/auth/html/login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+    <ul class="menu-horizontal">
+      <li>
+        <a href="#" id="btnInstituicoes">
+          <i class="fa-solid fa-building-columns"></i> Instituições
+        </a>
+      </li>
+
+      <li>
+        <a href="/gerenciar/html/perfilProfessor.html">
+          <i class="fa-solid fa-user"></i> Perfil
+        </a>
+      </li>
+
+      <li>
+        <a href="/auth/html/login.html">
+          <i class="fa-solid fa-right-from-bracket"></i> Sair
+        </a>
+      </li>
     </ul>
   </nav>
 
-  <!-- ========================================================= -->
-  <!--                    MENU FLUTUANTE                         -->
-  <!-- ========================================================= -->
-  <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
-    <div class="menu-conteudo">
-      <h3 id="tituloAba">Selecionar</h3>
-      <div id="selectContainer"></div>
-      <button id="btnIr" class="btn-curso" style="display:none;">Ir</button>
-    </div>
-  </div>
 
   <!-- ========================================================= -->
-  <!--                     CONTEÚDO PRINCIPAL                     -->
+  <!--                     CONTEÚDO PRINCIPAL                    -->
   <!-- ========================================================= -->
   <main class="container">
 
-    <!-- Cabeçalho da Turma -->
     <div class="turma-header">
-      <h1 id="tituloTurma">Turma —</h1>
+      <h1 id="tituloTurma">Turma: —</h1>
       <p id="subTurma"></p>
     </div>
 
-    <!-- Botões principais -->
     <div class="turma-acoes">
       <button id="btnAddAluno"><i class="fa-solid fa-user-plus"></i> Adicionar Aluno</button>
       <button id="btnImportar"><i class="fa-solid fa-file-import"></i> Importar Alunos</button>
@@ -63,9 +58,8 @@
       <button id="btnNotasTurma"><i class="fa-solid fa-clipboard-list"></i> Notas da Turma</button>
     </div>
 
-    <!-- Tabela de alunos -->
     <div class="tabela-notas">
-      <h2 style="color:#6ca98c; margin-bottom:10px;">Alunos da Turma</h2>
+      <h2 style="color:#6ca98c;margin-bottom:10px;">Alunos da Turma</h2>
 
       <table id="tabelaAlunos">
         <thead>
@@ -81,7 +75,6 @@
       </table>
     </div>
 
-    <!-- Botões inferiores -->
     <div class="footer-acoes">
       <button id="btnSalvar"><i class="fa-solid fa-floppy-disk"></i> Salvar Alterações</button>
       <button id="btnVoltar"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
@@ -90,9 +83,6 @@
   </main>
 </div>
 
-<!-- ========================================================= -->
-<!--                          JAVASCRIPT                        -->
-<!-- ========================================================= -->
 <script src="/gerenciar/javascript/detalhesTurma.js"></script>
 
 </body>

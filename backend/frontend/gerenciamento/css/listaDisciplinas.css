@@ -394,3 +394,23 @@ form.filtro-card input:focus {
     grid-template-columns: 1fr;
   }
 }
+
+.btn-excluir-comp {
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: none;
+  background: #b33a3a;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-excluir-comp:hover {
+  background: #d14545;
+  transform: translateY(-2px);
+}

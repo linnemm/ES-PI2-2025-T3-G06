@@ -1,23 +1,23 @@
 // =========================================================
-//  CADASTRO DE ALUNO — VERSÃO FINAL E CORRIGIDA
+//  CADASTRO DE ALUNO — VERSÃO FINAL PADRONIZADA
 // =========================================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // =========================================================
+  // ================================
   // 1) VALIDAR LOGIN
-  // =========================================================
+  // ================================
   const usuarioId = localStorage.getItem("usuarioId");
 
   if (!usuarioId) {
-    alert("Erro: usuário não encontrado. Faça login novamente.");
-    window.location.href = "/auth/html/login.html";
+    alert("Erro: usuário não encontrado.");
+    location.href = "/auth/html/login.html";
     return;
   }
 
-  // =========================================================
+  // ================================
   // ELEMENTOS
-  // =========================================================
+  // ================================
   const selInstituicao = document.getElementById("instituicao");
   const selCurso       = document.getElementById("curso");
   const selDisciplina  = document.getElementById("disciplina");
@@ -26,158 +26,103 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formAluno");
   const btnImportar = document.getElementById("btnImportar");
 
-
-  // =========================================================
-  // 2) CARREGAR INSTITUIÇÕES DO USUÁRIO
-  // =========================================================
+  // ================================
+  // 2) CARREGAR INSTITUIÇÕES
+  // ================================
   async function carregarInstituicoes() {
-    console.log("🔍 Carregando instituições...");
-
     const resp = await fetch(`/api/instituicoes/listar/${usuarioId}`);
-
-    if (!resp.ok) {
-      alert("Erro ao carregar instituições.");
-      return;
-    }
-
-    const data = await resp.json();
-    console.log("📌 Instituições carregadas:", data);
+    const insts = await resp.json();
 
     selInstituicao.innerHTML = `<option value="">Selecione...</option>`;
-
-    data.forEach(inst => {
-      selInstituicao.innerHTML += `
-        <option value="${inst.ID}">${inst.NOME}</option>
-      `;
+    insts.forEach(i => {
+      selInstituicao.innerHTML += `<option value="${i.ID}">${i.NOME}</option>`;
     });
-
-    selInstituicao.disabled = false;
   }
 
+  carregarInstituicoes();
 
-  // =========================================================
+  // ================================
   // 3) CARREGAR CURSOS
-  // =========================================================
-  async function carregarCursos(instituicaoId) {
-    console.log("🔍 Carregando cursos...");
+  // ================================
+  selInstituicao.addEventListener("change", async () => {
+    const instId = selInstituicao.value;
+
+    if (!instId) return;
 
     selCurso.disabled = false;
     selCurso.innerHTML = `<option>Carregando...</option>`;
 
-    selDisciplina.disabled = true;
-    selDisciplina.innerHTML = `<option value="">Selecione...</option>`;
-
-    selTurma.disabled = true;
-    selTurma.innerHTML = `<option value="">Selecione...</option>`;
-
-    const resp = await fetch(`/api/cursos/listar/${instituicaoId}`);
-    const data = await resp.json();
-
-    console.log("📘 Cursos:", data);
+    const resp = await fetch(`/api/cursos/listar/${instId}`);
+    const cursos = await resp.json();
 
     selCurso.innerHTML = `<option value="">Selecione...</option>`;
-    data.forEach(curso => {
-      selCurso.innerHTML += `<option value="${curso.ID}">${curso.NOME}</option>`;
+    cursos.forEach(c => {
+      selCurso.innerHTML += `<option value="${c.ID}">${c.NOME}</option>`;
     });
-  }
 
+    selDisciplina.disabled = true;
+    selDisciplina.innerHTML = `<option value="">Selecione...</option>`;
+    selTurma.disabled = true;
+    selTurma.innerHTML = `<option value="">Selecione...</option>`;
+  });
 
-  // =========================================================
+  // ================================
   // 4) CARREGAR DISCIPLINAS
-  // =========================================================
-  async function carregarDisciplinas(cursoId) {
-    console.log("🔍 Carregando disciplinas...");
+  // ================================
+  selCurso.addEventListener("change", async () => {
+    const cursoId = selCurso.value;
+
+    if (!cursoId) return;
 
     selDisciplina.disabled = false;
     selDisciplina.innerHTML = `<option>Carregando...</option>`;
 
-    selTurma.disabled = true;
-    selTurma.innerHTML = `<option value="">Selecione...</option>`;
-
     const resp = await fetch(`/api/disciplinas/curso/${cursoId}`);
-    const data = await resp.json();
-
-    console.log("📗 Disciplinas:", data);
+    const disciplinas = await resp.json();
 
     selDisciplina.innerHTML = `<option value="">Selecione...</option>`;
-    data.forEach(dis => {
-      selDisciplina.innerHTML += `<option value="${dis.ID}">${dis.NOME}</option>`;
+    disciplinas.forEach(d => {
+      selDisciplina.innerHTML += `<option value="${d.ID}">${d.NOME}</option>`;
     });
-  }
 
+    selTurma.disabled = true;
+    selTurma.innerHTML = `<option value="">Selecione...</option>`;
+  });
 
-  // =========================================================
+  // ================================
   // 5) CARREGAR TURMAS
-  // =========================================================
-  async function carregarTurmas(disciplinaId) {
-    console.log("🔍 Carregando turmas...");
+  // ================================
+  selDisciplina.addEventListener("change", async () => {
+    const discId = selDisciplina.value;
+
+    if (!discId) return;
 
     selTurma.disabled = false;
     selTurma.innerHTML = `<option>Carregando...</option>`;
 
-    const resp = await fetch(`/api/turmas/listar/${disciplinaId}`);
-    const data = await resp.json();
-
-    console.log("👥 Turmas:", data);
+    const resp = await fetch(`/api/turmas/listar/${discId}`);
+    const turmas = await resp.json();
 
     selTurma.innerHTML = `<option value="">Selecione...</option>`;
-    data.forEach(t => {
+    turmas.forEach(t => {
       selTurma.innerHTML += `<option value="${t.ID}">${t.NOME}</option>`;
     });
-  }
-
-
-  // =========================================================
-  // 6) EVENTOS — QUANDO ALTERAR OS SELECTS
-  // =========================================================
-
-  selInstituicao.addEventListener("change", () => {
-    const id = selInstituicao.value;
-    console.log("➡ Instituição selecionada:", id);
-    if (id) carregarCursos(id);
   });
 
-  selCurso.addEventListener("change", () => {
-    const id = selCurso.value;
-    console.log("➡ Curso selecionado:", id);
-    if (id) carregarDisciplinas(id);
-  });
-
-  selDisciplina.addEventListener("change", () => {
-    const id = selDisciplina.value;
-    console.log("➡ Disciplina selecionada:", id);
-    if (id) carregarTurmas(id);
-  });
-
-
-  // =========================================================
-  // 7) CADASTRAR ALUNO (COM REDIRECIONAMENTO)
-  // =========================================================
+  // ================================
+  // 6) SALVAR ALUNO
+  // ================================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nome = document.getElementById("nome").value.trim();
-    const matricula = document.getElementById("matricula").value.trim();
-
-    if (!nome || !matricula ||
-        !selInstituicao.value ||
-        !selCurso.value ||
-        !selDisciplina.value ||
-        !selTurma.value) 
-    {
-      return alert("⚠ Preencha todos os campos!");
-    }
-
     const body = {
-      nome,
-      matricula,
+      nome: document.getElementById("nome").value.trim(),
+      matricula: document.getElementById("matricula").value.trim(),
       instituicaoId: Number(selInstituicao.value),
       cursoId: Number(selCurso.value),
       disciplinaId: Number(selDisciplina.value),
       turmaId: Number(selTurma.value)
     };
-
-    console.log("📤 Enviando dados:", body);
 
     const resp = await fetch("/api/alunos/criar", {
       method: "POST",
@@ -187,65 +132,75 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const json = await resp.json();
 
-    if (!resp.ok) {
-      return alert("❌ Erro: " + json.message);
-    }
+    if (!resp.ok) return alert("Erro: " + json.message);
 
-    alert("✅ Aluno cadastrado com sucesso!");
-
-    // ⭐ REDIRECIONAR AUTOMÁTICO PARA DETALHES DA TURMA
-    const turmaId = selTurma.value;
-    window.location.href = `/gerenciar/html/detalhesTurma.html?turmaId=${turmaId}`;
+    alert("Aluno cadastrado com sucesso!");
+    location.href = `/gerenciar/html/detalhesTurma.html?turmaId=${body.turmaId}`;
   });
 
-
-  // =========================================================
-  // 8) IMPORTAR CSV
-  // =========================================================
+  // ================================
+  // 7) IMPORTAR CSV
+  // ================================
   btnImportar.addEventListener("click", () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".csv";
+    const inp = document.createElement("input");
+    inp.type = "file";
+    inp.accept = ".csv";
 
-    input.onchange = () => {
-      const arquivo = input.files[0];
+    inp.onchange = async () => {
+      const arquivo = inp.files[0];
       if (!arquivo) return;
 
-      if (!selInstituicao.value || !selCurso.value || !selDisciplina.value || !selTurma.value) {
-        return alert("Selecione todos os filtros antes de importar.");
-      }
+      if (!selInstituicao.value || !selCurso.value || !selDisciplina.value || !selTurma.value)
+        return alert("Selecione todos os campos antes de importar.");
 
-      const formData = new FormData();
-      formData.append("arquivo", arquivo);
-      formData.append("instituicaoId", selInstituicao.value);
-      formData.append("cursoId", selCurso.value);
-      formData.append("disciplinaId", selDisciplina.value);
-      formData.append("turmaId", selTurma.value);
+      const fd = new FormData();
+      fd.append("arquivo", arquivo);
+      fd.append("instituicaoId", selInstituicao.value);
+      fd.append("cursoId", selCurso.value);
+      fd.append("disciplinaId", selDisciplina.value);
+      fd.append("turmaId", selTurma.value);
 
-      fetch("/api/alunos/importar-csv", {
-        method: "POST",
-        body: formData
-      })
-      .then(r => r.json())
-      .then(j => {
-        alert(`📥 Importação concluída:
-Inseridos: ${j.inseridos}
-Duplicados: ${j.ignoradosDuplicados}`);
+      const resp = await fetch("/api/alunos/importar-csv", { method: "POST", body: fd });
+      const json = await resp.json();
 
-        // 🔥 REDIRECIONAR APÓS IMPORTAÇÃO
-        const turmaId = selTurma.value;
-        window.location.href = `/gerenciar/html/detalhesTurma.html?turmaId=${turmaId}`;
-      })
-      .catch(() => alert("Erro ao importar CSV."));
+      alert(`Importação concluída:
+Inseridos: ${json.inseridos}
+Duplicados: ${json.ignoradosDuplicados}`);
+
+      location.href = `/gerenciar/html/detalhesTurma.html?turmaId=${selTurma.value}`;
     };
 
-    input.click();
+    inp.click();
   });
 
+  // ================================
+  // 8) ENTER PARA MUDAR DE CAMPO E ENVIAR FORM
+  // ================================
+  const campos = document.querySelectorAll(
+    "#formAluno input, #formAluno select"
+  );
 
-  // =========================================================
-  // 9) INICIAR
-  // =========================================================
-  carregarInstituicoes();
+  campos.forEach((campo, index) => {
+    campo.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+
+        const ultimo = index === campos.length - 1;
+
+        if (ultimo) {
+          form.requestSubmit(); // Envia o formulário
+        } else {
+          campos[index + 1].focus(); // Vai para o próximo campo
+        }
+      }
+    });
+  });
+
+  // ================================
+  // 9) BOTÃO INSTITUIÇÕES
+  // ================================
+  document.getElementById("btnInstituicoes").addEventListener("click", () => {
+    location.href = "/gerenciar/html/dashboard.html";
+  });
 
 });

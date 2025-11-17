@@ -1,5 +1,5 @@
 // =============================================
-//  LISTA DE CURSOS — NotaDez
+//  LISTA DE CURSOS — NotaDez (VERSÃO FINAL)
 // =============================================
 
 // Helper
@@ -86,6 +86,7 @@ async function carregarCursos(filtro = "") {
       row.addEventListener("click", (e) => {
         if (!e.target.closest(".btn-editar") && !e.target.closest(".btn-excluir")) {
           cursoSelecionado = curso.ID;
+
           window.location.href =
             `/gerenciar/html/listaDisciplinas.html?inst=${instituicaoId}&curso=${curso.ID}`;
         }
@@ -131,24 +132,26 @@ $("fBusca").addEventListener("keyup", () => {
 //  NOVO CURSO
 // =============================================
 $("btnNovo").addEventListener("click", () => {
-  window.location.href = "/gerenciar/html/cadastro_curso.html";
+  window.location.href = "/gerenciar/html/cadastro_curso.html?inst=" + instituicaoId;
 });
 
 
 // =============================================
-//  NOVA DISCIPLINA — CORRIGIDO!!!
+//  NOVA DISCIPLINA — CORRIGIDO FINAL
 // =============================================
-// ➜ Se não selecionar nada, ele abre a tela e a pessoa escolhe o curso lá.
-// ➜ Se já clicou em um curso, passa o ID automaticamente.
 $("btnNovaDisciplina").addEventListener("click", () => {
-  if (!cursoSelecionado) {
-    // deixa a pessoa entrar na tela normalmente
-    window.location.href = "/gerenciar/html/cadastro_disciplina.html";
-  } else {
-    // Abre já com curso selecionado
+
+  // 1) Se o usuário já clicou em um curso → enviamos inst + curso
+  if (cursoSelecionado) {
     window.location.href =
       `/gerenciar/html/cadastro_disciplina.html?inst=${instituicaoId}&curso=${cursoSelecionado}`;
+    return;
   }
+
+  // 2) Se não clicou em nada, mas há pelo menos 1 curso na lista,
+  //    abrimos a página e o usuário escolhe o curso normalmente.
+  window.location.href =
+    `/gerenciar/html/cadastro_disciplina.html?inst=${instituicaoId}`;
 });
 
 
@@ -190,7 +193,7 @@ async function editarCurso(curso) {
 
 
 // =============================================
-//  REMOVER CURSO (com bloqueio certo!)
+//  REMOVER CURSO (com bloqueio correto!)
 // =============================================
 async function removerCurso(id) {
   if (!confirm("Deseja realmente remover este curso?")) return;
