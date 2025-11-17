@@ -1,4 +1,4 @@
-/* ==== Envio do formulário de redefinição de senha ==== */
+/* Autoria: Miriã - Esqueceu Senha JavaScript*/
 
 // Captura o formulário
 const form = document.getElementById("formEsqueciSenha");
@@ -22,7 +22,7 @@ if (form) {
     botao.innerText = "Enviando...";
 
     try {
-      // 🔹 Faz a requisição ao backend usando caminho absoluto (mais seguro)
+      //Faz a requisição ao backend usando caminho mais seguro
       const resposta = await fetch(`/api/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

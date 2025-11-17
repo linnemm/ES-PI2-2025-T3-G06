@@ -1,4 +1,4 @@
-/* ==== REDEFINIÇÃO DE SENHA - Lógica da tela ==== */
+/*Autoria: Miriã - Redefinir Senha JavaScript*/
 
 // Seleciona o formulário e a área de mensagens de erro
 const form = document.getElementById("formRedefinirSenha");
@@ -10,7 +10,7 @@ const senha2 = document.getElementById("password2");
 const toggle1 = document.getElementById("togglePassword");
 const toggle2 = document.getElementById("togglePassword2");
 
-/* ==== Mostrar/Ocultar Senha ==== */
+/* ==== Mostrar e ocultar Senha ==== */
 function toggleSenha(input, toggle) {
   toggle.addEventListener("click", () => {
     const isPassword = input.type === "password";
@@ -23,7 +23,7 @@ function toggleSenha(input, toggle) {
 if (senha1 && toggle1) toggleSenha(senha1, toggle1);
 if (senha2 && toggle2) toggleSenha(senha2, toggle2);
 
-/* ==== Captura o token do link ==== */
+/* Captura o token do link  */
 const token = new URLSearchParams(window.location.search).get("token");
 
 // Se não houver token, redireciona
@@ -32,7 +32,7 @@ if (!token) {
   window.location.href = "/auth/html/login.html";
 }
 
-/* ==== Envio do formulário ==== */
+/*Envio do formulário*/
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -60,7 +60,7 @@ form.addEventListener("submit", async (e) => {
   botao.innerText = "Redefinindo...";
 
   try {
-    // 🔹 fetch correto (SEM baseURL)
+    //fetch correto (SEM baseURL)
     const resposta = await fetch(`/api/auth/reset-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
