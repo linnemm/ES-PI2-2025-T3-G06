@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- CSS CORRETO -->
+  <!-- CSS -->
   <link rel="stylesheet" href="/gerenciar/css/cadastro_instituicao.css" />
 </head>
 <body>
@@ -21,31 +21,36 @@
     <!-- ===== TOPBAR ===== -->
     <nav class="topbar">
       <h2>NotaDez</h2>
-      <ul class="menu-horizontal">
-        <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-        <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
-        <li><a href="#" id="btnDisciplinas"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
-        <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
 
-        <!-- SAIR → CORRIGIDO -->
-        <li><a href="/auth/html/login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+      <ul class="menu-horizontal" id="menuHorizontal">
+
+        <li>
+          <a href="#" id="btnInstituicoes">
+            <i class="fa-solid fa-building-columns"></i> Instituições
+          </a>
+        </li>
+
+        <li>
+          <a href="/gerenciar/html/perfilProfessor.html" id="btnPerfil">
+            <i class="fa-solid fa-user"></i> Perfil
+          </a>
+        </li>
+
+        <li>
+          <a href="/auth/html/login.html">
+            <i class="fa-solid fa-right-from-bracket"></i> Sair
+          </a>
+        </li>
+
       </ul>
     </nav>
-
-    <!-- ===== ABA FLUTUANTE ===== -->
-    <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
-      <div class="menu-conteudo">
-        <h3 id="tituloAba">Selecionar</h3>
-        <div id="selectContainer"></div>
-        <button id="btnIr" class="btn-curso" style="display:none;">Ir</button>
-      </div>
-    </div>
 
     <!-- ===== CONTEÚDO PRINCIPAL ===== -->
     <main class="main-content">
       <h1>Cadastro de Instituição</h1>
 
       <form id="formInstituicao" autocomplete="off" novalidate>
+
         <label for="nome">Nome da Instituição:</label>
         <input type="text" id="nome" name="nome" placeholder="Ex: Pontifícia Universidade Católica de Campinas" required>
 
@@ -54,14 +59,14 @@
 
         <div class="botoes">
           <button type="submit" class="btn-salvar">Salvar</button>
-
           <button type="reset" class="btn-cancelar" id="btnCancelar">Cancelar</button>
         </div>
+
       </form>
     </main>
+
   </div>
 
-  <!-- JS CORRETO -->
   <script src="/gerenciar/javascript/cadastro_instituicao.js"></script>
 </body>
 </html>

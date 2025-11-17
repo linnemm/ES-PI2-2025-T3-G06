@@ -38,20 +38,7 @@ body {
 .menu-horizontal li a:hover,
 .menu-horizontal li a:focus { background-color: rgba(255,255,255,0.2); }
 
-/* ===== ABA FLUTUANTE ===== */
-.menu-flutuante {
-  position: absolute;
-  top: 75px;
-  right: 40px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  padding: 20px;
-  width: 280px;
-  z-index: 50;
-  display: none;
-  animation: slideDown 0.3s ease;
-}
+
 @keyframes slideDown { from {opacity: 0; transform: translateY(-10px);} to {opacity: 1; transform: translateY(0);} }
 .menu-conteudo h3 { color: #6ca98c; margin-bottom: 10px; text-align: center; }
 .campo-selecao { margin-bottom: 12px; }
@@ -59,11 +46,6 @@ body {
 .campo-selecao select {
   width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;
 }
-.menu-flutuante .btn-curso {
-  width: 100%; background-color: #6ca98c; color: white; border: none;
-  padding: 8px 0; border-radius: 6px; font-weight: 600; cursor: pointer;
-}
-.menu-flutuante .btn-curso:hover { background-color: #5c8c75; }
 
 /* ===== CONTEÚDO ===== */
 .main-content {
@@ -115,6 +97,7 @@ input:focus, select:focus {
 /* ================================
    MENU BLOQUEADO (Primeiro Acesso)
 ================================ */
+
 .desabilitado {
   pointer-events: none !important;
   opacity: 0.4;

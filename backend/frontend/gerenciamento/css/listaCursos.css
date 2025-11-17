@@ -61,52 +61,6 @@ body {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* ==================== MENU FLUTUANTE ==================== */
-.menu-flutuante {
-  position: absolute;
-  top: 75px;
-  right: 40px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  padding: 20px;
-  width: 280px;
-  z-index: 50;
-  display: none;
-  animation: slideDown 0.25s ease;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.menu-conteudo h3 {
-  color: #6ca98c;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.campo-selecao { margin-bottom: 12px; }
-.campo-selecao label {
-  font-size: 14px; color: #444; display: block; margin-bottom: 4px;
-}
-.campo-selecao select {
-  width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;
-}
-
-.menu-flutuante .btn-curso {
-  width: 100%;
-  background-color: #6ca98c;
-  color: white;
-  border: none;
-  padding: 8px 0;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.menu-flutuante .btn-curso:hover { background-color: #5c8c75; }
-
 /* ==================== CONTEÚDO PRINCIPAL ==================== */
 .container {
   width: 90%;
@@ -147,19 +101,11 @@ form.filtro-card label {
 }
 
 /* Linha principal da busca */
-.barra-controle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  width: 100%;
-}
-
-/* Input + Buscar (lado esquerdo) */
 .busca-linha {
   display: flex;
   gap: 10px;
   flex: 1;
+  width: 100%;
 }
 
 .busca-linha input {
@@ -177,13 +123,25 @@ form.filtro-card label {
   box-shadow: 0 0 5px rgba(108,169,140,0.5);
 }
 
-/* Botões do lado direito */
-.acoes-direita {
+/* ==================== LINHA DOS BOTÕES ==================== */
+.linha-botoes {
+  width: 100%;
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
+  margin-top: 5px;
 }
 
-/* Botão */
+.btn-esquerda {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-direita {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Botão geral */
 .btn-curso {
   padding: 10px 22px;
   border: none;
@@ -196,8 +154,12 @@ form.filtro-card label {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: 0.2s;
 }
-.btn-curso:hover { background-color: #5c8c75; }
+
+.btn-curso:hover {
+  background-color: #5c8c75;
+}
 
 /* ==================== LISTA (TABELA) ==================== */
 .lista-card {
@@ -221,7 +183,10 @@ form.filtro-card label {
   color: #fff;
   font-weight: 700;
 }
-.tabela-head span:last-child { text-align: right; }
+
+.tabela-head span:last-child {
+  text-align: right;
+}
 
 .tabela-row {
   display: grid;
@@ -231,8 +196,12 @@ form.filtro-card label {
   padding: 12px 16px;
   background: #fff;
   border-top: 2px solid #cfe1d8;
+  cursor: pointer;
 }
-.tabela-row:hover { background: #f5fbf8; }
+
+.tabela-row:hover {
+  background: #f5fbf8;
+}
 
 /* ==================== AÇÕES ==================== */
 .acoes {
@@ -254,7 +223,10 @@ form.filtro-card label {
   align-items: center;
   font-weight: 600;
 }
-.btn-editar:hover { background: #5c8c75; }
+
+.btn-editar:hover {
+  background: #5c8c75;
+}
 
 .btn-excluir {
   background: #b33a3a;
@@ -268,7 +240,10 @@ form.filtro-card label {
   align-items: center;
   font-weight: 600;
 }
-.btn-excluir:hover { filter: brightness(0.95); }
+
+.btn-excluir:hover {
+  filter: brightness(0.95);
+}
 
 .vazio {
   padding: 16px;
@@ -286,7 +261,8 @@ form.filtro-card label {
 
 /* ==================== RESPONSIVO ==================== */
 @media (max-width: 920px) {
-  .tabela-head, .tabela-row {
+  .tabela-head,
+  .tabela-row {
     grid-template-columns: 1fr 120px 200px 120px;
   }
 }
@@ -297,16 +273,18 @@ form.filtro-card label {
     width: 100%;
   }
 
-  .barra-controle {
+  .linha-botoes {
     flex-direction: column;
-    align-items: stretch;
+    gap: 10px;
   }
 
-  .acoes-direita {
-    justify-content: stretch;
+  .btn-direita,
+  .btn-esquerda {
+    justify-content: center;
   }
 
-  .tabela-head, .tabela-row {
+  .tabela-head, 
+  .tabela-row {
     grid-template-columns: 1fr 100px 150px 100px;
   }
 }

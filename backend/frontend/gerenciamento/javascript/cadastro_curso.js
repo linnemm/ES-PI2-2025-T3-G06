@@ -1,26 +1,72 @@
 // ===========================================================
-// CADASTRO DE CURSO — JS COMPLETO E ATUALIZADO
+// CADASTRO DE CURSO — JS DEFINITIVO
 // ===========================================================
 
-// Inputs do formulário
-const form = document.getElementById("formCurso");
-const selectInst = document.getElementById("instituicao");
-const nomeInput = document.getElementById("nome");
-const siglaInput = document.getElementById("sigla");
-const coordenadorInput = document.getElementById("coordenador");
-
-// Dados salvos no login
+// Usuário logado
 const usuarioId = localStorage.getItem("usuarioId");
-const instituicaoId = localStorage.getItem("instituicaoId");
 
-// Verificação de segurança
 if (!usuarioId) {
   alert("Erro: usuário não identificado.");
   window.location.href = "/auth/html/login.html";
 }
 
 // ===========================================================
-// 🔥 CARREGAR LISTA DE INSTITUIÇÕES NO SELECT
+// 🔒 BLOQUEAR MENUS VIA BACKEND (INSTITUIÇÕES + CURSOS)
+// ===========================================================
+async function bloquearMenusBackend() {
+  const btnInst = document.getElementById("btnInstituicoes");
+  const btnPerfil = document.getElementById("btnPerfil");
+
+  try {
+    const respInst = await fetch(`/api/instituicoes/listar/${usuarioId}`);
+    const instituicoes = await respInst.json();
+
+    if (!instituicoes || instituicoes.length === 0) {
+      btnInst?.classList.add("desabilitado");
+      btnPerfil?.classList.add("desabilitado");
+      return;
+    }
+
+    const instId = instituicoes[instituicoes.length - 1].ID;
+
+    const respCurso = await fetch(`/api/cursos/listar/${instId}`);
+    const cursos = await respCurso.json();
+
+    if (!cursos || cursos.length === 0) {
+      btnInst?.classList.remove("desabilitado"); // Inst pode acessar
+      btnPerfil?.classList.add("desabilitado");
+      return;
+    }
+
+    btnInst?.classList.remove("desabilitado");
+    btnPerfil?.classList.remove("desabilitado");
+
+  } catch (err) {
+    console.error("Erro ao verificar bloqueios:", err);
+  }
+}
+
+bloquearMenusBackend();
+
+// ===========================================================
+// REDIRECIONAR PARA DASHBOARD (botão Instituições)
+// ===========================================================
+document.getElementById("btnInstituicoes").addEventListener("click", (e) => {
+  e.preventDefault();
+  window.location.href = "/gerenciar/html/dashboard.html";
+});
+
+// ===========================================================
+// FORM INPUTS
+// ===========================================================
+const form = document.getElementById("formCurso");
+const selectInst = document.getElementById("instituicao");
+const nomeInput = document.getElementById("nome");
+const siglaInput = document.getElementById("sigla");
+const coordenadorInput = document.getElementById("coordenador");
+
+// ===========================================================
+// CARREGAR INSTITUIÇÕES
 // ===========================================================
 async function carregarInstituicoesSelect() {
 
@@ -30,20 +76,13 @@ async function carregarInstituicoesSelect() {
     const resp = await fetch(`/api/instituicoes/listar/${usuarioId}`);
     const lista = await resp.json();
 
-    if (!resp.ok) {
-      selectInst.innerHTML = `<option value="">Erro ao carregar instituições</option>`;
+    if (!lista || lista.length === 0) {
+      selectInst.innerHTML = `<option value="">Nenhuma instituição cadastrada</option>`;
       return;
     }
 
-    if (lista.length === 0) {
-      selectInst.innerHTML = `<option value="">Nenhuma instituição encontrada</option>`;
-      return;
-    }
-
-    // Limpa para inserir as opções reais
     selectInst.innerHTML = `<option value="">Selecione uma instituição</option>`;
 
-    // Preenche o select
     lista.forEach(inst => {
       const opt = document.createElement("option");
       opt.value = inst.ID;
@@ -51,21 +90,16 @@ async function carregarInstituicoesSelect() {
       selectInst.appendChild(opt);
     });
 
-    // Seleciona automaticamente a instituição que acabou de ser criada
-    if (instituicaoId) {
-      selectInst.value = instituicaoId;
-    }
-
-  } catch (erro) {
-    console.error("Erro ao carregar instituições:", erro);
-    selectInst.innerHTML = `<option value="">Erro ao conectar ao servidor</option>`;
+  } catch (err) {
+    console.error("Erro ao listar instituições:", err);
+    selectInst.innerHTML = `<option value="">Erro ao carregar instituições</option>`;
   }
 }
 
 carregarInstituicoesSelect();
 
 // ===========================================================
-// 🔥 SALVAR CURSO NO BANCO
+// SALVAR CURSO — REDIRECIONAMENTO INTELIGENTE
 // ===========================================================
 form.addEventListener("submit", async e => {
   e.preventDefault();
@@ -75,28 +109,14 @@ form.addEventListener("submit", async e => {
   const sigla = siglaInput.value.trim();
   const coordenador = coordenadorInput.value.trim();
 
-  // ========================
-  // VALIDAÇÕES
-  // ========================
-  if (!instSelecionada) {
-    alert("Selecione uma instituição.");
-    return;
-  }
-
-  if (!nome || !sigla || !coordenador) {
-    alert("Preencha todos os campos!");
-    return;
-  }
-
-  if (sigla.length < 2) {
-    alert("A sigla deve ter pelo menos 2 caracteres.");
-    return;
-  }
+  if (!instSelecionada) return alert("Selecione uma instituição.");
+  if (!nome || !sigla || !coordenador) return alert("Preencha todos os campos.");
+  if (sigla.length < 2) return alert("A sigla deve ter pelo menos 2 caracteres.");
 
   try {
     const resp = await fetch("/api/cursos", {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         nome,
         sigla,
@@ -115,17 +135,30 @@ form.addEventListener("submit", async e => {
 
     alert("Curso cadastrado com sucesso!");
 
-    // Avança para dashboard
-    window.location.href = "/gerenciar/html/dashboard.html";
+    // Recarrega menus
+    await bloquearMenusBackend();
+
+    // 🔍 Verifica quantos cursos existem após cadastrar
+    const respCursos = await fetch(`/api/cursos/listar/${instSelecionada}`);
+    const listaCursos = await respCursos.json();
+
+    // PRIMEIRO CURSO → DASHBOARD
+    if (listaCursos.length === 1) {
+      window.location.href = "/gerenciar/html/dashboard.html";
+      return;
+    }
+
+    // JÁ EXISTEM OUTROS → LISTA DE CURSOS
+    window.location.href = `/gerenciar/html/listaCursos.html?inst=${instSelecionada}`;
 
   } catch (erro) {
     console.error("Erro ao cadastrar curso:", erro);
-    alert("Erro ao conectar com o servidor.");
+    alert("Erro ao conectar ao servidor.");
   }
 });
 
 // ===========================================================
-// 🔥 ENTER → IR PARA PRÓXIMO / ENVIAR FORM
+// ENTER → Avança para o próximo campo
 // ===========================================================
 const inputsCurso = document.querySelectorAll("#formCurso input, #formCurso select");
 
@@ -133,14 +166,9 @@ inputsCurso.forEach((input, i) => {
   input.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       e.preventDefault();
-
       const ultimo = i === inputsCurso.length - 1;
-
-      if (ultimo) {
-        form.requestSubmit();
-      } else {
-        inputsCurso[i + 1].focus();
-      }
+      if (ultimo) form.requestSubmit();
+      else inputsCurso[i + 1].focus();
     }
   });
 });

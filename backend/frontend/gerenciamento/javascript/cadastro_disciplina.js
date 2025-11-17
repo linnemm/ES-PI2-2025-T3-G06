@@ -1,15 +1,11 @@
 // ======================================================
-//  CADASTRO DE DISCIPLINA — BACKEND INTEGRADO
+//  CADASTRO DE DISCIPLINA — NotaDez (CORRIGIDO COMPLETO)
 // ======================================================
 
-// Helper para pegar elementos
+// Helper
 const $ = (id) => document.getElementById(id);
 
-// ------------------------------------------------------
-// 🔥 CORREÇÃO IMPORTANTE
-// Você salvou no login: localStorage.setItem("usuarioId", id)
-// Portanto o correto é buscar "usuarioId", NÃO "userId"
-// ------------------------------------------------------
+// Usuário logado
 const userId = localStorage.getItem("usuarioId");
 
 if (!userId) {
@@ -17,24 +13,28 @@ if (!userId) {
   window.location.href = "/auth/html/login.html";
 }
 
-// IDs selecionados
-let instituicaoId = null;
-let cursoId = null;
+// ======================================================
+// PEGAR DADOS DA URL
+// ======================================================
+const params = new URLSearchParams(window.location.search);
+
+let instituicaoId = params.get("inst");
+let cursoId = params.get("curso");
+
+// Se não vier instituição, volta
+if (!instituicaoId) {
+  alert("⚠ Instituição não selecionada.");
+  window.location.href = "/gerenciar/html/dashboard.html";
+}
 
 // ======================================================
-// 1️⃣ CARREGAR INSTITUIÇÕES DO BANCO
+// 1️⃣ CARREGAR INSTITUIÇÕES → DEPOIS OS CURSOS
 // ======================================================
 async function carregarInstituicoes() {
   try {
     const resp = await fetch(`/api/instituicoes/listar/${userId}`);
     const lista = await resp.json();
 
-    if (!resp.ok) {
-      alert("Erro ao buscar instituições!");
-      return;
-    }
-
-    // Preencher o select
     lista.forEach(inst => {
       const opt = document.createElement("option");
       opt.value = inst.ID;
@@ -42,73 +42,94 @@ async function carregarInstituicoes() {
       $("instituicao").appendChild(opt);
     });
 
-  } catch (erro) {
-    console.error("Erro ao carregar instituições:", erro);
-    alert("Erro ao carregar instituições");
+    // Seleciona automaticamente a instituição
+    $("instituicao").value = instituicaoId;
+
+    // Agora carregar cursos correspondentes
+    await carregarCursos();
+
+  } catch (e) {
+    console.error("Erro ao carregar instituições:", e);
   }
 }
 
-// ======================================================
-// QUANDO SELECT DE INSTITUIÇÃO MUDAR → CARREGAR CURSOS
-// ======================================================
-$("instituicao").addEventListener("change", async () => {
-  instituicaoId = $("instituicao").value;
-  cursoId = null;
-
-  // Reseta o select
-  $("curso").innerHTML = `<option value="">Selecione um curso</option>`;
-
-  if (!instituicaoId) return;
+async function carregarCursos() {
+  $("curso").innerHTML = `<option value="">Carregando cursos...</option>`;
 
   try {
     const resp = await fetch(`/api/cursos/listar/${instituicaoId}`);
-    const cursos = await resp.json();
+    const lista = await resp.json();
 
-    if (!resp.ok) {
-      alert("Erro ao buscar cursos!");
-      return;
-    }
+    $("curso").innerHTML = `<option value="">Selecione um curso</option>`;
 
-    // Preencher select de cursos
-    cursos.forEach(c => {
+    lista.forEach(c => {
       const opt = document.createElement("option");
       opt.value = c.ID;
       opt.textContent = c.NOME;
       $("curso").appendChild(opt);
     });
 
-  } catch (erro) {
-    console.error("Erro ao carregar cursos:", erro);
-    alert("Erro ao carregar cursos");
+    // Seleciona automaticamente
+    if (cursoId) $("curso").value = cursoId;
+
+  } catch (e) {
+    console.error("Erro ao carregar cursos:", e);
   }
+}
+
+// Quando mudar instituição manualmente
+$("instituicao").addEventListener("change", () => {
+  instituicaoId = $("instituicao").value;
+  carregarCursos();
 });
 
-// Quando selecionar curso
+// Quando mudar curso
 $("curso").addEventListener("change", () => {
   cursoId = $("curso").value;
 });
 
 // ======================================================
-// 2️⃣ SALVAR DISCIPLINA NO BANCO
+// 2️⃣ SALVAR DISCIPLINA (COM VERIFICAÇÃO DE CÓDIGO DUPLICADO)
 // ======================================================
 $("formDisciplina").addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  instituicaoId = $("instituicao").value;
+  cursoId = $("curso").value;
 
   const nome = $("nome").value.trim();
   const sigla = $("sigla").value.trim();
   const codigo = $("codigo").value.trim();
   const periodo = $("periodo").value.trim();
 
-  if (!instituicaoId || !cursoId) {
-    alert("Selecione uma instituição e um curso!");
-    return;
-  }
-
+  if (!instituicaoId) return alert("Selecione uma instituição.");
+  if (!cursoId) return alert("Selecione um curso.");
   if (!nome || !sigla || !codigo || !periodo) {
-    alert("Preencha todos os campos!");
-    return;
+    return alert("Preencha todos os campos!");
   }
 
+  // ======================================================
+  // 🔍 VERIFICAR SE O CÓDIGO JÁ EXISTE NO CURSO
+  // ======================================================
+  try {
+    const respCheck = await fetch(`/api/disciplinas/curso/${cursoId}`);
+    const disciplinas = await respCheck.json();
+
+    const existeCodigo = disciplinas.some(
+      d => d.CODIGO.toLowerCase() === codigo.toLowerCase()
+    );
+
+    if (existeCodigo) {
+      return alert("❌ Já existe uma disciplina com esse CÓDIGO neste curso.");
+    }
+
+  } catch (erro) {
+    console.error("Erro ao verificar código:", erro);
+  }
+
+  // ======================================================
+  // ENVIAR PARA O BACK-END
+  // ======================================================
   try {
     const resp = await fetch("/api/disciplinas", {
       method: "POST",
@@ -126,16 +147,15 @@ $("formDisciplina").addEventListener("submit", async (e) => {
 
     const dados = await resp.json();
 
-    if (!resp.ok) {
-      alert("Erro: " + dados.message);
-      return;
-    }
+    if (!resp.ok) return alert("Erro: " + dados.message);
 
     alert("📘 Disciplina cadastrada com sucesso!");
-    window.location.href = "/gerenciar/html/listaDisciplinas.html";
 
-  } catch (erro) {
-    console.error("Erro ao cadastrar disciplina:", erro);
+    window.location.href =
+      `/gerenciar/html/listaDisciplinas.html?inst=${instituicaoId}&curso=${cursoId}`;
+
+  } catch (e) {
+    console.error(e);
     alert("Erro ao cadastrar disciplina.");
   }
 });
@@ -146,46 +166,22 @@ $("formDisciplina").addEventListener("submit", async (e) => {
 $("btnCancelar").addEventListener("click", () => history.back());
 
 // ======================================================
-// 4️⃣ MENU FLUTUANTE — padrão das telas
+// 4️⃣ ENTER para navegar pelos campos e enviar
 // ======================================================
-const menuFlutuante = $("menuFlutuante");
-const selectContainer = $("selectContainer");
-const tituloAba = $("tituloAba");
-const btnIr = $("btnIr");
+const inputs = document.querySelectorAll("#formDisciplina input, #formDisciplina select");
 
-function abrirMenu(tipo) {
-  menuFlutuante.style.display = "block";
-  selectContainer.innerHTML = "";
-  btnIr.style.display = "block";
-
-  if (tipo === "instituicao") {
-    tituloAba.textContent = "Instituições";
-    btnIr.onclick = () => window.location.href = "/gerenciar/html/dashboard.html";
-  }
-
-  if (tipo === "curso") {
-    tituloAba.textContent = "Cursos";
-    btnIr.onclick = () => window.location.href = "/gerenciar/html/listaCursos.html";
-  }
-
-  if (tipo === "disciplina") {
-    tituloAba.textContent = "Disciplinas";
-    btnIr.onclick = () => window.location.href = "/gerenciar/html/listaDisciplinas.html";
-  }
-}
-
-$("btnInstituicoes").addEventListener("click", () => abrirMenu("instituicao"));
-$("btnCursos").addEventListener("click", () => abrirMenu("curso"));
-$("btnDisciplinas").addEventListener("click", () => abrirMenu("disciplina"));
-$("btnTurmas").addEventListener("click", () => abrirMenu("turma"));
-
-document.addEventListener("click", (e) => {
-  if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
-    menuFlutuante.style.display = "none";
-  }
+inputs.forEach((input, i) => {
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const ultimo = i === inputs.length - 1;
+      if (ultimo) $("formDisciplina").requestSubmit();
+      else inputs[i + 1].focus();
+    }
+  });
 });
 
 // ======================================================
-// 5️⃣ INICIAR CARREGANDO INSTITUIÇÕES
+// INICIAR
 // ======================================================
 carregarInstituicoes();

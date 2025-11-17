@@ -2,11 +2,6 @@
 // CADASTRO DE INSTITUIÇÃO — JS DEFINITIVO
 // ===========================================================
 
-// Inputs
-const form = document.getElementById("formInstituicao");
-const nomeInput = document.getElementById("nome");
-const siglaInput = document.getElementById("sigla");
-
 // Usuário logado
 const usuarioId = localStorage.getItem("usuarioId");
 
@@ -15,6 +10,52 @@ if (!usuarioId) {
   alert("Erro: usuário não identificado.");
   window.location.href = "/auth/html/login.html";
 }
+
+// ===========================================================
+// BLOQUEAR MENUS BASEADO NO BACKEND (SEM localStorage)
+// ===========================================================
+async function bloquearMenusBackend() {
+  const btnInst = document.getElementById("btnInstituicoes");
+  const btnPerfil = document.getElementById("btnPerfil");
+
+  try {
+    const resp = await fetch(`/api/instituicoes/listar/${usuarioId}`);
+    const lista = await resp.json();
+
+    if (!lista || lista.length === 0) {
+      if (btnInst) btnInst.classList.add("desabilitado");
+      if (btnPerfil) btnPerfil.classList.add("desabilitado");
+    } else {
+      if (btnInst) btnInst.classList.remove("desabilitado");
+      if (btnPerfil) btnPerfil.classList.remove("desabilitado");
+    }
+
+  } catch (err) {
+    console.error("Erro ao verificar instituições:", err);
+  }
+}
+
+// executar bloqueio ao carregar a página
+bloquearMenusBackend();
+
+// ===========================================================
+// REDIRECIONAR MENU → INSTITUIÇÕES → DASHBOARD
+// ===========================================================
+const btnInst = document.getElementById("btnInstituicoes");
+if (btnInst) {
+  btnInst.addEventListener("click", (e) => {
+    if (btnInst.classList.contains("desabilitado")) return;
+    e.preventDefault();
+    window.location.href = "/gerenciar/html/dashboard.html";
+  });
+}
+
+// ===========================================================
+// FORMULÁRIO E INPUTS
+// ===========================================================
+const form = document.getElementById("formInstituicao");
+const nomeInput = document.getElementById("nome");
+const siglaInput = document.getElementById("sigla");
 
 // ===========================================================
 // VERIFICAR SE SIGLA JÁ EXISTE
@@ -68,7 +109,7 @@ form.addEventListener("submit", async e => {
 
     alert("Instituição cadastrada!");
 
-    verificarProximoPasso();
+    await verificarProximoPasso();
 
   } catch (erro) {
     console.error(erro);
@@ -95,26 +136,17 @@ inputs.forEach((input, i) => {
 // ===========================================================
 async function verificarProximoPasso() {
   try {
-    // Buscar instituições
     const respInst = await fetch(`/api/instituicoes/listar/${usuarioId}`);
     const instituicoes = await respInst.json();
 
-    if (!respInst.ok) {
-      alert("Erro ao verificar instituições.");
-      return;
-    }
-
-    const inst = instituicoes[instituicoes.length - 1]; // pega a última criada
+    const inst = instituicoes[instituicoes.length - 1];
     localStorage.setItem("instituicaoId", inst.ID);
 
-    // Buscar cursos desta instituição (ROTA CORRETA!)
+    // desbloquear menus imediatamente
+    await bloquearMenusBackend();
+
     const respCurso = await fetch(`/api/cursos/listar/${inst.ID}`);
     const cursos = await respCurso.json();
-
-    if (!respCurso.ok) {
-      alert("Erro ao verificar cursos.");
-      return;
-    }
 
     if (cursos.length === 0) {
       window.location.href = "/gerenciar/html/cadastro_curso.html";

@@ -1,37 +1,43 @@
-// ===========================================================
-// LISTA DE CURSOS — INTEGRAÇÃO COMPLETA COM O BACKEND
-// ===========================================================
+// =============================================
+//  LISTA DE CURSOS — NotaDez
+// =============================================
 
-// Helpers
+// Helper
 const $ = (id) => document.getElementById(id);
 
-// IDs essenciais
-const userId = localStorage.getItem("usuarioId");   // CORRIGIDO ✔
-const instituicaoId = localStorage.getItem("instituicaoId");
+// ID do usuário logado
+const usuarioId = localStorage.getItem("usuarioId");
 
-// Verificações
-if (!userId) {
-  alert("⚠ Erro: usuário não identificado. Faça login novamente.");
+// Segurança
+if (!usuarioId) {
+  alert("Erro: usuário não identificado.");
   window.location.href = "/auth/html/login.html";
 }
 
+// PEGAR ID DA INSTITUIÇÃO PELA URL
+const params = new URLSearchParams(window.location.search);
+const instituicaoId = params.get("inst");
+
 if (!instituicaoId) {
-  alert("⚠ Selecione uma instituição antes!");
+  alert("Selecione uma instituição antes.");
   window.location.href = "/gerenciar/html/dashboard.html";
 }
 
-// Elementos
+// Elementos da página
 const lista = $("corpoTabela");
 const vazio = $("vazio");
 
-// ===========================================================
-// 1️⃣ CARREGAR CURSOS DO BANCO
-// ===========================================================
+// Variável para armazenar curso selecionado
+let cursoSelecionado = null;
+
+
+// =============================================
+//  CARREGAR CURSOS DO BANCO
+// =============================================
 async function carregarCursos(filtro = "") {
   lista.innerHTML = "<p>Carregando...</p>";
 
   try {
-    // ROTA CORRETA DO BACKEND ✔
     const resp = await fetch(`/api/cursos/listar/${instituicaoId}`);
     const dados = await resp.json();
 
@@ -40,7 +46,7 @@ async function carregarCursos(filtro = "") {
       return;
     }
 
-    // 🔍 Filtro de busca
+    // FILTRO
     const filtrados = dados.filter((curso) =>
       curso.NOME.toLowerCase().includes(filtro.toLowerCase()) ||
       curso.SIGLA.toLowerCase().includes(filtro.toLowerCase()) ||
@@ -57,10 +63,10 @@ async function carregarCursos(filtro = "") {
     lista.innerHTML = "";
 
     filtrados.forEach((curso) => {
-      const div = document.createElement("div");
-      div.classList.add("tabela-row");
+      const row = document.createElement("div");
+      row.classList.add("tabela-row");
 
-      div.innerHTML = `
+      row.innerHTML = `
         <span><strong>${curso.NOME}</strong></span>
         <span>${curso.SIGLA}</span>
         <span>${curso.COORDENADOR}</span>
@@ -76,40 +82,42 @@ async function carregarCursos(filtro = "") {
         </span>
       `;
 
-      // Clique na linha → abrir disciplinas
-      div.addEventListener("click", (e) => {
+      // Quando clicar na linha → abre disciplinas
+      row.addEventListener("click", (e) => {
         if (!e.target.closest(".btn-editar") && !e.target.closest(".btn-excluir")) {
-          localStorage.setItem("cursoId", curso.ID);
-          window.location.href = "/gerenciar/html/listaDisciplinas.html";
+          cursoSelecionado = curso.ID;
+          window.location.href =
+            `/gerenciar/html/listaDisciplinas.html?inst=${instituicaoId}&curso=${curso.ID}`;
         }
       });
 
-      // Botão editar
-      div.querySelector(".btn-editar").addEventListener("click", (e) => {
+      // EDITAR
+      row.querySelector(".btn-editar").addEventListener("click", (e) => {
         e.stopPropagation();
         editarCurso(curso);
       });
 
-      // Botão excluir
-      div.querySelector(".btn-excluir").addEventListener("click", (e) => {
+      // EXCLUIR
+      row.querySelector(".btn-excluir").addEventListener("click", (e) => {
         e.stopPropagation();
         removerCurso(curso.ID);
       });
 
-      lista.appendChild(div);
+      lista.appendChild(row);
     });
 
-  } catch (error) {
-    console.error(error);
-    lista.innerHTML = "<p>Erro ao conectar com servidor.</p>";
+  } catch (err) {
+    console.error(err);
+    lista.innerHTML = "<p>Erro ao conectar ao servidor.</p>";
   }
 }
 
 carregarCursos();
 
-// ===========================================================
-// 2️⃣ BUSCA
-// ===========================================================
+
+// =============================================
+//  BUSCA
+// =============================================
 $("btnBuscar").addEventListener("click", () => {
   carregarCursos($("fBusca").value.trim());
 });
@@ -118,16 +126,35 @@ $("fBusca").addEventListener("keyup", () => {
   carregarCursos($("fBusca").value.trim());
 });
 
-// ===========================================================
-// 3️⃣ NOVO CURSO
-// ===========================================================
+
+// =============================================
+//  NOVO CURSO
+// =============================================
 $("btnNovo").addEventListener("click", () => {
   window.location.href = "/gerenciar/html/cadastro_curso.html";
 });
 
-// ===========================================================
-// 4️⃣ EDITAR CURSO
-// ===========================================================
+
+// =============================================
+//  NOVA DISCIPLINA — CORRIGIDO!!!
+// =============================================
+// ➜ Se não selecionar nada, ele abre a tela e a pessoa escolhe o curso lá.
+// ➜ Se já clicou em um curso, passa o ID automaticamente.
+$("btnNovaDisciplina").addEventListener("click", () => {
+  if (!cursoSelecionado) {
+    // deixa a pessoa entrar na tela normalmente
+    window.location.href = "/gerenciar/html/cadastro_disciplina.html";
+  } else {
+    // Abre já com curso selecionado
+    window.location.href =
+      `/gerenciar/html/cadastro_disciplina.html?inst=${instituicaoId}&curso=${cursoSelecionado}`;
+  }
+});
+
+
+// =============================================
+//  EDITAR CURSO
+// =============================================
 async function editarCurso(curso) {
   const nome = prompt("Novo nome:", curso.NOME);
   if (!nome) return;
@@ -142,10 +169,11 @@ async function editarCurso(curso) {
     const resp = await fetch(`/api/cursos/editar/${curso.ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, sigla, coordenador }),
+      body: JSON.stringify({ nome, sigla, coordenador })
     });
 
     const dados = await resp.json();
+
     if (!resp.ok) {
       alert("Erro: " + dados.message);
       return;
@@ -153,36 +181,31 @@ async function editarCurso(curso) {
 
     alert("Curso atualizado!");
     carregarCursos();
-  } catch (error) {
-    console.error(error);
+
+  } catch (err) {
+    console.error(err);
     alert("Erro ao editar curso.");
   }
 }
 
-// ===========================================================
-// 5️⃣ REMOVER CURSO — CORRIGIDO ✔
-// ===========================================================
+
+// =============================================
+//  REMOVER CURSO (com bloqueio certo!)
+// =============================================
 async function removerCurso(id) {
   if (!confirm("Deseja realmente remover este curso?")) return;
 
   try {
-    // Verifica disciplinas ligadas ao curso
     const respCheck = await fetch(`/api/cursos/quantidade/${id}`);
     const dadosCheck = await respCheck.json();
-
-    if (!respCheck.ok) {
-      alert("Erro ao verificar disciplinas.");
-      return;
-    }
 
     if (dadosCheck.quantidade > 0) {
       alert("❌ Não é possível remover: existem disciplinas vinculadas.");
       return;
     }
 
-    // Agora remover
     const resp = await fetch(`/api/cursos/remover/${id}`, {
-      method: "DELETE",
+      method: "DELETE"
     });
 
     const dados = await resp.json();
@@ -194,74 +217,17 @@ async function removerCurso(id) {
 
     alert("Curso removido!");
     carregarCursos();
-  } catch (error) {
-    console.error(error);
+
+  } catch (err) {
+    console.error(err);
     alert("Erro ao remover curso.");
   }
 }
 
-// ===========================================================
-// 6️⃣ MENU FLUTUANTE
-// ===========================================================
-const menuFlutuante = $("menuFlutuante");
-const selectContainer = $("selectContainer");
-const tituloAba = $("tituloAba");
-const btnIr = $("btnIr");
 
-function criarSelect(id, label, opcoes) {
-  const div = document.createElement("div");
-  div.classList.add("campo-selecao");
-  div.innerHTML = `
-    <label>${label}</label>
-    <select id="${id}">
-      <option>Selecione...</option>
-      ${opcoes.map((o) => `<option>${o}</option>`).join("")}
-    </select>
-  `;
-  return div;
-}
-
-function abrirMenu(tipo) {
-  selectContainer.innerHTML = "";
-  btnIr.style.display = "none";
-  menuFlutuante.style.display = "block";
-
-  if (tipo === "instituicao") {
-    tituloAba.textContent = "Instituições";
-    btnIr.style.display = "block";
-    btnIr.onclick = () => window.location.href = "/gerenciar/html/dashboard.html";
-  }
-
-  if (tipo === "curso") {
-    tituloAba.textContent = "Cursos";
-    btnIr.style.display = "block";
-    btnIr.onclick = () => window.location.href = "/gerenciar/html/listaCursos.html";
-  }
-}
-
-document.getElementById("btnInstituicoes").addEventListener("click", () =>
-  abrirMenu("instituicao")
-);
-document.getElementById("btnCursos").addEventListener("click", () =>
-  abrirMenu("curso")
-);
-document.getElementById("btnDisciplinas").addEventListener("click", () =>
-  abrirMenu("disciplina")
-);
-document.getElementById("btnTurmas").addEventListener("click", () =>
-  abrirMenu("turma")
-);
-
-document.addEventListener("click", (e) => {
-  if (!menuFlutuante.contains(e.target) && !e.target.closest(".menu-horizontal")) {
-    menuFlutuante.style.display = "none";
-  }
-});
-
-// ===========================================================
-// BOTÃO: NOVA DISCIPLINA
-// ===========================================================
-$("btnNovaDisciplina").addEventListener("click", () => {
-  localStorage.setItem("cursoId", "");
-  window.location.href = "/gerenciar/html/cadastro_disciplina.html";
+// =============================================
+//  MENU SUPERIOR — INSTITUIÇÕES
+// =============================================
+$("btnInstituicoes").addEventListener("click", () => {
+  window.location.href = "/gerenciar/html/dashboard.html";
 });

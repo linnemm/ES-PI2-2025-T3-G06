@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Disciplinas - NotaDez</title>
+  <title>Disciplinas — NotaDez</title>
 
-  <!-- CSS CORRETO -->
+  <!-- CSS -->
   <link rel="stylesheet" href="/gerenciar/css/listaDisciplinas.css" />
 
-  <!-- Ícones e Fonte -->
+  <!-- Ícones + Fonte -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
@@ -16,35 +16,47 @@
 <body>
 <div class="dashboard">
 
-  <!-- ================== TOPBAR ================== -->
+  <!-- ========================================================= -->
+  <!-- =========================== TOPBAR ======================= -->
+  <!-- ========================================================= -->
   <nav class="topbar">
     <h2>NotaDez</h2>
-    <ul class="menu-horizontal">
-      <li><a href="#" id="btnInstituicoes"><i class="fa-solid fa-building-columns"></i> Instituições</a></li>
-      <li><a href="#" id="btnCursos"><i class="fa-solid fa-book"></i> Cursos</a></li>
-      <li><a href="#" id="btnDisciplinas" class="ativo"><i class="fa-solid fa-layer-group"></i> Disciplinas</a></li>
-      <li><a href="#" id="btnTurmas"><i class="fa-solid fa-users"></i> Turmas</a></li>
 
-      <li><a href="/gerenciar/html/perfilProfessor.html"><i class="fa-solid fa-user"></i> Perfil</a></li>
-      <li><a href="/auth/html/login.html"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+    <ul class="menu-horizontal">
+
+      <!-- INSTITUIÇÕES -->
+      <li>
+        <a href="#" id="btnInstituicoes">
+          <i class="fa-solid fa-building-columns"></i> Instituições
+        </a>
+      </li>
+
+      <!-- PERFIL -->
+      <li>
+        <a href="/gerenciar/html/perfilProfessor.html">
+          <i class="fa-solid fa-user"></i> Perfil
+        </a>
+      </li>
+
+      <!-- SAIR -->
+      <li>
+        <a href="/auth/html/login.html">
+          <i class="fa-solid fa-right-from-bracket"></i> Sair
+        </a>
+      </li>
+
     </ul>
   </nav>
 
-  <!-- ================== MENU FLUTUANTE ================== -->
-  <div id="menuFlutuante" class="menu-flutuante" style="display:none;">
-    <div class="menu-conteudo">
-      <h3 id="tituloAba">Selecionar</h3>
-      <div id="selectContainer"></div>
-      <button id="btnIr" class="btn-curso" style="display:none;">Ir</button>
-    </div>
-  </div>
 
-  <!-- ================== CONTEÚDO PRINCIPAL ================== -->
+  <!-- ========================================================= -->
+  <!-- ==================== CONTEÚDO PRINCIPAL ================= -->
+  <!-- ========================================================= -->
   <main class="container">
 
     <h1 class="titulo-verde">Disciplinas do Curso</h1>
 
-    <!-- ===== FILTRO ===== -->
+    <!-- ==================== FILTRO ==================== -->
     <form class="filtro-card" onsubmit="return false;">
       <label for="fBuscaDisc">Busca</label>
 
@@ -55,6 +67,7 @@
         </button>
       </div>
 
+      <!-- Botões -->
       <div class="botoes" style="display:flex; justify-content:space-between; margin-top:15px;">
 
         <!-- ESQUERDA -->
@@ -74,10 +87,9 @@
         </div>
 
       </div>
-
     </form>
 
-    <!-- ===== LISTA ===== -->
+    <!-- ==================== LISTA ==================== -->
     <div class="lista-card">
 
       <div class="tabela-head">
@@ -98,12 +110,13 @@
   </main>
 </div>
 
-<!-- ========================================================= -->
-<!-- ===================== MODAL COMPONENTE =================== -->
-<!-- ========================================================= -->
+
+<!-- ===================================================================== -->
+<!-- ======================== MODAL COMPONENTE =========================== -->
+<!-- ===================================================================== -->
 
 <div id="modalComponente" class="modal-overlay" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true">
+  <div class="modal">
 
     <div class="modal-header">
       <div class="modal-title">Cadastrar componente de nota</div>
@@ -112,13 +125,13 @@
 
     <div class="modal-body">
 
-      <!-- TIPOS DE MÉDIA -->
+      <!-- TIPO DE MÉDIA -->
       <div class="media-box">
 
         <label class="radio-linha">
           <input type="radio" name="tipoMedia" id="mediaSimples" value="simples" checked>
           <div>
-            <strong>Média Simples</strong><br>
+            <strong>Média Simples</strong>
             <span class="explica">Soma dos componentes ÷ quantidade de componentes.</span>
           </div>
         </label>
@@ -126,15 +139,33 @@
         <label class="radio-linha">
           <input type="radio" name="tipoMedia" id="mediaPonderada" value="ponderada">
           <div>
-            <strong>Média Ponderada</strong><br>
-            <span class="explica">A soma dos pesos deve totalizar <strong>100%</strong>.</span>
+            <strong>Média Ponderada</strong>
+            <span class="explica">A soma dos pesos deve totalizar 100%.</span>
           </div>
         </label>
 
       </div>
 
+      <!-- FORM DO MODAL -->
       <div class="form-grid">
 
+        <!-- NOVO: INSTITUIÇÃO -->
+        <div class="field col-2">
+          <label class="required">Instituição</label>
+          <select id="cmpInst">
+            <option value="">Selecione...</option>
+          </select>
+        </div>
+
+        <!-- NOVO: CURSO -->
+        <div class="field col-2">
+          <label class="required">Curso</label>
+          <select id="cmpCurso">
+            <option value="">Selecione...</option>
+          </select>
+        </div>
+
+        <!-- DISCIPLINA (lista após selecionar inst → curso) -->
         <div class="field col-2">
           <label class="required">Disciplina</label>
           <select id="cmpDisc">
@@ -154,12 +185,12 @@
 
         <div class="field" id="campoPeso" style="display:none;">
           <label>Peso (%)</label>
-          <input id="cmpPeso" type="number" min="0" max="100" step="1" placeholder="Ex.: 40">
+          <input id="cmpPeso" type="number" min="0" max="100" placeholder="Ex.: 30">
         </div>
 
         <div class="field col-2">
           <label>Descrição</label>
-          <textarea id="cmpDesc" placeholder="Ex.: Prova teórica"></textarea>
+          <textarea id="cmpDesc" placeholder="Ex.: Prova escrita"></textarea>
         </div>
 
       </div>
@@ -167,7 +198,7 @@
 
     <div class="modal-footer">
 
-      <button class="btn btn-ghost" id="btnVerComponentes" style="margin-right:auto;">
+      <button class="btn btn-ghost" id="btnVerComponentes">
         <i class="fa-solid fa-list"></i> Componentes cadastrados
       </button>
 
@@ -182,11 +213,12 @@
   </div>
 </div>
 
-<!-- ========================================================= -->
-<!-- =============== SUB-MODAL: LISTA DE COMPONENTES ========= -->
-<!-- ========================================================= -->
 
-<div id="modalListaComponentes" class="modal-overlay" aria-hidden="true">
+<!-- ===================================================================== -->
+<!-- ===================== SUBMODAL LISTA COMPONENTES ==================== -->
+<!-- ===================================================================== -->
+
+<div id="modalListaComponentes" class="modal-overlay">
   <div class="modal modal-small">
 
     <div class="modal-header">
@@ -201,7 +233,8 @@
   </div>
 </div>
 
-<!-- JS -->
+
+<!-- ======================== JAVASCRIPT ======================== -->
 <script src="/gerenciar/javascript/listaDisciplinas.js"></script>
 
 </body>

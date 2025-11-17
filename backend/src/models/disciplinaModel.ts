@@ -32,38 +32,20 @@ export async function criarDisciplina(
   await conn.execute(
     `
       INSERT INTO disciplinas (
-        nome,
-        sigla,
-        codigo,
-        periodo,
-        usuario_id,
-        instituicao_id,
-        curso_id
+        nome, sigla, codigo, periodo, usuario_id, instituicao_id, curso_id
       )
       VALUES (
-        :nome,
-        :sigla,
-        :codigo,
-        :periodo,
-        :usuarioId,
-        :instituicaoId,
-        :cursoId
+        :nome, :sigla, :codigo, :periodo, :usuarioId, :instituicaoId, :cursoId
       )
     `,
-    {
-      nome,
-      sigla,
-      codigo,
-      periodo,
-      usuarioId,
-      instituicaoId,
-      cursoId
-    },
+    { nome, sigla, codigo, periodo, usuarioId, instituicaoId, cursoId },
     { autoCommit: true }
   );
 
   await conn.close();
 }
+
+
 
 // ======================================================
 // 2️⃣ BUSCAR DISCIPLINAS POR CURSO (COM NOME DO PROFESSOR)
@@ -98,6 +80,8 @@ export async function buscarDisciplinasPorCurso(cursoId: number) {
   return result.rows as Disciplina[];
 }
 
+
+
 // ======================================================
 // 3️⃣ BUSCAR DISCIPLINA POR ID
 // ======================================================
@@ -130,6 +114,8 @@ export async function buscarDisciplinaPorId(id: number) {
   return (result.rows as Disciplina[])[0] || null;
 }
 
+
+
 // ======================================================
 // 4️⃣ ATUALIZAR DISCIPLINA
 // ======================================================
@@ -145,11 +131,7 @@ export async function atualizarDisciplina(
   await conn.execute(
     `
       UPDATE disciplinas
-      SET
-        nome    = :nome,
-        sigla   = :sigla,
-        codigo  = :codigo,
-        periodo = :periodo
+      SET nome = :nome, sigla = :sigla, codigo = :codigo, periodo = :periodo
       WHERE id = :id
     `,
     { id, nome, sigla, codigo, periodo },
@@ -158,6 +140,8 @@ export async function atualizarDisciplina(
 
   await conn.close();
 }
+
+
 
 // ======================================================
 // 5️⃣ EXCLUIR DISCIPLINA
@@ -177,8 +161,10 @@ export async function excluirDisciplina(id: number) {
   await conn.close();
 }
 
+
+
 // ======================================================
-// 6️⃣ CONTAR DISCIPLINAS POR CURSO (para exclusão de curso)
+// 6️⃣ CONTAR DISCIPLINAS POR CURSO (para excluir curso)
 // ======================================================
 export async function contarDisciplinasPorCurso(
   cursoId: number
@@ -198,4 +184,51 @@ export async function contarDisciplinasPorCurso(
   await conn.close();
 
   return Number((result.rows as any)[0].TOTAL);
+}
+
+
+
+// ======================================================
+// 7️⃣ VERIFICAR CÓDIGO REPETIDO NO MESMO CURSO
+// ======================================================
+export async function verificarCodigoRepetido(cursoId: number, codigo: string) {
+  const conn = await oracledb.getConnection(dbConfig);
+
+  const result = await conn.execute(
+    `
+      SELECT COUNT(*) AS TOTAL
+      FROM disciplinas
+      WHERE curso_id = :cursoId
+        AND UPPER(codigo) = UPPER(:codigo)
+    `,
+    { cursoId, codigo },
+    { outFormat: oracledb.OUT_FORMAT_OBJECT }
+  );
+
+  await conn.close();
+
+  return Number((result.rows as any)[0].TOTAL) > 0;
+}
+
+
+
+// ======================================================
+// 8️⃣ VERIFICAR SE A DISCIPLINA TEM TURMAS
+// ======================================================
+export async function verificarDisciplinaTemTurmas(disciplinaId: number) {
+  const conn = await oracledb.getConnection(dbConfig);
+
+  const result = await conn.execute(
+    `
+      SELECT COUNT(*) AS TOTAL
+      FROM turmas
+      WHERE disciplina_id = :disciplinaId
+    `,
+    { disciplinaId },
+    { outFormat: oracledb.OUT_FORMAT_OBJECT }
+  );
+
+  await conn.close();
+
+  return Number((result.rows as any)[0].TOTAL) > 0;
 }

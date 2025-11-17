@@ -1,12 +1,16 @@
 import { Request, Response } from "express";
+
 import {
   criarDisciplina,
   buscarDisciplinasPorCurso,
   buscarDisciplinaPorId,
   atualizarDisciplina,
   excluirDisciplina,
-  contarDisciplinasPorCurso
+  contarDisciplinasPorCurso,
+  verificarCodigoRepetido,
+  verificarDisciplinaTemTurmas
 } from "../models/disciplinaModel";
+
 
 // ======================================================
 //  CADASTRAR DISCIPLINA
@@ -17,6 +21,14 @@ export const cadastrarDisciplina = async (req: Request, res: Response) => {
 
     if (!nome || !sigla || !codigo || !periodo || !usuarioId || !instituicaoId || !cursoId) {
       return res.status(400).json({ message: "Dados insuficientes." });
+    }
+
+    // 🔥 Verificar código duplicado dentro do mesmo curso
+    const codigoExiste = await verificarCodigoRepetido(cursoId, codigo);
+    if (codigoExiste) {
+      return res.status(400).json({
+        message: "Já existe uma disciplina com esse código neste curso."
+      });
     }
 
     await criarDisciplina(
@@ -37,6 +49,7 @@ export const cadastrarDisciplina = async (req: Request, res: Response) => {
   }
 };
 
+
 // ======================================================
 //  LISTAR DISCIPLINAS POR CURSO
 // ======================================================
@@ -56,6 +69,7 @@ export const listarDisciplinasPorCurso = async (req: Request, res: Response) => 
     return res.status(500).json({ message: "Erro ao listar disciplinas." });
   }
 };
+
 
 // ======================================================
 //  BUSCAR DISCIPLINA POR ID
@@ -81,6 +95,7 @@ export const obterDisciplina = async (req: Request, res: Response) => {
   }
 };
 
+
 // ======================================================
 //  ATUALIZAR DISCIPLINA
 // ======================================================
@@ -98,11 +113,20 @@ export const editarDisciplinaController = async (req: Request, res: Response) =>
       return res.status(404).json({ message: "Disciplina não encontrada." });
     }
 
+    // 🔥 Verificar código duplicado ao editar
+    if (codigo !== existente.CODIGO) {
+      const codigoRepetido = await verificarCodigoRepetido(existente.CURSO_ID, codigo);
+
+      if (codigoRepetido) {
+        return res.status(400).json({
+          message: "Já existe uma disciplina com esse código neste curso."
+        });
+      }
+    }
+
     await atualizarDisciplina(id, nome, sigla, codigo, periodo);
 
-    return res
-      .status(200)
-      .json({ message: "Disciplina atualizada com sucesso!" });
+    return res.status(200).json({ message: "Disciplina atualizada com sucesso!" });
 
   } catch (error) {
     console.error("Erro ao atualizar disciplina:", error);
@@ -110,8 +134,9 @@ export const editarDisciplinaController = async (req: Request, res: Response) =>
   }
 };
 
+
 // ======================================================
-//  REMOVER DISCIPLINA
+//  REMOVER DISCIPLINA (com bloqueio de turmas)
 // ======================================================
 export const removerDisciplinaController = async (req: Request, res: Response) => {
   try {
@@ -126,6 +151,14 @@ export const removerDisciplinaController = async (req: Request, res: Response) =
       return res.status(404).json({ message: "Disciplina não encontrada." });
     }
 
+    // 🔥 Bloquear exclusão caso tenha turmas
+    const temTurmas = await verificarDisciplinaTemTurmas(id);
+    if (temTurmas) {
+      return res.status(400).json({
+        message: "Não é possível excluir: existem turmas vinculadas."
+      });
+    }
+
     await excluirDisciplina(id);
 
     return res.status(200).json({ message: "Disciplina removida com sucesso!" });
@@ -136,8 +169,10 @@ export const removerDisciplinaController = async (req: Request, res: Response) =
   }
 };
 
+
 // ======================================================
-//  QUANTIDADES VINCULADAS AO CURSO (para excluir curso)
+//  QUANTIDADE DE DISCIPLINAS POR CURSO
+//  (usado para bloquear exclusão do CURSO)
 // ======================================================
 export const quantidadeDisciplinasPorCurso = async (req: Request, res: Response) => {
   try {

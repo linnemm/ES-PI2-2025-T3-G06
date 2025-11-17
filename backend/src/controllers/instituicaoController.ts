@@ -24,12 +24,11 @@ export const cadastrarInstituicao = async (req: Request, res: Response) => {
 
     await criarInstituicao(nome, sigla, usuarioId);
 
-    // Marca primeiro acesso como concluído
+    // Atualiza primeiro acesso
     const conn = await oracledb.getConnection(dbConfig);
     await conn.execute(
       `UPDATE usuarios SET primeiro_acesso = 0 WHERE id = :id`,
-      { id: usuarioId },
-      { autoCommit: true }
+      { id: usuarioId }
     );
     await conn.close();
 
@@ -64,7 +63,6 @@ export const listarInstituicoesPorUsuario = async (req: Request, res: Response) 
 
 // ======================================================
 //  EDITAR INSTITUIÇÃO
-//  (BODY → id, nome, sigla)
 // ======================================================
 export const atualizarInstituicao = async (req: Request, res: Response) => {
   try {
@@ -92,11 +90,10 @@ export const atualizarInstituicao = async (req: Request, res: Response) => {
 
 // ======================================================
 //  REMOVER INSTITUIÇÃO
-//  (BODY → id)
 // ======================================================
 export const removerInstituicao = async (req: Request, res: Response) => {
   try {
-    const { id } = req.body;
+    const id = Number(req.params.id); // 👈 CORRETO
 
     if (!id) {
       return res.status(400).json({ message: "ID inválido." });
@@ -109,8 +106,8 @@ export const removerInstituicao = async (req: Request, res: Response) => {
 
     const temCursos = await instituicaoTemCursos(id);
     if (temCursos) {
-      return res.status(403).json({
-        message: "Não é possível excluir: existem cursos vinculados."
+      return res.status(400).json({
+        message: "Você não pode excluir uma instituição que possui cursos."
       });
     }
 
