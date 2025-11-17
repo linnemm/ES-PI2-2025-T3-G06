@@ -1,31 +1,37 @@
 import oracledb from "oracledb";
 import { openConnection } from "../config/database";
 
-// ====================================================================
-// 1) LISTAR COMPONENTES DA DISCIPLINA
-// ====================================================================
+// ============================================================
+// 1) LISTAR COMPONENTES DE UMA DISCIPLINA
+// ============================================================
 export async function listarPorDisciplina(disciplinaId: number) {
   const conn = await openConnection();
 
   const result = await conn.execute(
     `
-      SELECT ID, NOME, SIGLA, PESO, DESCRICAO, TIPO_MEDIA
+      SELECT 
+        ID,
+        NOME,
+        SIGLA,
+        PESO,
+        DESCRICAO,
+        TIPO_MEDIA
       FROM COMPONENTES_NOTA
       WHERE DISCIPLINA_ID = :id
       ORDER BY ID
     `,
-    { id: disciplinaId }
+    { id: disciplinaId },
+    { outFormat: oracledb.OUT_FORMAT_OBJECT }
   );
 
   await conn.close();
 
-  // rows pode ser undefined, então garantimos array vazio
   return (result.rows as any[]) || [];
 }
 
-// ====================================================================
-// 2) VERIFICAR NOME OU SIGLA DUPLICADOS
-// ====================================================================
+// ============================================================
+// 2) VERIFICAR SE EXISTE NOME OU SIGLA REPETIDOS
+// ============================================================
 export async function existeComponenteIgual(
   disciplinaId: number,
   nome: string,
@@ -40,23 +46,19 @@ export async function existeComponenteIgual(
       WHERE DISCIPLINA_ID = :disc
       AND (NOME = :nome OR SIGLA = :sigla)
     `,
-    { disc: disciplinaId, nome, sigla }
+    { disc: disciplinaId, nome, sigla },
+    { outFormat: oracledb.OUT_FORMAT_OBJECT }
   );
 
   await conn.close();
 
-  const rows = (result.rows as any[]) || [];
-  if (rows.length === 0) return false;
-
-  const linha: any = rows[0];
-  const total = linha.TOTAL ?? linha[0] ?? 0;
-
-  return Number(total) > 0;
+  const total = Number((result.rows as any)[0]?.TOTAL || 0);
+  return total > 0;
 }
 
-// ====================================================================
+// ============================================================
 // 3) SOMA DOS PESOS DA DISCIPLINA
-// ====================================================================
+// ============================================================
 export async function somaPesos(disciplinaId: number) {
   const conn = await openConnection();
 
@@ -66,23 +68,18 @@ export async function somaPesos(disciplinaId: number) {
       FROM COMPONENTES_NOTA
       WHERE DISCIPLINA_ID = :disc
     `,
-    { disc: disciplinaId }
+    { disc: disciplinaId },
+    { outFormat: oracledb.OUT_FORMAT_OBJECT }
   );
 
   await conn.close();
 
-  const rows = (result.rows as any[]) || [];
-  if (rows.length === 0) return 0;
-
-  const linha: any = rows[0];
-  const total = linha.TOTAL ?? linha[0] ?? 0;
-
-  return Number(total);
+  return Number((result.rows as any)[0]?.TOTAL || 0);
 }
 
-// ====================================================================
-// 4) INSERIR COMPONENTE (COM TODAS AS REGRAS DE NEGÓCIO)
-// ====================================================================
+// ============================================================
+// 4) INSERIR COMPONENTE COM TODAS AS REGRAS DE NEGÓCIO
+// ============================================================
 export async function inserirComponente(dados: any) {
   const {
     disciplinaId,
@@ -95,26 +92,25 @@ export async function inserirComponente(dados: any) {
   } = dados;
 
   console.log("========================================");
-  console.log("NOVO COMPONENTE RECEBIDO:");
+  console.log(" NOVO COMPONENTE RECEBIDO ");
   console.log(dados);
   console.log("========================================");
 
-  // --------------------------------------------------------------------
-  // REGRA 1 — nome e sigla não podem repetir
-  // --------------------------------------------------------------------
-  const igual = await existeComponenteIgual(disciplinaId, nome, sigla);
-  if (igual) {
+  // -------------------------
+  // REGRA 1 — Nome ou sigla duplicados
+  // -------------------------
+  const duplicado = await existeComponenteIgual(disciplinaId, nome, sigla);
+  if (duplicado) {
     throw new Error("Já existe um componente com este nome OU sigla nesta disciplina.");
   }
 
-  // --------------------------------------------------------------------
-  // REGRA 2 — disciplina só pode ter um tipo de média
-  // --------------------------------------------------------------------
+  // -------------------------
+  // REGRA 2 — Tipo de média deve ser único na disciplina
+  // -------------------------
   const existentes = await listarPorDisciplina(disciplinaId);
 
   if (existentes.length > 0) {
-    const primeiro: any = existentes[0];
-    const tipoExistente = primeiro.TIPO_MEDIA;
+    const tipoExistente = existentes[0].TIPO_MEDIA;
 
     if (tipoExistente !== tipoMedia) {
       throw new Error(
@@ -123,31 +119,46 @@ export async function inserirComponente(dados: any) {
     }
   }
 
-  // --------------------------------------------------------------------
-  // REGRA 3 — validar soma dos pesos
-  // --------------------------------------------------------------------
+  // -------------------------
+  // REGRA 3 — Soma de pesos não pode passar de 100
+  // -------------------------
   if (tipoMedia === "ponderada") {
-    const totalAtual = await somaPesos(disciplinaId);
-    const pesoNumero = Number(peso) || 0;
-    const totalDepois = totalAtual + pesoNumero;
+    const pesoAtual = await somaPesos(disciplinaId);
+    const pesoNovo = Number(peso) || 0;
 
-    if (totalDepois > 100) {
+    if (pesoAtual + pesoNovo > 100) {
       throw new Error(
-        `A soma dos pesos ultrapassa 100! Soma atual: ${totalAtual}. Soma com este: ${totalDepois}.`
+        `A soma dos pesos ultrapassa 100%. Soma atual: ${pesoAtual}%. Soma após este: ${pesoAtual + pesoNovo}%.`
       );
     }
   }
 
-  // --------------------------------------------------------------------
-  // INSERÇÃO NO BANCO
-  // --------------------------------------------------------------------
+  // -------------------------
+  // INSERIR NO BANCO
+  // -------------------------
   const conn = await openConnection();
 
   const sql = `
     INSERT INTO COMPONENTES_NOTA
-      (DISCIPLINA_ID, NOME, SIGLA, PESO, DESCRICAO, USUARIO_ID, TIPO_MEDIA)
+    (
+      DISCIPLINA_ID,
+      NOME,
+      SIGLA,
+      PESO,
+      DESCRICAO,
+      USUARIO_ID,
+      TIPO_MEDIA
+    )
     VALUES
-      (:disciplina, :nome, :sigla, :peso, :descricao, :usuario, :tipo_media)
+    (
+      :disciplina,
+      :nome,
+      :sigla,
+      :peso,
+      :descricao,
+      :usuario,
+      :tipo_media
+    )
     RETURNING ID INTO :id
   `;
 
@@ -155,8 +166,8 @@ export async function inserirComponente(dados: any) {
     disciplina: disciplinaId,
     nome,
     sigla,
-    peso: tipoMedia === "simples" ? null : peso,
-    descricao: descricao ?? null,
+    peso: tipoMedia === "simples" ? null : Number(peso),
+    descricao: descricao || null,
     usuario: usuario_id,
     tipo_media: tipoMedia,
     id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
@@ -165,13 +176,12 @@ export async function inserirComponente(dados: any) {
   const result = await conn.execute(sql, binds, { autoCommit: true }) as any;
   await conn.close();
 
-  const novoId = result.outBinds?.id?.[0] ?? null;
-  return novoId;
+  return result.outBinds?.id?.[0] ?? null;
 }
 
-// ====================================================================
+// ============================================================
 // 5) REMOVER COMPONENTE
-// ====================================================================
+// ============================================================
 export async function removerComponente(id: number) {
   const conn = await openConnection();
 

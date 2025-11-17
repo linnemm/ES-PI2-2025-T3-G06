@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Disciplinas — NotaDez</title>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="/gerenciar/css/listaDisciplinas.css" />
-
-  <!-- Ícones + Fonte -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
@@ -16,29 +13,24 @@
 <body>
 <div class="dashboard">
 
-  <!-- ========================================================= -->
-  <!-- =========================== TOPBAR ======================= -->
-  <!-- ========================================================= -->
+  <!-- ================= TOPBAR ================= -->
   <nav class="topbar">
     <h2>NotaDez</h2>
 
     <ul class="menu-horizontal">
 
-      <!-- INSTITUIÇÕES -->
       <li>
         <a href="#" id="btnInstituicoes">
           <i class="fa-solid fa-building-columns"></i> Instituições
         </a>
       </li>
 
-      <!-- PERFIL -->
       <li>
         <a href="/gerenciar/html/perfilProfessor.html">
           <i class="fa-solid fa-user"></i> Perfil
         </a>
       </li>
 
-      <!-- SAIR -->
       <li>
         <a href="/auth/html/login.html">
           <i class="fa-solid fa-right-from-bracket"></i> Sair
@@ -49,14 +41,11 @@
   </nav>
 
 
-  <!-- ========================================================= -->
-  <!-- ==================== CONTEÚDO PRINCIPAL ================= -->
-  <!-- ========================================================= -->
+  <!-- ================= CONTEÚDO ================= -->
   <main class="container">
 
     <h1 class="titulo-verde">Disciplinas do Curso</h1>
 
-    <!-- ==================== FILTRO ==================== -->
     <form class="filtro-card" onsubmit="return false;">
       <label for="fBuscaDisc">Busca</label>
 
@@ -67,15 +56,11 @@
         </button>
       </div>
 
-      <!-- Botões -->
       <div class="botoes" style="display:flex; justify-content:space-between; margin-top:15px;">
-
-        <!-- ESQUERDA -->
         <button class="btn-curso" id="btnNovaDisc" type="button">
           + Nova Disciplina
         </button>
 
-        <!-- DIREITA -->
         <div style="display:flex; gap:10px;">
           <button class="btn-curso" id="btnComponenteNota" type="button">
             + Componente de Nota
@@ -89,7 +74,6 @@
       </div>
     </form>
 
-    <!-- ==================== LISTA ==================== -->
     <div class="lista-card">
 
       <div class="tabela-head">
@@ -111,9 +95,8 @@
 </div>
 
 
-<!-- ===================================================================== -->
-<!-- ======================== MODAL COMPONENTE =========================== -->
-<!-- ===================================================================== -->
+
+<!-- ================= MODAL COMPONENTE ================= -->
 
 <div id="modalComponente" class="modal-overlay" aria-hidden="true">
   <div class="modal">
@@ -125,7 +108,6 @@
 
     <div class="modal-body">
 
-      <!-- TIPO DE MÉDIA -->
       <div class="media-box">
 
         <label class="radio-linha">
@@ -146,26 +128,9 @@
 
       </div>
 
-      <!-- FORM DO MODAL -->
       <div class="form-grid">
 
-        <!-- NOVO: INSTITUIÇÃO -->
-        <div class="field col-2">
-          <label class="required">Instituição</label>
-          <select id="cmpInst">
-            <option value="">Selecione...</option>
-          </select>
-        </div>
-
-        <!-- NOVO: CURSO -->
-        <div class="field col-2">
-          <label class="required">Curso</label>
-          <select id="cmpCurso">
-            <option value="">Selecione...</option>
-          </select>
-        </div>
-
-        <!-- DISCIPLINA (lista após selecionar inst → curso) -->
+        <!-- AGORA SOMENTE DISCIPLINA -->
         <div class="field col-2">
           <label class="required">Disciplina</label>
           <select id="cmpDisc">
@@ -214,9 +179,8 @@
 </div>
 
 
-<!-- ===================================================================== -->
-<!-- ===================== SUBMODAL LISTA COMPONENTES ==================== -->
-<!-- ===================================================================== -->
+
+<!-- ================= SUBMODAL LISTA COMPONENTES ================= -->
 
 <div id="modalListaComponentes" class="modal-overlay">
   <div class="modal modal-small">
@@ -234,7 +198,6 @@
 </div>
 
 
-<!-- ======================== JAVASCRIPT ======================== -->
 <script src="/gerenciar/javascript/listaDisciplinas.js"></script>
 
 </body>

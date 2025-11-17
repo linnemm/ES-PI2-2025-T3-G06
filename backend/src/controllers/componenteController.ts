@@ -1,5 +1,5 @@
 // ===========================================
-// componenteController.ts (VERSÃO FINALIZADA)
+// componenteController.ts — VERSÃO APROVADA
 // ===========================================
 
 import { Request, Response } from "express";
@@ -14,7 +14,7 @@ import {
 // ===========================
 export async function criarComponente(req: Request, res: Response) {
   try {
-    let {
+    const {
       disciplinaId,
       nome,
       sigla,
@@ -24,9 +24,7 @@ export async function criarComponente(req: Request, res: Response) {
       usuario_id
     } = req.body;
 
-    // -----------------------------
-    // VALIDAÇÕES BÁSICAS
-    // -----------------------------
+    // Básico
     if (!disciplinaId || !nome || !sigla || !tipoMedia) {
       return res.status(400).json({ message: "Campos obrigatórios faltando." });
     }
@@ -35,9 +33,6 @@ export async function criarComponente(req: Request, res: Response) {
       return res.status(400).json({ message: "Usuário não identificado." });
     }
 
-    // -----------------------------
-    // NORMALIZAR TIPO MEDIA
-    // -----------------------------
     const tipo = String(tipoMedia).trim().toLowerCase();
 
     if (tipo !== "simples" && tipo !== "ponderada") {
@@ -46,36 +41,28 @@ export async function criarComponente(req: Request, res: Response) {
       });
     }
 
-    // -----------------------------
-    // TRATAR PESO DE ACORDO COM O TIPO
-    // -----------------------------
+    // Peso → só se for ponderada
     let pesoNormalizado: number | null = null;
 
-    if (tipo === "simples") {
-      pesoNormalizado = null; // obrigatório ser NULL
-    }
-
     if (tipo === "ponderada") {
-      if (peso === undefined || peso === null || peso === "") {
+      if (!peso && peso !== 0) {
         return res.status(400).json({
           message: "Peso é obrigatório para média ponderada."
         });
       }
 
-      const pesoConvertido = Number(peso);
+      const pesoNum = Number(peso);
 
-      if (isNaN(pesoConvertido) || pesoConvertido <= 0) {
+      if (isNaN(pesoNum) || pesoNum <= 0) {
         return res.status(400).json({
-          message: "Peso inválido. Deve ser um número maior que 0."
+          message: "Peso inválido. Deve ser maior que 0."
         });
       }
 
-      pesoNormalizado = pesoConvertido;
+      pesoNormalizado = pesoNum;
     }
 
-    // -----------------------------
-    // INSERIR NO BANCO (COM TODAS AS REGRAS NO MODEL)
-    // -----------------------------
+    // INSERE NO BANCO — regras no model
     const novoId = await inserirComponente({
       disciplinaId: Number(disciplinaId),
       nome,
@@ -91,16 +78,14 @@ export async function criarComponente(req: Request, res: Response) {
       id: novoId
     });
 
-  } catch (e: any) {
-    console.error("Erro ao criar componente:", e);
-
-    // retorna erro amigável
-    return res.status(400).json({ message: e.message });
+  } catch (error: any) {
+    console.error("Erro ao criar componente:", error);
+    return res.status(400).json({ message: error.message });
   }
 }
 
 // ===========================
-// LISTAR COMPONENTES
+// LISTAR COMPONENTES POR DISCIPLINA
 // ===========================
 export async function listarComponentes(req: Request, res: Response) {
   try {
@@ -110,14 +95,14 @@ export async function listarComponentes(req: Request, res: Response) {
 
     return res.status(200).json(lista);
 
-  } catch (e: any) {
-    console.error("Erro ao listar componentes:", e);
-    return res.status(500).json({ message: e.message });
+  } catch (error: any) {
+    console.error("Erro ao listar componentes:", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
 // ===========================
-// DELETAR COMPONENTE
+// REMOVER COMPONENTE
 // ===========================
 export async function deletarComponente(req: Request, res: Response) {
   try {
@@ -129,8 +114,8 @@ export async function deletarComponente(req: Request, res: Response) {
       message: "Componente removido com sucesso!"
     });
 
-  } catch (e: any) {
-    console.error("Erro ao remover componente:", e);
-    return res.status(500).json({ message: e.message });
+  } catch (error: any) {
+    console.error("Erro ao remover componente:", error);
+    return res.status(500).json({ message: error.message });
   }
 }
