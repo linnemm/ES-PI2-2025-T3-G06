@@ -1,4 +1,6 @@
-/* ===== Base ===== */
+/* Autoria: Alycia  */
+
+/*Base*/
 * {
   margin: 0;
   padding: 0;
@@ -7,29 +9,29 @@
 }
 
 body {
-  background-color: #f5f6fa;
-  overflow-x: hidden;
+  background-color: #f5f6fa;    /* fundo claro */
+  overflow-x: hidden;              /* evita scroll horizontal */
 }
 
 .dashboard {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh;          /* ocupa altura toda da tela */
 }
 
-/* ===== Topbar ===== */
+/* Topbar */
 .topbar {
   width: 100%;
-  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  background: linear-gradient(to right, #6ca98c, #5c8c75); /* degradê verde */
   color: #fff;
   padding: 15px 40px;
-  display: flex;
+  display: flex;     /* itens lado a lado */
   align-items: center;
   justify-content: space-between;
-  position: sticky;
+  position: sticky;    /* fixa no topo ao rolar */
   top: 0;
   z-index: 10;
-  box-shadow: 0 2px 8px rgb(236, 232, 232);
+  box-shadow: 0 2px 8px rgb(236, 232, 232); /*sombra */
 }
 
 .topbar h2 {
@@ -41,7 +43,7 @@ body {
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 25px;    /* espaçamento entre itens */
   flex-wrap: wrap;
 }
 
@@ -59,18 +61,16 @@ body {
 
 .menu-horizontal li a:hover,
 .menu-horizontal li a.ativo {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);  /* efeito hover */
 }
 
-/* ============================= */
-/* ===== Conteúdo principal ===== */
-/* ============================= */
+/* Conteúdo principal*/
 
 .container {
   width: 90%;
   max-width: 1000px;
-  margin: 100px auto 40px;
-  display: flex;
+  margin: 100px auto 40px; /* centraliza */
+  display: flex;    
   flex-direction: column;
   align-items: center;
 }
@@ -83,7 +83,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* ===== Filtro ===== */
+/* Filtro */
 form.filtro-card {
   background: #fff;
   padding: 20px;
@@ -140,7 +140,7 @@ form.filtro-card input:focus {
   background: #5c8c75;
 }
 
-/* ===== Lista ===== */
+/*Lista*/
 .lista-card {
   width: 100%;
   max-width: 900px;
@@ -162,8 +162,8 @@ form.filtro-card input:focus {
 
 .tabela-row {
   display: grid;
-  grid-template-columns: 1fr 120px 140px 200px 160px;
-  padding: 12px 16px;
+  grid-template-columns: 1fr 120px 140px 200px 160px; /* define largura das colunas */
+  padding: 12px 16px; 
   background: #fff;
   align-items: center;
   gap: 10px;
@@ -174,7 +174,7 @@ form.filtro-card input:focus {
   background: #f5fbf8;
 }
 
-/* ===== AÇÕES ===== */
+/*AÇÕES*/
 .acoes {
   display: flex;
   gap: 8px;
@@ -222,19 +222,17 @@ form.filtro-card input:focus {
   color: #6b7b87;
 }
 
-/* ======================= */
-/* ======= MODAL ========= */
-/* ======================= */
+/* MODAL*/
 
 .modal-overlay {
-  display: none;
+  display: none;   /* só aparece quando ativo */
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.45);    /* fundo escuro */
   backdrop-filter: blur(4px);
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 9999;    /* acima de tudo */
 }
 
 .modal {
@@ -242,7 +240,7 @@ form.filtro-card input:focus {
   background: #fff;
   border-radius: 18px;
   overflow: hidden;
-  animation: modalUp .22s ease-out;
+  animation: modalUp .22s ease-out;  /* animação ao abrir */
   box-shadow: 0 30px 80px rgba(0,0,0,.25);
 }
 
@@ -283,7 +281,7 @@ form.filtro-card input:focus {
   padding: 22px;
 }
 
-/* ------- ÁREA DA MÉDIA (explicação antiga RESTAURADA) ------- */
+/* ÁREA DA MÉDIA*/
 .media-box {
   display: flex;
   flex-direction: column;
@@ -304,7 +302,7 @@ form.filtro-card input:focus {
 
 .radio-linha input[type="radio"] {
   margin-top: 3px;
-  transform: scale(1.2);
+  transform: scale(1.2);  /* aumenta o radio */
 }
 
 .radio-linha strong {
@@ -327,7 +325,7 @@ form.filtro-card input:focus {
 }
 
 .col-2 {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1;   /* ocupa toda a largura */
 }
 
 .field label {
@@ -356,7 +354,7 @@ form.filtro-card input:focus {
   display: none;
 }
 
-/* Footer */
+/* Footer do model*/
 .modal-footer {
   display: flex;
   justify-content: space-between;
@@ -412,5 +410,5 @@ form.filtro-card input:focus {
 
 .btn-excluir-comp:hover {
   background: #d14545;
-  transform: translateY(-2px);
+  transform: translateY(-2px);  /* animação */
 }
