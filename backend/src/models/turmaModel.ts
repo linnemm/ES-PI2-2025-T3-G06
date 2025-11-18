@@ -1,3 +1,5 @@
+//Autoria: Miriã
+
 // src/models/turmaModel.ts
 import { openConnection } from "../config/database";
 
@@ -14,9 +16,7 @@ export interface Turma {
   CODIGO?: string;
 }
 
-/* ======================================================
-   FUNÇÃO AUXILIAR → Converte linhas do Oracle
-====================================================== */
+/* Função para converter linhas do Oracle*/
 function mapRows(rows: any[] | undefined) {
   if (!rows || rows.length === 0) return [];
 
@@ -34,9 +34,7 @@ function mapRows(rows: any[] | undefined) {
   }));
 }
 
-/* ======================================================
-   1) Criar Turma
-====================================================== */
+/*Cadastrar Turma */
 export async function criarTurma(dados: any): Promise<void> {
   const conn = await openConnection();
 
@@ -56,9 +54,7 @@ export async function criarTurma(dados: any): Promise<void> {
   }
 }
 
-/* ======================================================
-   2) Listar turmas por CURSO
-====================================================== */
+/*Listar Turmas por curso */
 export async function buscarTurmasPorCurso(cursoId: number) {
   const conn = await openConnection();
 
@@ -91,9 +87,7 @@ export async function buscarTurmasPorCurso(cursoId: number) {
   }
 }
 
-/* ======================================================
-   3) Listar turmas por DISCIPLINA
-====================================================== */
+/*Listar Turmas por discplina*/
 export async function buscarTurmasPorDisciplina(disciplinaId: number) {
   const conn = await openConnection();
 
@@ -126,9 +120,7 @@ export async function buscarTurmasPorDisciplina(disciplinaId: number) {
   }
 }
 
-/* ======================================================
-   4) Buscar turma por ID (detalhes)
-====================================================== */
+/*Buscar Turma por ID */
 export async function buscarTurmaPorId(id: number) {
   const conn = await openConnection();
 
@@ -161,9 +153,7 @@ export async function buscarTurmaPorId(id: number) {
   }
 }
 
-/* ======================================================
-   5) Editar Turma
-====================================================== */
+/*Editar Turma*/
 export async function editarTurmaModel(
   id: number,
   nome: string,
@@ -191,9 +181,7 @@ export async function editarTurmaModel(
   }
 }
 
-/* ======================================================
-   6) Remover Turma
-====================================================== */
+/*Remover Turma */
 export async function removerTurmaModel(id: number) {
   const conn = await openConnection();
 

@@ -1,3 +1,5 @@
+//Autoria: Miriã - Lista Turmas JS
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const corpoTabela = document.getElementById("corpoTabela");
@@ -9,9 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnNovaTurma = document.getElementById("btnNovaTurma");
   const btnNovoAluno = document.getElementById("btnNovoAluno");
 
-  // =====================================================
-  // PEGAR PARAMETROS EXATAMENTE COMO AS OUTRAS TELAS
-  // =====================================================
+  //PEGAR PARAMETROS 
 
   const params = new URLSearchParams(window.location.search);
 
@@ -25,32 +25,24 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // =====================================================
-  // BOTÕES DE TOPO
-  // =====================================================
+  //BOTÕES DO TOPO
   document.getElementById("btnInstituicoes").addEventListener("click", () => {
     window.location.href = "/gerenciar/html/dashboard.html";
   });
 
-  // =====================================================
-  // BOTÃO NOVA TURMA
-  // =====================================================
+  //BOTÃO NOVA TURMA
   btnNovaTurma.onclick = () => {
     window.location.href =
       `/gerenciar/html/cadastro_turma.html?inst=${instituicaoId}&curso=${cursoId}&disc=${disciplinaId}`;
   };
 
-  // =====================================================
-  // BOTÃO NOVO ALUNO
-  // =====================================================
+  //BOTÃO NOVO ALUNO
   btnNovoAluno.onclick = () => {
     window.location.href =
       `/gerenciar/html/cadastro_aluno.html?inst=${instituicaoId}&curso=${cursoId}&disc=${disciplinaId}`;
   };
 
-  // =====================================================
-  // BUSCAR LISTA DE TURMAS
-  // =====================================================
+  //BUSCAR LISTA DE TURMAS
   async function carregarTurmas() {
     corpoTabela.innerHTML = "<p>Carregando...</p>";
 
@@ -82,9 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // =====================================================
-  // RENDER TABELA
-  // =====================================================
+  //RENDER TABELA
   function render(turmas) {
     corpoTabela.innerHTML = "";
 
@@ -137,9 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // =====================================================
-  // EDITAR TURMA  (⭐ VIA PROMPT — SIMPLES E RÁPIDO)
-  // =====================================================
+  //EDITAR TURMA
   async function editarTurma(turma) {
 
     const nome = prompt("Novo nome da turma:", turma.NOME);
@@ -182,9 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // =====================================================
-  // EXCLUIR TURMA
-  // =====================================================
+  //EXCLUIR TURMA
   async function excluirTurma(id) {
     if (!confirm("Tem certeza que deseja excluir esta turma?")) return;
 
@@ -201,15 +187,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // =====================================================
-  // BUSCA
-  // =====================================================
+  //BUSCAR
   btnBuscar.addEventListener("click", () => carregarTurmas());
   fBusca.addEventListener("keyup", () => carregarTurmas());
 
-  // =====================================================
-  // INICIAR
-  // =====================================================
+  //INICIAR
   carregarTurmas();
 
 });

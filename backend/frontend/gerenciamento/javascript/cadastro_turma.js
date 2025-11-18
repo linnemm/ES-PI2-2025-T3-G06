@@ -1,6 +1,6 @@
-// ================================================
-// CADASTRO DE TURMA — VERSÃO FINAL CORRIGIDA
-// ================================================
+//Autoria: Miriã - Cadastro Turmas JS 
+
+// CADASTRO DE TURMA 
 document.addEventListener("DOMContentLoaded", () => {
 
   const $ = (id) => document.getElementById(id);
@@ -19,18 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // =====================================================
-  // PEGAR PARÂMETROS DA URL
-  // =====================================================
+  //PEGAR PARÂMETROS DA URL
   const params = new URLSearchParams(window.location.search);
 
   let instituicaoId = params.get("inst");
   let cursoId = params.get("curso");
   let disciplinaId = params.get("disc");
 
-  // =====================================================
-  // 1) CARREGAR INSTITUIÇÕES DO USUÁRIO
-  // =====================================================
+  //CARREGAR INSTITUIÇÕES DO USUÁRIO
   async function carregarInstituicoes() {
     try {
       const resp = await fetch(`/api/instituicoes/listar/${usuarioId}`);
@@ -48,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Se veio pela URL → selecionar automaticamente
       if (instituicaoId) {
         selInstituicao.value = instituicaoId;
-        carregarCursos(); // já carrega os cursos
+        carregarCursos(); // já carregar os cursos
       }
 
     } catch (e) {
@@ -58,9 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarInstituicoes();
 
-  // =====================================================
-  // 2) AO SELECIONAR INSTITUIÇÃO → CARREGAR CURSOS
-  // =====================================================
+  //CARREGAR CURSOS QUANDO SELECIONAR INSTITUIÇÃO
   async function carregarCursos() {
     selCurso.innerHTML = `<option value="">Carregando...</option>`;
     selDisciplina.innerHTML = `<option value="">Selecione...</option>`;
@@ -93,9 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarCursos();
   });
 
-  // =====================================================
-  // 3) AO SELECIONAR CURSO → CARREGAR DISCIPLINAS
-  // =====================================================
+  //CARREGAR DISCIPLINAS QUANDO SELECIONAR CURSO
   async function carregarDisciplinas() {
     selDisciplina.innerHTML = `<option value="">Carregando...</option>`;
 
@@ -126,9 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarDisciplinas();
   });
 
-  // =====================================================
-  // 4) SALVAR TURMA
-  // =====================================================
+  //SALVAR TURMA
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -173,9 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // =====================================================
-  // 5) CANCELAR
-  // =====================================================
+  //CANCELAR
   $("btnCancelar").addEventListener("click", () => {
     history.back();
   });

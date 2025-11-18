@@ -1,17 +1,13 @@
-/*===============================================
-  📌 Código CSS — Página "Esqueceu a Senha"
-  📌 Autoria original: Miriã
-  📌 TODO o estilo está INALTERADO — apenas comentado
-================================================*/
+/*Autoria: Miriã - Esqueceu a Senha CSS/
 
-/* Fundo geral da página */
+/* Fundo verde da página */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #e8f4ec, #e6f0e8, #e1efe6, #d9ebdf); /* fundo degradê */
+  background: linear-gradient(to bottom, #e8f4ec, #e6f0e8, #e1efe6, #d9ebdf); 
   display: flex;
-  justify-content: center;   /* centraliza horizontalmente */
-  align-items: center;       /* centraliza verticalmente */
+  justify-content: center; 
+  align-items: center;       
   height: 100vh;
   overflow: hidden;
   min-height: 100vh;
@@ -28,7 +24,7 @@ body {
   box-shadow: 0 8px 18px #9dccb2; /* sombra */
   top: 50%;                      
   left: 50%;
-  transform: translate(-50%, -50%); /* centraliza perfeitamente */
+  transform: translate(-50%, -50%); /* centraliza */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +37,7 @@ form {
   width: 360px;
   padding: 70px; /* espaçamento interno */
   border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* leve sombra */
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1); /*sombra */
   text-align: center;
   position: relative;
 }
@@ -108,7 +104,7 @@ form button:hover {
   position: absolute;
   left: 50%;
   top: 20px;
-  margin-top: 100px; /* empurra para baixo */
+  margin-top: 100px; 
   transform: translateX(-50%);
   display: flex;
   gap: 6px;
@@ -154,7 +150,7 @@ form button:hover {
 .flamula:nth-child(6) { background: #ff5722; transform: rotate(-10deg) translateY(7px); }
 .flamula:nth-child(7) { background: #26c6da; transform: rotate(-15deg) translateY(-1px); }
 
-/*=========== RESPONSIVIDADE — TABLETS ===========*/
+/*Responsividade para tablets*/
 @media (max-width: 768px) {
 
   body {
@@ -189,7 +185,7 @@ form button:hover {
   }
 }
 
-/*=========== RESPONSIVIDADE — CELULARES ===========*/
+/*Responsividade para celulares*/
 @media (max-width: 480px) {
 
   body {
@@ -251,7 +247,7 @@ form button:hover {
   }
 }
 
-/*=========== RESPONSIVIDADE — CELULARES MUITO PEQUENOS ===========*/
+/*Responsividade para celulares menores*/
 @media (max-width: 360px) {
 
   .background-box {
