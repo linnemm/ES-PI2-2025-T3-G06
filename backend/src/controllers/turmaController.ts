@@ -1,3 +1,5 @@
+//Autoria: Miriã
+
 import { Request, Response } from "express";
 import {
   criarTurma,
@@ -8,9 +10,9 @@ import {
   removerTurmaModel
 } from "../models/turmaModel";
 
-// ======================================================
-// 1) Criar Turma
-// ======================================================
+
+// Cadastrar Turma
+
 export async function cadastrarTurma(req: Request, res: Response) {
   try {
     const {
@@ -45,9 +47,7 @@ export async function cadastrarTurma(req: Request, res: Response) {
   }
 }
 
-// ======================================================
-// 2) Listar Turmas por Curso
-// ======================================================
+//Listar Turmas por Curso
 export async function listarTurmasPorCurso(req: Request, res: Response) {
   try {
     const cursoId = Number(req.params.cursoId);
@@ -65,9 +65,7 @@ export async function listarTurmasPorCurso(req: Request, res: Response) {
   }
 }
 
-// ======================================================
-// 3) Listar Turmas por Disciplina
-// ======================================================
+//Listar Turmas por Disciplina
 export async function listarTurmasPorDisciplina(req: Request, res: Response) {
   try {
     const disciplinaId = Number(req.params.disciplinaId);
@@ -85,9 +83,7 @@ export async function listarTurmasPorDisciplina(req: Request, res: Response) {
   }
 }
 
-// ======================================================
-// 4) Buscar Turma por ID
-// ======================================================
+//Buscar Turma por ID
 export async function obterTurmaPorId(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
@@ -110,9 +106,7 @@ export async function obterTurmaPorId(req: Request, res: Response) {
   }
 }
 
-// ======================================================
-// 5) Editar Turma
-// ======================================================
+//Editar Turma
 export async function editarTurma(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
@@ -136,9 +130,7 @@ export async function editarTurma(req: Request, res: Response) {
   }
 }
 
-// ======================================================
-// 6) Remover Turma
-// ======================================================
+//Remover Turma
 export async function removerTurma(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);

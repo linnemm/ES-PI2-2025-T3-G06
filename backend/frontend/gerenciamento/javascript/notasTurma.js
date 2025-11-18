@@ -14,7 +14,7 @@
     return;
   }
 
-  // ELEMENTOS HTML
+  //ELEMENTOS HTML
   const tituloTurma      = document.getElementById("tituloTurma");
   const subTurma         = document.getElementById("subTurma");
   const tipoMediaTexto   = document.getElementById("tipoMediaTexto");
@@ -27,7 +27,7 @@
   const thead = document.querySelector("#tabelaNotas thead");
   const tbody = document.getElementById("tbodyNotas");
 
-  // ESTADOS
+  //ESTADOS
   let turma = null;
   let alunos = [];
   let componentes = [];
@@ -292,7 +292,7 @@
     }
   }
 
-  // EVENTOS
+  //EVENTOS
   selComponente.addEventListener("change", aplicarModoEdicao);
   chkEdicaoCompleta.addEventListener("change", () => {
     selComponente.value = "";

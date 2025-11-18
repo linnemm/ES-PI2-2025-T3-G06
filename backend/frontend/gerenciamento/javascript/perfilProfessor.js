@@ -2,6 +2,7 @@
 
 // PERFIL DO PROFESSOR — LOCALSTORAGE + TOKEN + /me
 
+// pega o id, nome e email do usuário do localstorage
 const usuarioId = localStorage.getItem("usuarioId");
 const token = localStorage.getItem("token");
 
@@ -9,9 +10,10 @@ if (!usuarioId || !token) {
   window.location.href = "/auth/html/login.html";
 }
 
+// função auxiliar para pegar elementos pelo id
 const $ = (id) => document.getElementById(id);
 
-// Toast
+// função para exibir toast de notificação
 function toast(msg) {
   const t = $("toast");
   t.textContent = msg;
@@ -52,6 +54,7 @@ function carregarPerfil() {
   $("nomeProfessor").textContent = usuarioNome || "Professor";
   $("emailProfessor").textContent = usuarioEmail || "-";
 
+  // gera iniciais para o avatar
   const iniciais = (usuarioNome || "?")
     .split(" ")
     .map(p => p[0])
@@ -65,14 +68,17 @@ function carregarPerfil() {
 // ATUALIZAR EMAIL
 
 $("formEmail").addEventListener("submit", async (e) => {
-  e.preventDefault();
+  e.preventDefault(); // evita recarregar a página
 
+  // pega o novo email e a senha informada
   const novoEmail = $("novoEmail").value.trim();
   const senha = $("senhaConfirmaEmail").value.trim();
 
-  if (!novoEmail || !senha) return toast("Preencha tudo.");
+  // valida se os campos foram preenchidos
+  if (!novoEmail || !senha) return toast("preencha tudo.");
 
   try {
+    // envia requisição para o backend atualizar o email
     const resp = await fetch(`/api/auth/update-email`, {
       method: "PUT",
       headers: { 
@@ -89,33 +95,37 @@ $("formEmail").addEventListener("submit", async (e) => {
     const json = await resp.json();
     if (!resp.ok) return toast(json.message);
 
-    toast("E-mail atualizado!");
+    toast("e-mail atualizado!");
 
-    // Atualiza localStorage
+    // atualiza email salvo no localstorage e na interface
     localStorage.setItem("usuarioEmail", novoEmail);
     $("emailProfessor").textContent = novoEmail;
 
+    // limpa os campos do formulário
     $("novoEmail").value = "";
     $("senhaConfirmaEmail").value = "";
 
   } catch (e) {
-    toast("Erro ao atualizar e-mail.");
+    toast("erro ao atualizar e-mail.");
   }
 });
 
 // ATUALIZAR SENHA
 
 $("formSenha").addEventListener("submit", async (e) => {
-  e.preventDefault();
+  e.preventDefault(); // evita recarregar a página
 
+  // pega as senhas informadas no formulário
   const atual = $("senhaAtual").value.trim();
   const nova = $("novaSenha").value.trim();
   const conf = $("confirmaSenha").value.trim();
 
-  if (!atual || !nova || !conf) return toast("Preencha tudo.");
-  if (nova !== conf) return toast("A confirmação não confere.");
+  // valida preenchimento e confirmação
+  if (!atual || !nova || !conf) return toast("preencha tudo.");
+  if (nova !== conf) return toast("a confirmação não confere.");
 
   try {
+    // envia requisição para o backend atualizar a senha
     const resp = await fetch(`/api/auth/update-password`, {
       method: "PUT",
       headers: { 
@@ -132,20 +142,22 @@ $("formSenha").addEventListener("submit", async (e) => {
     const json = await resp.json();
     if (!resp.ok) return toast(json.message);
 
-    toast("Senha alterada!");
+    toast("senha alterada!");
 
+    // limpa campos do formulário
     $("senhaAtual").value = "";
     $("novaSenha").value = "";
     $("confirmaSenha").value = "";
 
   } catch (err) {
-    toast("Erro ao atualizar senha.");
+    toast("erro ao atualizar senha.");
   }
 });
 
 // LOGOUT
 
 $("btnLogout").onclick = () => {
+  // apaga todos os dados do localstorage e volta para o login
   localStorage.clear();
   window.location.href = "/auth/html/login.html";
 };
@@ -153,6 +165,7 @@ $("btnLogout").onclick = () => {
 // MENU
 
 $("btnInstituicoes").onclick = () => {
+  // redireciona para o dashboard de gerenciamento
   window.location.href = "/gerenciar/html/dashboard.html";
 };
 

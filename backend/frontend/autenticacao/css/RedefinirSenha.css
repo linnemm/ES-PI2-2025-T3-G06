@@ -1,8 +1,4 @@
-/*==========================================================
-  📌 Código CSS (Redefinir a Senha)
-  📌 Autoria original: Miriã
-  📌 IMPORTANTE: Nada foi alterado — apenas COMENTADO
-==========================================================*/
+/*Autoria: Miriã - Redefinir a Senha CSS/
 
 /* Fundo da página */
 body {
@@ -37,10 +33,10 @@ form {
   height: 660px;
   background: linear-gradient(to right, #b5dcc6, #a7d5bb); /* verde degradê */
   border-radius: 16px;
-  box-shadow: 0 8px 18px #9dccb2; /* sombra */
+  box-shadow: 0 8px 18px #9dccb2; 
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* centraliza tudo */
+  transform: translate(-50%, -50%); /* centraliza*/
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,19 +76,19 @@ form h1 {
   box-sizing: border-box;
 }
 
-/* Efeito ao focar no input */
+/* Efeito quando focar no input */
 .password-container input:focus {
   border-color: #9dccb2;
   box-shadow: 0 0 6px #a7d5bb;
 }
 
-/* Repetição proposital do container (mantido) */
+/* Repetição do container mantido */
 .password-container {
   position: relative;
   width: 100%;
 }
 
-/* Ícone de mostrar/ocultar senha */
+/* Ícone de mostrar e ocultar a senha */
 .toggle-password {
   position: absolute;
   right: 12px;
@@ -197,7 +193,7 @@ form button:hover {
 .flamula:nth-child(6) { background: #ff5722; transform: rotate(-10deg) translateY(7px); }
 .flamula:nth-child(7) { background: #26c6da; transform: rotate(-15deg) translateY(-1px); }
 
-/*==================== RESPONSIVIDADE — TABLETS ====================*/
+/*Responsividade para tablets*/
 @media (max-width: 768px) {
 
   body {
@@ -231,7 +227,7 @@ form button:hover {
   }
 }
 
-/*==================== RESPONSIVIDADE — CELULARES ====================*/
+/*Responsividade para celulares*/
 @media (max-width: 480px) {
 
   body {
@@ -302,7 +298,7 @@ form button:hover {
   }
 }
 
-/*==================== RESPONSIVIDADE — CELULARES MUITO PEQUENOS ====================*/
+/*Responsividade para celulares menores*/
 @media (max-width: 360px) {
 
   .background-box {

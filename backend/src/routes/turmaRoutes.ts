@@ -1,3 +1,5 @@
+//Autoria: Miriã
+
 // src/routes/turmaRoutes.ts
 import { Router } from "express";
 import {
@@ -11,46 +13,25 @@ import {
 
 const router = Router();
 
-/* ============================================================
-   📌 CRIAR TURMA
-   POST /api/turmas/criar
-   ============================================================ */
+/*Cadastrar Turmas */
 router.post("/criar", cadastrarTurma);
 
-/* ============================================================
-   📌 LISTAR TURMAS POR CURSO
-   GET /api/turmas/curso/:cursoId
-   ============================================================ */
+/*Listar Turmas por curso */
 router.get("/curso/:cursoId", listarTurmasPorCurso);
 
-/* ============================================================
-   📌 LISTAR TURMAS POR DISCIPLINA
-   GET /api/turmas/disciplina/:disciplinaId
-   ============================================================ */
+/*Listar Turmas por Disciplina */
 router.get("/disciplina/:disciplinaId", listarTurmasPorDisciplina);
 
-/* ============================================================
-   📌 *** LISTAR TURMAS (ROTA QUE O FRONT USA) ***
-   GET /api/turmas/listar/:disciplinaId
-   ============================================================ */
+/*Listar Turmas (Roat que o front usa)*/
 router.get("/listar/:disciplinaId", listarTurmasPorDisciplina);
 
-/* ============================================================
-   📌 BUSCAR TURMA POR ID
-   GET /api/turmas/detalhes/:id
-   ============================================================ */
+/*Buscar Turmas por ID*/
 router.get("/detalhes/:id", obterTurmaPorId);
 
-/* ============================================================
-   📌 EDITAR TURMA
-   PUT /api/turmas/editar/:id
-   ============================================================ */
+/*Editar Turmas */
 router.put("/editar/:id", editarTurma);
 
-/* ============================================================
-   📌 REMOVER TURMA
-   DELETE /api/turmas/remover/:id
-   ============================================================ */
+/*Remover Turmas */
 router.delete("/remover/:id", removerTurma);
 
 export default router;

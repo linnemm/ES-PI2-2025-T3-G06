@@ -1,4 +1,6 @@
-/* ===== Base ===== */
+/* Autora: Alinne
+
+/* Base  */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
@@ -15,9 +17,7 @@ body {
   min-height: 100vh;
 }
 
-/* ======================
-   TOPBAR (CORRETA)
-====================== */
+/* TOPBAR */
 .topbar-notadez {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
@@ -63,14 +63,12 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-/* item ativo (caso você use em outra página) */
+/* item ativo */
 .ndz-menu li a.ativo {
   background-color: rgba(255,255,255,0.2);
 }
 
-/* ======================
-   CONTEÚDO PRINCIPAL
-====================== */
+/* CONTEÚDO PRINCIPAL*/
 .main-content {
   display: flex;
   flex-direction: column;
@@ -85,9 +83,7 @@ h1 {
   margin-bottom: 24px;
 }
 
-/* ======================
-   FORMULÁRIO
-====================== */
+/* FORMULÁRIO*/
 form {
   background-color: white;
   padding: 30px;
@@ -125,9 +121,7 @@ select:focus {
   box-shadow: 0 0 5px rgba(108,169,140,0.6);
 }
 
-/* ======================
-   BOTÕES
-====================== */
+/* BOTÕES*/
 .botoes {
   display: flex;
   gap: 10px;
@@ -185,9 +179,7 @@ select:focus {
   }
 }
 
-/* ======================
-   MENU BLOQUEADO
-====================== */
+/* MENU BLOQUEADO*/
 .desabilitado {
   pointer-events: none !important;
   opacity: 0.4 !important;

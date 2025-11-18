@@ -1,26 +1,24 @@
-// =========================================
-// UTILITÁRIO
-// =========================================
+// autoria por alycia bond
+
 const $ = (id) => document.getElementById(id);
 
-// =========================================
-// PEGAR PARAMETROS DA URL
-// =========================================
+
+// pegar parâmetros da URL e dados do localstorage
+
 const params = new URLSearchParams(window.location.search);
 const instituicaoId = params.get("inst");
 const cursoId = params.get("curso");
 const usuarioId = localStorage.getItem("usuarioId");
 
-// =========================================
-// VALIDAÇÕES DE SEGURANÇA
-// =========================================
+// validações 
+
 if (!usuarioId) {
   alert("⚠ Erro: usuário não identificado.");
   window.location.href = "/auth/html/login.html";
 }
 
 if (!instituicaoId) {
-  alert("Selecione primeiro uma instituição 😊");
+  alert("Selecione primeiro uma instituição ");
   window.location.href = "/gerenciar/html/dashboard.html";
 }
 
@@ -29,14 +27,14 @@ if (!cursoId) {
   window.location.href = `/gerenciar/html/listaCursos.html?inst=${instituicaoId}`;
 }
 
-// Elementos principais
+// elementos principais
 const lista = $("corpoTabelaDisc");
 const vazio = $("vazioDisc");
 
 
 // =========================================
-// 1️⃣ CARREGAR DISCIPLINAS DO CURSO
-// =========================================
+// carregar disciplinas de um curso
+
 async function carregarDisciplinas(filtro = "") {
   lista.innerHTML = "<p>Carregando...</p>";
 
@@ -82,7 +80,7 @@ async function carregarDisciplinas(filtro = "") {
         </span>
       `;
 
-      // ABRIR LISTA DE TURMAS
+      // abrir lista de turmas
       row.querySelector(".disciplina-click")
         .addEventListener("click", () => {
           window.location.href =
@@ -109,9 +107,7 @@ async function carregarDisciplinas(filtro = "") {
 carregarDisciplinas();
 
 
-// =========================================
-// 2️⃣ EDITAR DISCIPLINA (CORRIGIDO)
-// =========================================
+// editar disciplina
 async function editarDisciplina(disc) {
   const nome = prompt("Novo nome:", disc.NOME);
   if (!nome) return;
@@ -151,9 +147,7 @@ async function editarDisciplina(disc) {
 }
 
 
-// =========================================
-// 3️⃣ BUSCA
-// =========================================
+// busca de disciplinas
 $("btnBuscarDisc").addEventListener("click", () =>
   carregarDisciplinas($("fBuscaDisc").value.trim())
 );
@@ -163,9 +157,8 @@ $("fBuscaDisc").addEventListener("keyup", () =>
 );
 
 
-// =========================================
-// 4️⃣ REMOVER DISCIPLINA (BLOQUEIO TURMAS)
-// =========================================
+// remover disciplina
+
 async function removerDisciplina(id) {
   if (!confirm("Tem certeza que deseja excluir?")) return;
 
@@ -196,35 +189,35 @@ async function removerDisciplina(id) {
 }
 
 
-// =========================================
-// 5️⃣ NOVA DISCIPLINA
-// =========================================
+
+// nova disciplina
+
 $("btnNovaDisc").addEventListener("click", () => {
   window.location.href =
     `/gerenciar/html/cadastro_disciplina.html?inst=${instituicaoId}&curso=${cursoId}`;
 });
 
 
-// =========================================
-// 6️⃣ NOVA TURMA
-// =========================================
+
+// nova turma
+
 $("btnNovaTurma").addEventListener("click", () => {
   window.location.href =
     `/gerenciar/html/cadastro_turma.html?inst=${instituicaoId}&curso=${cursoId}`;
 });
 
 
-// =========================================
-// 7️⃣ BOTÃO INSTITUIÇÕES
-// =========================================
+
+// botão voltar para dashboard
+
 $("btnInstituicoes").addEventListener("click", () => {
   window.location.href = "/gerenciar/html/dashboard.html";
 });
 
 
-// =========================================
-// 8️⃣ MODAL DE COMPONENTE
-// =========================================
+
+// mo
+
 const modal = $("modalComponente");
 const btnAbrir = $("btnComponenteNota");
 const btnFecharX = $("btnFecharModal");
@@ -244,9 +237,9 @@ modal.addEventListener("click", (e) => {
 });
 
 
-// =========================================
-// 9️⃣ CARREGAR DISCIPLINAS NO SELECT DO MODAL
-// =========================================
+
+// carregar disciplinas no select
+
 async function carregarDisciplinasParaSelect() {
   const cmpDisc = $("cmpDisc");
   cmpDisc.innerHTML = `<option value="">Carregando...</option>`;
@@ -270,9 +263,7 @@ async function carregarDisciplinasParaSelect() {
 }
 
 
-// =========================================
-// 🔟 SALVAR COMPONENTE
-// =========================================
+// salvar componente
 btnSalvar.addEventListener("click", async () => {
 
   const disciplinaId = $("cmpDisc").value;
@@ -318,9 +309,7 @@ btnSalvar.addEventListener("click", async () => {
 });
 
 
-// =========================================
-// 1️⃣1️⃣ SUBMODAL — LISTAR COMPONENTES
-// =========================================
+// lista de componentes
 const subModal = $("modalListaComponentes");
 const btnFecharLista = $("btnFecharListaComp");
 
@@ -338,9 +327,7 @@ subModal.addEventListener("click", (e) => {
 });
 
 
-// =========================================
-// 1️⃣2️⃣ CARREGAR LISTA DE COMPONENTES
-// =========================================
+// carregar componentes da disciplina selecionada
 async function carregarComponentes() {
   const container = $("listaComponentesContainer");
   const disciplinaId = $("cmpDisc").value;
@@ -398,9 +385,8 @@ async function carregarComponentes() {
 }
 
 
-// =========================================
-// 1️⃣3️⃣ REMOVER COMPONENTE
-// =========================================
+// remover componente
+
 async function removerComponente(id) {
   if (!confirm("Deseja realmente excluir este componente?")) return;
 

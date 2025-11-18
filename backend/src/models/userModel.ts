@@ -1,6 +1,9 @@
+// Autora: Alinne
+
 import { openConnection } from "../config/database";
 
-// Tipo opcional para padronizar
+
+// interface que representa a estrutura de um usuário no banco
 export interface UsuarioDB {
   ID: number;
   NOME: string;
@@ -13,7 +16,7 @@ export interface UsuarioDB {
   PRIMEIRO_ACESSO: number;
 }
 
-// Transformar row → UsuarioDB
+// converte uma linha do banco para o formato UsuarioDB
 function mapUsuario(row: any): UsuarioDB {
   return {
     ID: row.ID,
@@ -28,9 +31,7 @@ function mapUsuario(row: any): UsuarioDB {
   };
 }
 
-// =============================================
-// BUSCAR USUÁRIO POR EMAIL (para login)
-// =============================================
+// Busca usuário pelo e-mail
 export async function findUserByEmail(email: string): Promise<UsuarioDB | null> {
   const conn = await openConnection();
 
@@ -46,17 +47,17 @@ export async function findUserByEmail(email: string): Promise<UsuarioDB | null> 
     const result = await conn.execute(sql, { email });
     const rows = result.rows || [];
 
+    // se nenhum usuário for encontrado, retorna null
     if (rows.length === 0) return null;
 
+    // retorna o usuário já mapeado para o formato da aplicação
     return mapUsuario(rows[0]);
   } finally {
     await conn.close();
   }
 }
 
-// =============================================
-// BUSCAR USUÁRIO POR ID (para /me, update)
-// =============================================
+// busca usuário pelo ID
 export async function findUserById(id: number): Promise<UsuarioDB | null> {
   const conn = await openConnection();
 
@@ -80,9 +81,7 @@ export async function findUserById(id: number): Promise<UsuarioDB | null> {
   }
 }
 
-// =============================================
-// CRIAR NOVO USUÁRIO
-// =============================================
+// Cria novo usuário
 export async function createUser(
   nome: string,
   email: string,
@@ -108,9 +107,7 @@ export async function createUser(
   }
 }
 
-// =============================================
-// ATUALIZAR EMAIL
-// =============================================
+// Atualiza o e-mail do usuário
 export async function updateUserEmail(id: number, novoEmail: string) {
   const conn = await openConnection();
 
@@ -126,9 +123,7 @@ export async function updateUserEmail(id: number, novoEmail: string) {
   }
 }
 
-// =============================================
-// ATUALIZAR SENHA (hash)
-// =============================================
+// Atualiza a senha do usuário
 export async function updateUserPassword(id: number, senhaHash: string) {
   const conn = await openConnection();
 

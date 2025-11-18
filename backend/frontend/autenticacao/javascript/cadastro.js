@@ -1,4 +1,4 @@
-/* ================= MOSTRAR / OCULTAR SENHA ================= */
+/* MOSTRAR / OCULTAR SENHA  */
 
 // Campos de senha (1ª e 2ª digitação)
 const senha1 = document.getElementById("password1");
@@ -8,7 +8,7 @@ const senha2 = document.getElementById("password2");
 const toggle1 = document.getElementById("togglePassword");
 const toggle2 = document.getElementById("togglePassword2");
 
-// Função genérica para alternar visibilidade da senha
+// Função para alternar visibilidade da senha
 function toggleSenha(input, toggle) {
   toggle.addEventListener("click", () => {
     const isPassword = input.type === "password"; // verifica se está "password"
@@ -17,12 +17,12 @@ function toggleSenha(input, toggle) {
   });
 }
 
-// Ativa o comportamento para os dois campos, se existirem
+// ativa o comportamento para os dois campos, se existirem
 if (senha1 && toggle1) toggleSenha(senha1, toggle1);
 if (senha2 && toggle2) toggleSenha(senha2, toggle2);
 
 
-/* ================= ENVIO DO FORMULÁRIO ================= */
+/* ENVIO DO FORMULÁRIO */
 
 // Formulário principal
 const form = document.getElementById('formCadastro');
@@ -35,7 +35,7 @@ if (form) {
   form.addEventListener('submit', async function (e) {
     e.preventDefault(); // impede recarregar página automaticamente
 
-    // Captura dos valores digitados
+    // captura dos valores digitados
     const nome = form.querySelector('input[placeholder="Nome"]').value.trim();
     const sobrenome = form.querySelector('input[placeholder="Sobrenome"]').value.trim();
     const email = form.querySelector('input[placeholder="E-mail"]').value.trim();
@@ -43,11 +43,11 @@ if (form) {
     const senha1Valor = senha1.value.trim();
     const senha2Valor = senha2.value.trim();
 
-    // Reset da mensagem de erro
+    // reset da mensagem de erro
     errorMsg.style.display = 'none';
     errorMsg.textContent = '';
 
-    // ----- VALIDAÇÕES -----
+    // VALIDAÇÕES
 
     // Senha com mínimo de 6 caracteres
     if (senha1Valor.length < 6) {
@@ -99,7 +99,7 @@ if (form) {
       }
 
     } catch (erro) {
-      // Caso não consiga conectar ao backend
+      // Caso não consiga conectar ao back
       console.error("Erro:", erro);
       errorMsg.textContent = "Erro ao conectar com o servidor.";
       errorMsg.style.display = 'block';
@@ -107,9 +107,8 @@ if (form) {
   });
 }
  
-// ========================================================
+
 // ENTER vai para o próximo campo e, no último, envia o form
-// ========================================================
 
 // Seleciona todos os inputs dentro do formulário
 const inputs = document.querySelectorAll("#formCadastro input");
@@ -126,10 +125,10 @@ inputs.forEach((input, index) => {
       const isLast = index === inputs.length - 1;
 
       if (isLast) {
-        // Último campo → envia formulário automaticamente
+        // Último campo = envia formulário automaticamente
         form.requestSubmit();
       } else {
-        // Caso contrário, vai para o próximo input
+        // caso contrário, vai para o próximo input
         inputs[index + 1].focus();
       }
     }

@@ -1,3 +1,5 @@
+// Autora: Alinne
+
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
@@ -12,23 +14,25 @@ import {
 
 import { enviarEmail } from "../services/emailService";
 
+// configurações do token JWT
 const JWT_SECRET = process.env.JWT_SECRET || "chave_super_secreta_notadez";
 const JWT_EXPIRES = "2h";
 
-/* ========================================================================
-   📌 REGISTRAR NOVO USUÁRIO
-   ======================================================================== */
+// CADASTRAR USUARIO
 export const registerUser = async (req: Request, res: Response) => {
   const { nome, email, telefone, senha } = req.body;
 
   try {
+    // verifica se já existe usuário com o mesmo e-mail
     const existe = await findUserByEmail(email);
     if (existe) {
       return res.status(400).json({ message: "Usuário já cadastrado." });
     }
 
+    // criptografa a senha
     const senhaCriptografada = await bcrypt.hash(senha, 10);
 
+    // salva usuário no banco
     await createUser(nome, email, telefone, senhaCriptografada);
 
     return res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
@@ -40,30 +44,31 @@ export const registerUser = async (req: Request, res: Response) => {
 };
 
 
-/* ========================================================================
-   📌 LOGIN
-   ======================================================================== */
+// LOGIN USUARIO
 export const loginUser = async (req: Request, res: Response) => {
   const { email, senha } = req.body;
 
   try {
+    // verifica se o usuário existe
     const user = await findUserByEmail(email);
-
     if (!user) {
       return res.status(401).json({ message: "Usuário não encontrado." });
     }
 
+    // compara senha enviada com a senha criptografada
     const senhaCorreta = await bcrypt.compare(senha, user.SENHA);
     if (!senhaCorreta) {
       return res.status(401).json({ message: "Senha incorreta." });
     }
 
+    // gera token JWT
     const token = jwt.sign(
       { id: user.ID, email: user.EMAIL },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES }
     );
 
+    // retorna dados do usuário logado
     return res.json({
       message: "Login realizado com sucesso!",
       token,
@@ -82,17 +87,17 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 
-/* ========================================================================
-   📌 PERFIL DO USUÁRIO LOGADO
-   ======================================================================== */
+// RETORNAR PERFIL DO USUARIO LOGADO
 export const getMe = async (req: any, res: Response) => {
   try {
-    const usuarioId = req.usuarioId; // vem do middleware
+    const usuarioId = req.usuarioId; // vem do middleware JWT
     if (!usuarioId) return res.status(401).json({ message: "Não autenticado." });
 
+    // busca o usuário no banco
     const user = await findUserById(usuarioId);
     if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
 
+    // retorna dados básicos do usuário
     return res.json({
       id: user.ID,
       nome: user.NOME,
@@ -108,9 +113,7 @@ export const getMe = async (req: any, res: Response) => {
 };
 
 
-/* ========================================================================
-   📌 ATUALIZAR E-MAIL
-   ======================================================================== */
+// ATUALIZAR EMAIL
 export const updateEmailController = async (req: any, res: Response) => {
   try {
     const usuarioId = req.usuarioId;
@@ -119,9 +122,11 @@ export const updateEmailController = async (req: any, res: Response) => {
     const user = await findUserById(usuarioId);
     if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
 
+    // verifica senha atual
     const ok = await bcrypt.compare(senha, user.SENHA);
     if (!ok) return res.status(401).json({ message: "Senha incorreta." });
 
+    // atualiza email
     await updateUserEmail(usuarioId, novoEmail);
 
     return res.json({ message: "E-mail atualizado com sucesso!" });
@@ -133,20 +138,21 @@ export const updateEmailController = async (req: any, res: Response) => {
 };
 
 
-/* ========================================================================
-   📌 ATUALIZAR SENHA
-   ======================================================================== */
+// ATUALIZAR SENHA
 export const updatePasswordController = async (req: any, res: Response) => {
   try {
     const usuarioId = req.usuarioId;
     const { senhaAtual, novaSenha } = req.body;
 
+    // verifica se usuario existe
     const user = await findUserById(usuarioId);
     if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
 
+    // verifica senha atual
     const ok = await bcrypt.compare(senhaAtual, user.SENHA);
     if (!ok) return res.status(401).json({ message: "Senha atual incorreta." });
 
+    // criptografa nova senha
     const hash = await bcrypt.hash(novaSenha, 10);
     await updateUserPassword(usuarioId, hash);
 
@@ -158,10 +164,7 @@ export const updatePasswordController = async (req: any, res: Response) => {
   }
 };
 
-
-/* ========================================================================
-   📌 ESQUECI SENHA
-   ======================================================================== */
+// ESQUECI MINHA SENHA (gera e envia token por email)
 export const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body;
 
@@ -171,10 +174,13 @@ export const forgotPassword = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "E-mail não encontrado." });
     }
 
+    // token (valido por 15 minutos)
     const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "15m" });
 
+    // link de recuperação enviado ao usuario
     const link = `http://${req.headers.host}/auth/html/RedefinirSenha.html?token=${token}`;
 
+    // envio do email - mensagem
     await enviarEmail(
       email,
       "Redefinição de senha - NotaDez",
@@ -195,18 +201,19 @@ export const forgotPassword = async (req: Request, res: Response) => {
 };
 
 
-/* ========================================================================
-   📌 REDEFINIR SENHA
-   ======================================================================== */
+// RESETAR SENHA (USANDO TOKEN ENVIADO POR EMAIL)
 export const resetPassword = async (req: Request, res: Response) => {
   const { token, novaSenha } = req.body;
 
   try {
+    // verifica e decodifica token
     const decoded: any = jwt.verify(token, JWT_SECRET);
 
+    // verifica se o usuario existe
     const user = await findUserByEmail(decoded.email);
     if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
 
+    // atualiza senha
     const hash = await bcrypt.hash(novaSenha, 10);
     await updateUserPassword(user.ID, hash);
 
