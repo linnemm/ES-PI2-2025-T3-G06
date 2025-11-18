@@ -1,4 +1,6 @@
-/* ===== Base ===== */
+/* Autoria: Miriã  */
+
+/*Base*/
 * {
   margin: 0;
   padding: 0;
@@ -17,7 +19,7 @@ body {
   min-height: 100vh;
 }
 
-/* ===== Topbar ===== */
+/* Topbar */
 .topbar {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
@@ -62,9 +64,7 @@ body {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* ============================= */
-/* ===== Conteúdo principal ===== */
-/* ============================= */
+/*Conteúdo principal */
 
 .main-content {
   width: 90%;
@@ -83,7 +83,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* ===== Filtro ===== */
+/* Filtro */
 form.filtro-card {
   background: #fff;
   padding: 20px;
@@ -120,7 +120,7 @@ form.filtro-card input:focus {
   outline: none;
 }
 
-/* BOTÕES DO FILTRO */
+/* Botões do filtro */
 .botoes-acao {
   display: flex;
   justify-content: space-between;
@@ -144,7 +144,7 @@ form.filtro-card input:focus {
   background: #5c8c75;
 }
 
-/* ===== Lista / Tabela ===== */
+/* Tabela  */
 .lista-card {
   width: 100%;
   max-width: 900px;
@@ -196,7 +196,7 @@ form.filtro-card input:focus {
   background: #f5fbf8;
 }
 
-/* AÇÕES */
+/* Ações */
 .tabela-acoes {
   display: flex;
   gap: 8px;
@@ -241,9 +241,7 @@ form.filtro-card input:focus {
   font-style: italic;
 }
 
-/* ======================= */
-/* ====== MODAL ========== */
-/* ======================= */
+/*Modal */
 
 .modal-overlay {
   position: fixed;

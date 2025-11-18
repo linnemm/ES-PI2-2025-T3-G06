@@ -1,37 +1,45 @@
+<!-- Autoria: Miriã - Detalhes Turma HTML -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <!-- Configurações básicas -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Alunos da Turma — NotaDez</title>
 
+  <!-- Fonte e ícones -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  
+  <!-- Conexão com CSS -->
   <link rel="stylesheet" href="/gerenciar/css/detalhesTurma.css" />
 </head>
 
 <body>
 <div class="dashboard">
 
-  <!-- ========================================================= -->
-  <!--                        TOPBAR LIMPA                       -->
-  <!-- ========================================================= -->
+  <!-- TOPBAR LIMPA-->
   <nav class="topbar">
     <h2>NotaDez</h2>
 
     <ul class="menu-horizontal">
+      <!-- Botão para abrir menu de Instituições / Cursos / etc -->
       <li>
         <a href="#" id="btnInstituicoes">
           <i class="fa-solid fa-building-columns"></i> Instituições
         </a>
       </li>
 
+      <!-- Perfil do professor -->
       <li>
         <a href="/gerenciar/html/perfilProfessor.html">
           <i class="fa-solid fa-user"></i> Perfil
         </a>
       </li>
 
+      <!-- Logout -->
       <li>
         <a href="/auth/html/login.html">
           <i class="fa-solid fa-right-from-bracket"></i> Sair
@@ -41,16 +49,18 @@
   </nav>
 
 
-  <!-- ========================================================= -->
-  <!--                     CONTEÚDO PRINCIPAL                    -->
-  <!-- ========================================================= -->
+  <!--CONTEÚDO PRINCIPAL-->
   <main class="container">
 
+    
+    <!-- Cabeçalho com nome e informações da turma -->
     <div class="turma-header">
       <h1 id="tituloTurma">Turma: —</h1>
-      <p id="subTurma"></p>
+      <p id="subTurma"></p> <!-- detalhes da disciplina, curso, instituição -->
     </div>
 
+
+    <!-- Botões principais de ação da turma -->
     <div class="turma-acoes">
       <button id="btnAddAluno"><i class="fa-solid fa-user-plus"></i> Adicionar Aluno</button>
       <button id="btnImportar"><i class="fa-solid fa-file-import"></i> Importar Alunos</button>
@@ -58,6 +68,8 @@
       <button id="btnNotasTurma"><i class="fa-solid fa-clipboard-list"></i> Notas da Turma</button>
     </div>
 
+
+    <!-- Tabela de alunos cadastrados -->
     <div class="tabela-notas">
       <h2 style="color:#6ca98c;margin-bottom:10px;">Alunos da Turma</h2>
 
@@ -83,6 +95,7 @@
   </main>
 </div>
 
+<!-- JavaScript -->
 <script src="/gerenciar/javascript/detalhesTurma.js"></script>
 
 </body>

@@ -1,11 +1,9 @@
-// =========================================================
-//  NOTAS DA TURMA — VERSÃO FINAL SEM PARÂMETROS EXTRAS
-// =========================================================
+//Autoria: Miriã - Notas Turmas JS -->
+
+// NOTAS DA TURMA 
 (function initNotasTurma() {
 
-  // --------------------------------------------
-  // PEGAR SOMENTE TURMA ID
-  // --------------------------------------------
+  //PEGAR SOMENTE TURMA ID
   const qs = new URLSearchParams(location.search);
   const turmaId = Number(qs.get("turmaId"));
 
@@ -14,7 +12,7 @@
     return;
   }
 
-  // ELEMENTOS HTML
+  //ELEMENTOS HTML
   const tituloTurma      = document.getElementById("tituloTurma");
   const subTurma         = document.getElementById("subTurma");
   const tipoMediaTexto   = document.getElementById("tipoMediaTexto");
@@ -27,7 +25,7 @@
   const thead = document.querySelector("#tabelaNotas thead");
   const tbody = document.getElementById("tbodyNotas");
 
-  // ESTADOS
+  //ESTADOS
   let turma = null;
   let alunos = [];
   let componentes = [];
@@ -54,9 +52,7 @@
     notasAlteradas.set(k, n);
   }
 
-  // ======================================================
-  // CÁLCULO DA NOTA FINAL
-  // ======================================================
+  //CÁLCULO DA NOTA FINAL
   function calcularNotaFinal(alunoId) {
     if (!componentes.length) return "-";
 
@@ -85,9 +81,7 @@
     return (soma / componentes.length).toFixed(2);
   }
 
-  // ======================================================
-  // CABEÇALHO DA TABELA
-  // ======================================================
+  //CABEÇALHO DA TABELA
   function montarCabecalho() {
     let html = `<th>Matrícula</th><th>Aluno</th>`;
 
@@ -101,9 +95,7 @@
     thead.innerHTML = `<tr>${html}</tr>`;
   }
 
-  // ======================================================
-  // LINHAS
-  // ======================================================
+  //LINHAS
   function montarLinhas() {
     tbody.innerHTML = alunos.map(aluno => {
       let html = `
@@ -134,9 +126,7 @@
     }).join("");
   }
 
-  // ======================================================
-  // MODO DE EDIÇÃO
-  // ======================================================
+  //MODO DE EDIÇÃO
   function aplicarModoEdicao() {
     const campos = document.querySelectorAll(".campo-nota");
     const compSel = Number(selComponente.value || 0);
@@ -148,9 +138,7 @@
     });
   }
 
-  // ======================================================
-  // ENTER PARA IR DESCENDO
-  // ======================================================
+  //ENTER PARA DESCER A TELA
   function ligarEventosEntrada() {
     const campos = [...document.querySelectorAll(".campo-nota")];
 
@@ -177,9 +165,7 @@
     });
   }
 
-  // ======================================================
-  // SALVAR NOTAS
-  // ======================================================
+  //SALVAR NOTAS
   async function salvarNotas() {
     if (!notasAlteradas.size) {
       alert("Nenhuma nota alterada!");
@@ -216,9 +202,7 @@
     notasAlteradas.clear();
   }
 
-  // ======================================================
-  // EXPORTAÇÃO COMPLETA — TODAS AS NOTAS OBRIGATÓRIAS
-  // ======================================================
+  //EXPORTAÇÃO COMPLETA — TODAS AS NOTAS OBRIGATÓRIAS
   function exportarCSV() {
 
     for (const aluno of alunos) {
@@ -255,9 +239,7 @@
     link.click();
   }
 
-  // ======================================================
-  // CARREGAR TUDO USANDO APENAS turmaId
-  // ======================================================
+  //CARREGAR TUDO USANDO APENAS turmaId
   async function carregarTudo() {
     try {
       const respT = await fetch(`/api/turmas/detalhes/${turmaId}`);
@@ -300,7 +282,7 @@
     }
   }
 
-  // EVENTOS
+  //EVENTOS
   selComponente.addEventListener("change", aplicarModoEdicao);
   chkEdicaoCompleta.addEventListener("change", () => {
     selComponente.value = "";
