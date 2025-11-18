@@ -1,12 +1,11 @@
-// =========================================================
-// PERFIL DO PROFESSOR — UTILIZANDO SOMENTE LOCALSTORAGE
-// =========================================================
+// Autoria: Alycia
+
+// PERFIL DO PROFESSOR — LOCALSTORAGE + TOKEN + /me
 
 const usuarioId = localStorage.getItem("usuarioId");
-const usuarioNome = localStorage.getItem("usuarioNome");
-const usuarioEmail = localStorage.getItem("usuarioEmail");
+const token = localStorage.getItem("token");
 
-if (!usuarioId) {
+if (!usuarioId || !token) {
   window.location.href = "/auth/html/login.html";
 }
 
@@ -20,10 +19,36 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2500);
 }
 
-// =========================================================
-// 1 — CARREGAR PERFIL DO LOCALSTORAGE
-// =========================================================
+// BUSCAR DADOS DO USUÁRIO PELO BACKEND (/me)
+
+async function carregarDoBanco() {
+  try {
+    const resp = await fetch("/api/auth/me", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    if (!resp.ok) return;
+
+    const json = await resp.json();
+
+    // Atualiza localStorage com dados reais do banco
+    localStorage.setItem("usuarioNome", json.nome);
+    localStorage.setItem("usuarioEmail", json.email);
+
+  } catch (err) {
+    console.log("Erro ao carregar do banco:", err);
+  }
+}
+
+// CARREGAR PERFIL DO LOCALSTORAGE
+
 function carregarPerfil() {
+  const usuarioNome = localStorage.getItem("usuarioNome");
+  const usuarioEmail = localStorage.getItem("usuarioEmail");
+
   $("nomeProfessor").textContent = usuarioNome || "Professor";
   $("emailProfessor").textContent = usuarioEmail || "-";
 
@@ -37,9 +62,8 @@ function carregarPerfil() {
   $("letrasAvatar").textContent = iniciais;
 }
 
-// =========================================================
-// 2 — ATUALIZAR EMAIL
-// =========================================================
+// ATUALIZAR EMAIL
+
 $("formEmail").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -51,7 +75,10 @@ $("formEmail").addEventListener("submit", async (e) => {
   try {
     const resp = await fetch(`/api/auth/update-email`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`   
+      },
       body: JSON.stringify({
         usuarioId,
         novoEmail,
@@ -60,7 +87,6 @@ $("formEmail").addEventListener("submit", async (e) => {
     });
 
     const json = await resp.json();
-
     if (!resp.ok) return toast(json.message);
 
     toast("E-mail atualizado!");
@@ -77,9 +103,8 @@ $("formEmail").addEventListener("submit", async (e) => {
   }
 });
 
-// =========================================================
-// 3 — ATUALIZAR SENHA
-// =========================================================
+// ATUALIZAR SENHA
+
 $("formSenha").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -93,7 +118,10 @@ $("formSenha").addEventListener("submit", async (e) => {
   try {
     const resp = await fetch(`/api/auth/update-password`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`   // OBRIGATÓRIO
+      },
       body: JSON.stringify({
         usuarioId,
         senhaAtual: atual,
@@ -102,7 +130,6 @@ $("formSenha").addEventListener("submit", async (e) => {
     });
 
     const json = await resp.json();
-
     if (!resp.ok) return toast(json.message);
 
     toast("Senha alterada!");
@@ -116,22 +143,21 @@ $("formSenha").addEventListener("submit", async (e) => {
   }
 });
 
-// =========================================================
-// 4 — LOGOUT
-// =========================================================
+// LOGOUT
+
 $("btnLogout").onclick = () => {
   localStorage.clear();
   window.location.href = "/auth/html/login.html";
 };
 
-// =========================================================
-// 5 — MENU
-// =========================================================
+// MENU
+
 $("btnInstituicoes").onclick = () => {
   window.location.href = "/gerenciar/html/dashboard.html";
 };
 
-// =========================================================
 // INICIAR
-// =========================================================
-carregarPerfil();
+
+carregarDoBanco().then(() => {
+  carregarPerfil();
+});

@@ -1,6 +1,4 @@
-// =============================================================
-// Controller: notasController.ts
-// =============================================================
+// Autoria: Livia
 
 import { Request, Response } from "express";
 import {
@@ -9,10 +7,9 @@ import {
 } from "../models/notasModel";
 
 
-// =============================================================
-// 1. BUSCAR NOTAS POR TURMA + DISCIPLINA
+// BUSCAR NOTAS POR TURMA + DISCIPLINA
 // GET /api/notas/:turmaId/:disciplinaId
-// =============================================================
+
 export async function listarNotas(req: Request, res: Response) {
   try {
     const { turmaId, disciplinaId } = req.params;
@@ -33,12 +30,9 @@ export async function listarNotas(req: Request, res: Response) {
   }
 }
 
-
-
-// =============================================================
-// 2. SALVAR / ATUALIZAR NOTAS (POST em massa)
+// SALVAR / ATUALIZAR NOTAS 
 // POST /api/notas
-// =============================================================
+
 export async function salvarNotas(req: Request, res: Response) {
   try {
 

@@ -1,11 +1,11 @@
-// =========================================================
-//  NOTAS DA TURMA — VERSÃO FINAL SEM PARÂMETROS EXTRAS
-// =========================================================
+// Autoria: Livia
+
+// NOTAS DA TURMA
+
 (function initNotasTurma() {
 
-  // --------------------------------------------
   // PEGAR SOMENTE TURMA ID
-  // --------------------------------------------
+
   const qs = new URLSearchParams(location.search);
   const turmaId = Number(qs.get("turmaId"));
 
@@ -54,9 +54,8 @@
     notasAlteradas.set(k, n);
   }
 
-  // ======================================================
   // CÁLCULO DA NOTA FINAL
-  // ======================================================
+  
   function calcularNotaFinal(alunoId) {
     if (!componentes.length) return "-";
 
@@ -85,9 +84,8 @@
     return (soma / componentes.length).toFixed(2);
   }
 
-  // ======================================================
   // CABEÇALHO DA TABELA
-  // ======================================================
+  
   function montarCabecalho() {
     let html = `<th>Matrícula</th><th>Aluno</th>`;
 
@@ -101,9 +99,8 @@
     thead.innerHTML = `<tr>${html}</tr>`;
   }
 
-  // ======================================================
   // LINHAS
-  // ======================================================
+
   function montarLinhas() {
     tbody.innerHTML = alunos.map(aluno => {
       let html = `
@@ -134,9 +131,8 @@
     }).join("");
   }
 
-  // ======================================================
   // MODO DE EDIÇÃO
-  // ======================================================
+ 
   function aplicarModoEdicao() {
     const campos = document.querySelectorAll(".campo-nota");
     const compSel = Number(selComponente.value || 0);
@@ -148,9 +144,8 @@
     });
   }
 
-  // ======================================================
   // ENTER PARA IR DESCENDO
-  // ======================================================
+  
   function ligarEventosEntrada() {
     const campos = [...document.querySelectorAll(".campo-nota")];
 
@@ -177,9 +172,8 @@
     });
   }
 
-  // ======================================================
   // SALVAR NOTAS
-  // ======================================================
+
   async function salvarNotas() {
     if (!notasAlteradas.size) {
       alert("Nenhuma nota alterada!");
@@ -216,9 +210,8 @@
     notasAlteradas.clear();
   }
 
-  // ======================================================
   // EXPORTAÇÃO COMPLETA — TODAS AS NOTAS OBRIGATÓRIAS
-  // ======================================================
+
   function exportarCSV() {
 
     for (const aluno of alunos) {
@@ -255,9 +248,8 @@
     link.click();
   }
 
-  // ======================================================
   // CARREGAR TUDO USANDO APENAS turmaId
-  // ======================================================
+
   async function carregarTudo() {
     try {
       const respT = await fetch(`/api/turmas/detalhes/${turmaId}`);

@@ -1,9 +1,10 @@
+// Autoria: Livia
+
 import oracledb from "oracledb";
 import { dbConfig } from "../config/database";
 
-// ======================================================
 // CRIAR INSTITUIÇÃO
-// ======================================================
+
 export async function criarInstituicao(
   nome: string,
   sigla: string,
@@ -23,9 +24,8 @@ export async function criarInstituicao(
   await connection.close();
 }
 
-// ======================================================
 // BUSCAR INSTITUIÇÕES VINCULADAS AO USUÁRIO
-// ======================================================
+
 export async function buscarInstituicoesPorUsuario(usuarioId: number) {
   const connection = await oracledb.getConnection(dbConfig);
 
@@ -48,9 +48,8 @@ export async function buscarInstituicoesPorUsuario(usuarioId: number) {
   return result.rows || [];
 }
 
-// ======================================================
 // BUSCAR UMA INSTITUIÇÃO PELO ID
-// ======================================================
+
 export async function buscarInstituicaoPorId(id: number) {
   const connection = await oracledb.getConnection(dbConfig);
 
@@ -72,9 +71,8 @@ export async function buscarInstituicaoPorId(id: number) {
   return (result.rows && result.rows[0]) || null;
 }
 
-// ======================================================
 // EDITAR INSTITUIÇÃO
-// ======================================================
+
 export async function editarInstituicao(
   id: number,
   nome: string,
@@ -96,9 +94,8 @@ export async function editarInstituicao(
   await connection.close();
 }
 
-// ======================================================
 // VERIFICAR SE A INSTITUIÇÃO TEM CURSOS VINCULADOS
-// ======================================================
+
 export async function instituicaoTemCursos(id: number): Promise<boolean> {
   const connection = await oracledb.getConnection(dbConfig);
 
@@ -118,9 +115,8 @@ export async function instituicaoTemCursos(id: number): Promise<boolean> {
   return total > 0;
 }
 
-// ======================================================
 // EXCLUIR INSTITUIÇÃO
-// ======================================================
+
 export async function excluirInstituicao(id: number) {
   const connection = await oracledb.getConnection(dbConfig);
 

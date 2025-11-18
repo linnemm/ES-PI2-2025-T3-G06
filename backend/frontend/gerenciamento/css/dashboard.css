@@ -1,6 +1,6 @@
-/* ============================
-   RESET E BASE
-============================ */
+/* Autoria: Livia */
+
+/* RESET E BASE */
 * { 
   margin: 0;
   padding: 0;
@@ -19,9 +19,7 @@ body {
   min-height: 100vh;
 }
 
-/* ============================
-   TOPBAR
-============================ */
+/* TOPBAR */
 .topbar {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
@@ -72,9 +70,7 @@ body {
 }
 
 
-/* ============================
-   CONTEÚDO PRINCIPAL
-============================ */
+/* CONTEÚDO PRINCIPAL */
 .container {
   width: 90%;
   max-width: 1000px;
@@ -89,9 +85,7 @@ body {
   margin-bottom: 30px;
 }
 
-/* ============================
-   BUSCA
-============================ */
+/* BUSCA */
 form.filtro-card {
   background-color: #fff;
   padding: 20px;
@@ -146,9 +140,7 @@ form.filtro-card input:focus {
   background-color: #5c8c75;
 }
 
-/* ============================
-   LISTA DE CARDS
-============================ */
+/* LISTA DE CARDS */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -228,9 +220,7 @@ form.filtro-card input:focus {
   background-color: #e03131;
 }
 
-/* ============================
-   MENSAGEM DE LISTA VAZIA
-============================ */
+/* MENSAGEM DE LISTA VAZIA */
 .mensagem-vazia {
   text-align: center;
   font-size: 16px;

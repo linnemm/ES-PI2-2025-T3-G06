@@ -1,12 +1,11 @@
-// =============================================================
+// Autoria: Livia
+
 // Model: notasModel.ts
-// =============================================================
 
 import { openConnection } from "../config/database";
 
-// =============================================================
-// 1. LISTAR NOTAS POR TURMA + DISCIPLINA
-// =============================================================
+// LISTAR NOTAS POR TURMA + DISCIPLINA
+
 export async function listarNotasBD(turmaId: string, disciplinaId: string) {
   const conn = await openConnection();
 
@@ -38,10 +37,9 @@ export async function listarNotasBD(turmaId: string, disciplinaId: string) {
 
 
 
-// =============================================================
-// 2. SALVAR / ATUALIZAR NOTAS EM MASSA
+// SALVAR / ATUALIZAR NOTAS EM MASSA
 // lista[] = { turmaId, alunoId, componenteId, valor }
-// =============================================================
+
 export async function salvarNotasBD(lista: any[]) {
   const conn = await openConnection();
 
@@ -51,9 +49,8 @@ export async function salvarNotasBD(lista: any[]) {
     for (const item of lista) {
       const { turmaId, alunoId, componenteId, valor } = item;
 
-      // -----------------------------------------
       // Verificar se já existe nota para (turma, aluno, componente)
-      // -----------------------------------------
+     
       const existe = await conn.execute(
         `
         SELECT ID FROM NOTAS
@@ -66,9 +63,8 @@ export async function salvarNotasBD(lista: any[]) {
 
       const linhas = existe.rows || [];
 
-      // -----------------------------------------
       // UPDATE se já existe
-      // -----------------------------------------
+      
       if (linhas.length > 0) {
         await conn.execute(
           `
@@ -82,10 +78,8 @@ export async function salvarNotasBD(lista: any[]) {
         );
       }
 
-      // -----------------------------------------
       // INSERT caso não exista
-      // ID É IDENTITY — NÃO COLOCA NO INSERT
-      // -----------------------------------------
+      
       else {
         await conn.execute(
           `

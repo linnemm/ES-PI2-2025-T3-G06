@@ -1,6 +1,6 @@
-// =============================================
+// Autoria: Livia
+
 //  DASHBOARD — NotaDez
-// =============================================
 
 // ID do usuário logado
 const usuarioId = localStorage.getItem("usuarioId");
@@ -11,9 +11,8 @@ if (!usuarioId) {
   window.location.href = "/auth/html/login.html";
 }
 
-// =============================================
 //  BOTÃO INSTITUIÇÕES → DASHBOARD
-// =============================================
+
 const btnInst = document.getElementById("btnInstituicoes");
 
 if (btnInst) {
@@ -23,9 +22,8 @@ if (btnInst) {
   });
 }
 
-// =============================================
-//  CARREGAR LISTA DE INSTITUIÇÕES
-// =============================================
+// CARREGAR LISTA DE INSTITUIÇÕES
+
 async function carregarInstituicoes(filtro = "") {
   const listaContainer = document.getElementById("listaInstituicoes");
 
@@ -80,16 +78,14 @@ async function carregarInstituicoes(filtro = "") {
         </div>
       `;
 
-      // =============================
-      //  ABRIR LISTA DE CURSOS
-      // =============================
+      // ABRIR LISTA DE CURSOS
+      
       card.querySelector(".card-content").addEventListener("click", () => {
         window.location.href = `/gerenciar/html/listaCursos.html?inst=${inst.ID}`;
       });
 
-      // =============================
       //  EDITAR — VIA PROMPT
-      // =============================
+      
       card.querySelector(".edit-btn").addEventListener("click", async (e) => {
         e.stopPropagation();
 
@@ -115,7 +111,7 @@ async function carregarInstituicoes(filtro = "") {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              id: inst.ID,  // ⭐ OBRIGATÓRIO PARA O SEU BACKEND
+              id: inst.ID,  // OBRIGATÓRIO PARA O BACKEND
               nome: novoNome.trim(),
               sigla: novaSigla.trim()
             })
@@ -137,9 +133,8 @@ async function carregarInstituicoes(filtro = "") {
         }
       });
 
-      // =============================
-      //  EXCLUIR
-      // =============================
+      // EXCLUIR
+      
       card.querySelector(".remove-btn").addEventListener("click", async (e) => {
         e.stopPropagation();
 
@@ -175,24 +170,21 @@ async function carregarInstituicoes(filtro = "") {
   }
 }
 
-// =============================================
-//  BOTÃO — NOVA INSTITUIÇÃO
-// =============================================
+// BOTÃO — NOVA INSTITUIÇÃO
+
 document.getElementById("addInstituicao").addEventListener("click", () => {
   window.location.href = "/gerenciar/html/cadastro_instituicao.html";
 });
 
-// =============================================
-//  BOTÃO DE BUSCA
-// =============================================
+// BOTÃO DE BUSCA
+
 document.getElementById("btnBuscarInstituicao").addEventListener("click", () => {
   const termo = document.getElementById("buscaInstituicao").value;
   carregarInstituicoes(termo);
 });
 
-// =============================================
-//  ENTER NA BUSCA
-// =============================================
+// ENTER NA BUSCA
+
 document.getElementById("buscaInstituicao").addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
@@ -200,7 +192,6 @@ document.getElementById("buscaInstituicao").addEventListener("keydown", (e) => {
   }
 });
 
-// =============================================
-//  CARREGAR AO INICIAR
-// =============================================
+// CARREGAR AO INICIAR
+
 carregarInstituicoes();

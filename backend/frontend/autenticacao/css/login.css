@@ -1,6 +1,6 @@
 /* Autoria: Livia */
 
-/* =================== ESTILOS GERAIS DA PÁGINA =================== */
+/* ESTILOS GERAIS DA PÁGINA */
 
 body {
   margin: 0; /* remove margens padrão */
@@ -13,7 +13,7 @@ body {
   overflow: hidden; /* impede rolagem */
 }
 
-/* =================== FUNDO VERDE ATRÁS DO FORMULÁRIO =================== */
+/* FUNDO VERDE ATRÁS DO FORMULÁRIO */
 
 .background-box {
   position: absolute; /* fica atrás do formulário */
@@ -30,7 +30,7 @@ body {
   align-items: center;
 }
 
-/* =================== CONTAINER BRANCO DO FORMULÁRIO =================== */
+/* CONTAINER BRANCO DO FORMULÁRIO */
 
 .login-container {
   position: relative;
@@ -44,14 +44,14 @@ body {
   z-index: 2; /* fica acima do fundo verde */
 }
 
-/* =================== TÍTULO =================== */
+/* TÍTULO */
 
 .login-container h1 {
   color: #9c6b34; /* marrom dourado */
   margin-bottom: 25px;
 }
 
-/* =================== INPUTS =================== */
+/* INPUTS */
 
 .login-container input {
   width: 100%; /* ocupa toda a largura */
@@ -79,7 +79,7 @@ body {
   font-style: italic;
 }
 
-/* =================== CAMPO DE SENHA + OLHINHO =================== */
+/* CAMPO DE SENHA + OLHINHO */
 
 .password-wrapper {
   position: relative;
@@ -112,7 +112,7 @@ body {
   background-size: contain;
 }
 
-/* =================== BOTÃO =================== */
+/* BOTÃO */
 
 .login-container button {
   background: linear-gradient(to right, #6ca98c, #5c8c75); /* verde */
@@ -131,7 +131,7 @@ body {
   background: linear-gradient(to right, #a7d5bb, #9dccb2);
 }
 
-/* =================== LINKS =================== */
+/* LINKS */
 
 .login-container a {
   display: block;
@@ -146,7 +146,7 @@ body {
   text-decoration: underline;
 }
 
-/* =================== BANDEIRINHAS =================== */
+/* BANDEIRINHAS */
 
 .bandeirinhas {
   position: absolute;
@@ -170,7 +170,7 @@ body {
   border-radius: 50%;
 }
 
-/* =================== CADA BANDEIRINHA =================== */
+/* CADA BANDEIRINHA */
 
 .flamula {
   width: 32px;
@@ -195,7 +195,7 @@ body {
 .flamula:nth-child(6) { background: #ff5722; transform: rotate(-10deg) translateY(7px); }
 .flamula:nth-child(7) { background: #26c6da; transform: rotate(-15deg) translateY(-1px); }
 
-/* =================== RESPONSIVIDADE PARA TABLETS =================== */
+/* RESPONSIVIDADE PARA TABLETS */
 
 @media (max-width: 768px) {
   body {
@@ -229,7 +229,7 @@ body {
   }
 }
 
-/* =================== RESPONSIVIDADE PARA CELULARES =================== */
+/* RESPONSIVIDADE PARA CELULARES */
 
 @media (max-width: 480px) {
   body {
@@ -287,7 +287,7 @@ body {
   }
 }
 
-/* =================== RESPONSIVIDADE PARA SMARTPHONES MENORES =================== */
+/* RESPONSIVIDADE PARA SMARTPHONES MENORES */
 
 @media (max-width: 360px) {
   .background-box {

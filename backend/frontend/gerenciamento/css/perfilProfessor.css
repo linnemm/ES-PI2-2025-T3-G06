@@ -1,4 +1,6 @@
 /* Alycia */
+
+/* Estilos Gerais */
 * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
 
 body { background-color:#f4f6f5; color:#333; }
@@ -54,6 +56,36 @@ input,select{
   border-radius:8px; font-size:15px; box-sizing:border-box; height:42px; background:#fff;
 }
 input:focus,select:focus{ outline:none; border-color:#6ca98c; box-shadow:0 0 5px rgba(108,169,140,.6); transition:.2s ease-in-out; }
+
+/* OLHO NAS SENHAS */
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  opacity: 0.7;
+  background: url("https://cdn-icons-png.flaticon.com/512/709/709612.png") no-repeat center;
+  background-size: contain;
+  transition: 0.2s;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+
+.toggle-password.visible {
+  background: url("https://cdn-icons-png.flaticon.com/512/159/159604.png") no-repeat center;
+  background-size: contain;
+}
 
 /* Botões */
 .botoes{ display:flex; justify-content:space-between; gap:10px; margin-top:18px; }

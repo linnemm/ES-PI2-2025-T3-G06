@@ -1,6 +1,6 @@
-// =========================================================
-// CONTROLLER — ALUNOS (FINAL, COMPLETO, VALIDADO)
-// =========================================================
+// Autoria: Livia
+
+// CONTROLLER — ALUNOS 
 
 import { Request, Response } from "express";
 
@@ -19,9 +19,8 @@ import * as fs from "fs";
 import * as path from "path";
 
 
-// =========================================================
-// 1) Cadastrar aluno individual
-// =========================================================
+// Cadastrar aluno individual
+
 export async function cadastrarAluno(req: Request, res: Response) {
   try {
     const {
@@ -38,7 +37,7 @@ export async function cadastrarAluno(req: Request, res: Response) {
       return res.status(400).json({ message: "Preencha todos os campos obrigatórios." });
     }
 
-    // ❗ Validação de matrícula duplicada NA TURMA
+    // Validação de matrícula duplicada NA TURMA
     const jaExiste = await verificarMatriculaDuplicada(matricula, turmaId);
 
     if (jaExiste) {
@@ -63,9 +62,8 @@ export async function cadastrarAluno(req: Request, res: Response) {
 }
 
 
-// =========================================================
-// 2) Listar alunos por turma
-// =========================================================
+// Listar alunos por turma
+
 export async function listarPorTurma(req: Request, res: Response) {
   try {
     const turmaId = Number(req.params.turmaId);
@@ -84,9 +82,8 @@ export async function listarPorTurma(req: Request, res: Response) {
 }
 
 
-// =========================================================
-// 3) Buscar aluno por ID
-// =========================================================
+// Buscar aluno por ID
+
 export async function obterAluno(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
@@ -105,9 +102,8 @@ export async function obterAluno(req: Request, res: Response) {
 }
 
 
-// =========================================================
-// 4) Editar aluno
-// =========================================================
+// Editar aluno
+
 export async function editarAlunoController(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
@@ -123,7 +119,7 @@ export async function editarAlunoController(req: Request, res: Response) {
       return res.status(404).json({ message: "Aluno não encontrado." });
     }
 
-    // ❗ Validar se matrícula já existe para outro aluno da mesma turma
+    // Validar se matrícula já existe para outro aluno da mesma turma
     const duplicado = await verificarMatriculaDuplicada(matricula, aluno.TURMA_ID, id);
 
     if (duplicado) {
@@ -141,9 +137,8 @@ export async function editarAlunoController(req: Request, res: Response) {
 }
 
 
-// =========================================================
-// 5) Remover aluno
-// =========================================================
+// Remover aluno
+
 export async function removerAlunoController(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
@@ -159,9 +154,8 @@ export async function removerAlunoController(req: Request, res: Response) {
 }
 
 
-// =========================================================
-// 6) Importar alunos via CSV
-// =========================================================
+// Importar alunos via CSV
+
 export async function importarAlunosCsvController(req: Request, res: Response) {
   try {
     const { instituicaoId, cursoId, disciplinaId, turmaId } = req.body;

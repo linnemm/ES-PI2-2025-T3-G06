@@ -1,4 +1,6 @@
-// ==================== MOSTRAR / OCULTAR SENHA ====================
+// Autoria: Livia 
+
+// MOSTRAR / OCULTAR SENHA
 
 // Seleciona o input da senha no HTML
 const senha = document.getElementById("senha");
@@ -15,9 +17,7 @@ if (toggle && senha) {
   });
 }
 
-
-
-// ==================== ENVIO DO FORMULÁRIO (LOGIN) ====================
+// ENVIO DO FORMULÁRIO (LOGIN)
 
 // Seleciona o formulário de login
 const form = document.getElementById("formLogin");
@@ -40,7 +40,7 @@ if (form) {
     botao.innerText = "Entrando...";
 
     try {
-      // 🔥 LOGIN
+      // LOGIN
       const resposta = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,7 +76,7 @@ if (form) {
         return;
       }
 
-      // 🔥 SE NÃO FOR PRIMEIRO ACESSO → VERIFICAR INSTITUIÇÃO
+      // SE NÃO FOR PRIMEIRO ACESSO → VERIFICAR INSTITUIÇÃO
       const usuarioId = dados.usuario.id;
       const respInst = await fetch(`/api/instituicoes/listar/${usuarioId}`);
       let instituicoes = [];
@@ -97,7 +97,7 @@ if (form) {
       const instituicaoId = instituicoes[0].ID;
       localStorage.setItem("instituicaoId", instituicaoId);
 
-      // 🔥 VERIFICAR SE EXISTE CURSO
+      // VERIFICAR SE EXISTE CURSO
       const respCursos = await fetch(`/api/cursos/listar/${instituicaoId}`);
 
       let cursos = [];
@@ -126,11 +126,7 @@ if (form) {
   });
 }
 
-
-
-// ========================================================
 // ENTER vai para o próximo campo e, no último, envia o form
-// ========================================================
 
 // Seleciona todos os inputs dentro do formulário de login
 const inputsLogin = document.querySelectorAll("#formLogin input");
@@ -153,11 +149,7 @@ if (inputsLogin) {
   });
 }
 
-
-
-// ===============================
 // VALIDAÇÃO DE EMAIL AO SAIR DO CAMPO (BLUR)
-// ===============================
 
 // Seleciona o input de email
 const emailInput = document.getElementById("email");

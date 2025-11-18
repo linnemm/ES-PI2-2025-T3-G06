@@ -1,6 +1,5 @@
-/* ========================================== */
-/*              BASE DO SISTEMA               */
-/* ========================================== */
+/* Autoria: Livia */
+/* BASE DO SISTEMA */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -18,10 +17,7 @@ body {
   min-height: 100vh;
 }
 
-
-/* ========================================== */
-/*                  TOPBAR                     */
-/* ========================================== */
+/* TOPBAR */
 
 .topbar-notadez {
   width: 100%;
@@ -67,9 +63,7 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-/* ========================================== */
-/*                 FORMULÁRIO                 */
-/* ========================================== */
+/* FORMULÁRIO */
 
 .main-content {
   display: flex;
@@ -118,10 +112,7 @@ select:focus {
   box-shadow: 0 0 5px rgba(108,169,140,.6);
 }
 
-
-/* ========================================== */
-/*                  BOTÕES                    */
-/* ========================================== */
+/* BOTÕES */
 
 .botoes {
   display: flex;
@@ -150,10 +141,7 @@ select:focus {
   background-color: #5c8c75;
 }
 
-
-/* ========================================== */
-/*                 RESPONSIVO                 */
-/* ========================================== */
+/* RESPONSIVO */
 
 @media (max-width: 768px) {
   .topbar-notadez {

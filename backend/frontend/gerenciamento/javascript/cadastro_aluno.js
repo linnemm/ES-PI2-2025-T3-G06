@@ -1,12 +1,11 @@
-// =========================================================
-//  CADASTRO DE ALUNO — VERSÃO FINAL PADRONIZADA
-// =========================================================
+// Autoria: Livia
+
+//  CADASTRO DE ALUNO 
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ================================
-  // 1) VALIDAR LOGIN
-  // ================================
+  // VALIDAR LOGIN
+
   const usuarioId = localStorage.getItem("usuarioId");
 
   if (!usuarioId) {
@@ -15,9 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ================================
   // ELEMENTOS
-  // ================================
+
   const selInstituicao = document.getElementById("instituicao");
   const selCurso       = document.getElementById("curso");
   const selDisciplina  = document.getElementById("disciplina");
@@ -26,9 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formAluno");
   const btnImportar = document.getElementById("btnImportar");
 
-  // ================================
-  // 2) CARREGAR INSTITUIÇÕES
-  // ================================
+  // CARREGAR INSTITUIÇÕES
+  
   async function carregarInstituicoes() {
     const resp = await fetch(`/api/instituicoes/listar/${usuarioId}`);
     const insts = await resp.json();
@@ -41,9 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarInstituicoes();
 
-  // ================================
-  // 3) CARREGAR CURSOS
-  // ================================
+  // CARREGAR CURSOS
+  
   selInstituicao.addEventListener("change", async () => {
     const instId = selInstituicao.value;
 
@@ -66,9 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
     selTurma.innerHTML = `<option value="">Selecione...</option>`;
   });
 
-  // ================================
-  // 4) CARREGAR DISCIPLINAS
-  // ================================
+  // CARREGAR DISCIPLINAS
+  
   selCurso.addEventListener("change", async () => {
     const cursoId = selCurso.value;
 
@@ -89,9 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
     selTurma.innerHTML = `<option value="">Selecione...</option>`;
   });
 
-  // ================================
-  // 5) CARREGAR TURMAS
-  // ================================
+  // CARREGAR TURMAS
+  
   selDisciplina.addEventListener("change", async () => {
     const discId = selDisciplina.value;
 
@@ -109,9 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ================================
-  // 6) SALVAR ALUNO
-  // ================================
+  // SALVAR ALUNO
+  
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -138,9 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
     location.href = `/gerenciar/html/detalhesTurma.html?turmaId=${body.turmaId}`;
   });
 
-  // ================================
-  // 7) IMPORTAR CSV
-  // ================================
+  // IMPORTAR CSV
+  
   btnImportar.addEventListener("click", () => {
     const inp = document.createElement("input");
     inp.type = "file";
@@ -173,9 +165,8 @@ Duplicados: ${json.ignoradosDuplicados}`);
     inp.click();
   });
 
-  // ================================
-  // 8) ENTER PARA MUDAR DE CAMPO E ENVIAR FORM
-  // ================================
+  // ENTER PARA MUDAR DE CAMPO E ENVIAR FORM
+  
   const campos = document.querySelectorAll(
     "#formAluno input, #formAluno select"
   );
@@ -196,9 +187,8 @@ Duplicados: ${json.ignoradosDuplicados}`);
     });
   });
 
-  // ================================
-  // 9) BOTÃO INSTITUIÇÕES
-  // ================================
+  // BOTÃO INSTITUIÇÕES
+  
   document.getElementById("btnInstituicoes").addEventListener("click", () => {
     location.href = "/gerenciar/html/dashboard.html";
   });

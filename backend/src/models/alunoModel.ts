@@ -1,6 +1,6 @@
-// ======================================================
-// MODEL — ALUNOS  (VERSÃO FINAL E CORRIGIDA)
-// ======================================================
+// Autoria: Livia
+
+// MODEL — ALUNOS 
 
 import { openConnection } from "../config/database";
 import oracledb from "oracledb";
@@ -31,9 +31,8 @@ export interface ImportAlunoCsv {
   nome: string;
 }
 
-/* ======================================================
-   1) Verificar matrícula duplicada
-   ====================================================== */
+/* Verificar matrícula duplicada */
+
 export async function verificarMatriculaDuplicada(
   matricula: string,
   turmaId: number,
@@ -70,9 +69,8 @@ export async function verificarMatriculaDuplicada(
   }
 }
 
-/* ======================================================
-   2) Criar aluno
-   ====================================================== */
+/* Criar aluno */
+
 export async function criarAluno(dados: NovoAlunoInput): Promise<void> {
   const conn = await openConnection();
 
@@ -106,9 +104,8 @@ export async function criarAluno(dados: NovoAlunoInput): Promise<void> {
   }
 }
 
-/* ======================================================
-   3) Listar alunos por turma
-   ====================================================== */
+/* Listar alunos por turma */
+
 export async function listarAlunosPorTurma(turmaId: number): Promise<Aluno[]> {
   const conn = await openConnection();
 
@@ -139,9 +136,7 @@ export async function listarAlunosPorTurma(turmaId: number): Promise<Aluno[]> {
   }
 }
 
-/* ======================================================
-   4) Buscar aluno por ID
-   ====================================================== */
+/* Buscar aluno por ID */
 export async function buscarAlunoPorId(id: number): Promise<Aluno | null> {
   const conn = await openConnection();
 
@@ -171,9 +166,8 @@ export async function buscarAlunoPorId(id: number): Promise<Aluno | null> {
   }
 }
 
-/* ======================================================
-   5) Editar aluno
-   ====================================================== */
+/* Editar aluno */
+
 export async function editarAluno(
   id: number,
   nome: string,
@@ -206,9 +200,8 @@ export async function editarAluno(
   }
 }
 
-/* ======================================================
-   6) Remover aluno
-   ====================================================== */
+/* Remover aluno */
+
 export async function removerAluno(id: number): Promise<void> {
   const conn = await openConnection();
 
@@ -224,9 +217,8 @@ export async function removerAluno(id: number): Promise<void> {
   }
 }
 
-/* ======================================================
-   7) Importação CSV
-   ====================================================== */
+/* Importação CSV */
+
 export async function importarAlunosCsv(
   contexto: {
     instituicaoId: number;

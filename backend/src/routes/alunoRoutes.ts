@@ -1,7 +1,6 @@
-// ======================================================
-// src/routes/alunoRoutes.ts
+// Autoria: Livia
+
 // Rotas de alunos (criação, edição, importação CSV)
-// ======================================================
 
 import { Router } from "express";
 import multer, { StorageEngine } from "multer";
@@ -19,9 +18,7 @@ import {
 
 const router = Router();
 
-/* ======================================================
-   GARANTIR QUE A PASTA /uploads/csv EXISTE
-   ====================================================== */
+/* GARANTIR QUE A PASTA /uploads/csv EXISTE */
 const uploadDir = path.resolve("uploads/csv");
 
 if (!fs.existsSync(uploadDir)) {
@@ -29,9 +26,8 @@ if (!fs.existsSync(uploadDir)) {
   console.log("📁 Pasta criada:", uploadDir);
 }
 
-/* ======================================================
-   CONFIGURAÇÃO DO MULTER PARA CSV
-   ====================================================== */
+/* CONFIGURAÇÃO DO MULTER PARA CSV */
+
 const storage: StorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
@@ -51,9 +47,7 @@ const uploadCsv = multer({
   }
 });
 
-/* ======================================================
-   MIDDLEWARE DE TRATAMENTO DE ERROS DO MULTER
-   ====================================================== */
+/* MIDDLEWARE DE TRATAMENTO DE ERROS DO MULTER */
 function multerErrorHandler(
   err: any,
   req: any,
@@ -66,9 +60,7 @@ function multerErrorHandler(
   next();
 }
 
-/* ======================================================
-                    ROTAS API ALUNOS
-   ====================================================== */
+/* ROTAS API ALUNOS */
 
 // Criar aluno individual
 router.post("/criar", cadastrarAluno);

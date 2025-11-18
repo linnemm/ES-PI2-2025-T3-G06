@@ -1,12 +1,11 @@
-// =========================================================
-//  DETALHES DA TURMA — VERSÃO FINAL SEM MENU FLUTUANTE
-// =========================================================
+// Autoria: Livia
+
+//  DETALHES DA TURMA 
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // -------------------------------
   // PEGAR TURMA ID DA URL
-  // -------------------------------
+  
   const qs = new URLSearchParams(location.search);
   const turmaId = Number(qs.get("turmaId"));
 
@@ -15,48 +14,44 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // -------------------------------
   // BOTÃO INSTITUIÇÕES
-  // -------------------------------
+  
   document.getElementById("btnInstituicoes").onclick = () => {
     window.location.href = "/gerenciar/html/dashboard.html";
   };
 
-  // -------------------------------
   // ELEMENTOS
-  // -------------------------------
+  
   const tituloTurma = document.getElementById("tituloTurma");
   const subTurma    = document.getElementById("subTurma");
   const tbody       = document.getElementById("tbodyAlunos");
 
   let alunos = [];
-  let turmaCache = null; // ⭐ aqui vamos guardar INSTITUICAO_ID, CURSO_ID, DISCIPLINA_ID
+  let turmaCache = null; // guardar INSTITUICAO_ID, CURSO_ID, DISCIPLINA_ID
 
-  // -------------------------------
+  
   // CARREGAR TURMA
-  // -------------------------------
+  
   async function carregarTurma() {
     const resp  = await fetch(`/api/turmas/detalhes/${turmaId}`);
     const turma = await resp.json();
 
-    turmaCache = turma; // ⭐ guarda tudo para usar depois nos botões / import
+    turmaCache = turma; // guarda tudo para usar depois nos botões / import
 
     tituloTurma.textContent = `Turma ${turma.NOME} — ${turma.DISCIPLINA_NOME}`;
     subTurma.textContent    = `Código: ${turma.CODIGO || "-"} | Disciplina: ${turma.DISCIPLINA_NOME}`;
   }
 
-  // -------------------------------
   // CARREGAR ALUNOS
-  // -------------------------------
+  
   async function carregarAlunos() {
     const resp = await fetch(`/api/alunos/turma/${turmaId}`);
     alunos = await resp.json();
     render();
   }
 
-  // -------------------------------
   // MODAL EDITAR ALUNO
-  // -------------------------------
+ 
   function abrirModalEditar(aluno) {
     const modal = document.createElement("div");
     modal.className = "modal-overlay";
@@ -121,17 +116,15 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // -------------------------------
   // REMOVER ALUNO INDIVIDUAL
-  // -------------------------------
+  
   async function removerAluno(id) {
     const resp = await fetch(`/api/alunos/remover/${id}`, { method: "DELETE" });
     return resp.ok;
   }
 
-  // -------------------------------
   // RENDERIZAÇÃO DA TABELA
-  // -------------------------------
+  
   function render() {
     tbody.innerHTML = alunos.map(a => `
       <tr>
@@ -160,9 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // -------------------------------
   // IMPORTAR CSV
-  // -------------------------------
+ 
   document.getElementById("btnImportar").onclick = () => {
     const inp = document.createElement("input");
     inp.type = "file";
@@ -198,9 +190,8 @@ Duplicados: ${json.ignoradosDuplicados}`);
     inp.click();
   };
 
-  // -------------------------------
   // EXCLUIR SELECIONADOS
-  // -------------------------------
+  
   document.getElementById("btnExcluirSelecionados").onclick = async () => {
     const checks = [...document.querySelectorAll(".chkAluno:checked")];
 
@@ -219,10 +210,8 @@ Duplicados: ${json.ignoradosDuplicados}`);
     carregarAlunos();
   };
 
-  // -------------------------------
   // BOTÃO NOTAS DA TURMA
-  // (AGORA SÓ USA turmaCache, SEM URL EXTRA)
-// -------------------------------
+
   document.getElementById("btnNotasTurma").onclick = () => {
     if (!turmaCache) {
       alert("Turma ainda não carregada. Tente novamente.");
@@ -238,9 +227,8 @@ Duplicados: ${json.ignoradosDuplicados}`);
       `turmaId=${turmaId}&inst=${instId}&curso=${cursoId}&disc=${discId}`;
   };
 
-  // -------------------------------
   // BOTÃO ADICIONAR ALUNO
-  // -------------------------------
+
   document.getElementById("btnAddAluno").onclick = () => {
     if (!turmaCache) {
       alert("Turma ainda não carregada. Tente novamente.");
@@ -256,16 +244,14 @@ Duplicados: ${json.ignoradosDuplicados}`);
       `turmaId=${turmaId}&inst=${instId}&curso=${cursoId}&disc=${discId}`;
   };
 
-  // -------------------------------
   // VOLTAR
-  // -------------------------------
+
   document.getElementById("btnVoltar").onclick = () => {
     window.history.back();
   };
 
-  // -------------------------------
   // INICIAR
-  // -------------------------------
+
   carregarTurma();
   carregarAlunos();
 

@@ -1,3 +1,5 @@
+// Autoria: Livia
+
 import { Request, Response } from "express";
 import {
   criarInstituicao,
@@ -11,9 +13,8 @@ import {
 import oracledb from "oracledb";
 import { dbConfig } from "../config/database";
 
-// ======================================================
 //  CADASTRAR INSTITUIÇÃO
-// ======================================================
+
 export const cadastrarInstituicao = async (req: Request, res: Response) => {
   try {
     const { nome, sigla, usuarioId } = req.body;
@@ -40,9 +41,8 @@ export const cadastrarInstituicao = async (req: Request, res: Response) => {
   }
 };
 
-// ======================================================
 //  LISTAR INSTITUIÇÕES DO USUÁRIO
-// ======================================================
+
 export const listarInstituicoesPorUsuario = async (req: Request, res: Response) => {
   try {
     const usuarioId = Number(req.params.usuarioId);
@@ -61,9 +61,8 @@ export const listarInstituicoesPorUsuario = async (req: Request, res: Response) 
   }
 };
 
-// ======================================================
 //  EDITAR INSTITUIÇÃO
-// ======================================================
+
 export const atualizarInstituicao = async (req: Request, res: Response) => {
   try {
     const { id, nome, sigla } = req.body;
@@ -88,9 +87,8 @@ export const atualizarInstituicao = async (req: Request, res: Response) => {
   }
 };
 
-// ======================================================
-//  REMOVER INSTITUIÇÃO
-// ======================================================
+// REMOVER INSTITUIÇÃO
+
 export const removerInstituicao = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id); // 👈 CORRETO
