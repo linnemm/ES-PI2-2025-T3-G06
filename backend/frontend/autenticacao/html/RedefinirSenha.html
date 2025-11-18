@@ -1,0 +1,57 @@
+<!--Autoria: Miriã - Redefinir Senha HTML-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redefinir Senha</title>
+
+  <!-- Ligação com o CSS-->
+  <link rel="stylesheet" href="/auth/css/RedefinirSenha.css">
+
+  <!-- Link do Ícone (olho de senha) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="background-box">
+    <div class="esqueceu_senha-container">
+
+      <!-- Bandeirinhas -->
+      <div class="bandeirinhas">
+        <div class="flamula">N</div>
+        <div class="flamula">O</div>
+        <div class="flamula">T</div>
+        <div class="flamula">A</div>
+        <div class="flamula">D</div>
+        <div class="flamula">E</div>
+        <div class="flamula">Z</div>
+      </div>
+
+      <!-- Formulário de redefinição -->
+      <form id="formRedefinirSenha">
+        <h1>Redefinir Senha</h1>
+
+        <div class="input-wrapper password-container">
+          <input type="password" placeholder="Digite a nova senha" id="password1" required>
+          <span id="togglePassword" class="toggle-password"></span>
+        </div>
+
+        <div class="input-wrapper password-container">
+          <input type="password" placeholder="Confirme a senha" id="password2" required>
+          <span id="togglePassword2" class="toggle-password"></span>
+        </div>
+
+        <p id="errorMsg" class="error-message"></p>
+
+        <button type="submit">Redefinir senha</button>
+      </form>
+
+    </div>
+  </div>
+
+  <!--Conexão com o JavaScript-->
+  <script src="/auth/javascript/RedefinirSenha.js"></script>
+</body>
+</html>

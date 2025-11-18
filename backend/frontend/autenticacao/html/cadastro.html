@@ -1,0 +1,93 @@
+<!-- Código feito por: Alinne -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro</title>
+
+  <!-- Importa o CSS da página de cadastro -->
+  <link rel="stylesheet" href="/auth/css/cadastro.css" />
+</head>
+<body>
+    
+  <!-- Caixa verde maior no fundo -->
+  <div class="background-box">
+
+    <!-- Caixa branca onde fica o formulário -->
+    <div class="cadastro-container">
+
+      <!-- Bandeirinhas decorativas superiores -->
+      <div class="bandeirinhas">
+        <div class="flamula">N</div>
+        <div class="flamula">O</div>
+        <div class="flamula">T</div>
+        <div class="flamula">A</div>
+        <div class="flamula">D</div>
+        <div class="flamula">E</div>
+        <div class="flamula">Z</div>
+      </div>
+
+      <!-- Título da página -->
+      <h1>Cadastro</h1>
+
+      <!-- Aviso de campo obrigatório -->
+      <p class="aviso-obrigatorio">* Campo obrigatório</p>
+
+      <!-- FORMULÁRIO DE CADASTRO -->
+      <form id="formCadastro">
+
+        <!-- Campo Nome -->
+        <div class="input-wrapper">
+          <input type="text" placeholder="Nome" required />
+        </div>
+
+        <!-- Campo Sobrenome -->
+        <div class="input-wrapper">
+          <input type="text" placeholder="Sobrenome" required />
+        </div>
+
+        <!-- Campo E-mail -->
+        <div class="input-wrapper">
+          <input type="email" placeholder="E-mail" required />
+        </div>
+
+        <!-- Campo Telefone -->
+        <div class="input-wrapper">
+          <input type="tel" placeholder="Telefone" required />
+        </div>
+
+        <!-- Aviso fixo sobre a senha -->
+        <p class="aviso-senha">
+          <span style="color: red;">*</span> A senha deve ter pelo menos 6 caracteres.
+        </p>
+
+        <!-- Campo Senha com ícone de mostrar/ocultar -->
+        <div class="input-wrapper password-container">
+            <input type="password" placeholder="Senha" id="password1" name="senha" required />
+            <span id="togglePassword" class="toggle-password"></span>
+        </div>
+
+        <!-- Campo Confirmar Senha -->
+        <div class="input-wrapper password-container">
+            <input type="password" placeholder="Confirme a nova senha" id="password2" name="senha" required />
+            <span id="togglePassword2" class="toggle-password"></span>
+        </div>
+
+        <!-- Mensagem de erro -->
+        <p id="errorMsg" class="error-message"></p>
+
+        <!-- Botão de cadastrar -->
+        <button type="submit">Cadastrar</button>
+
+        <!-- Link para a página de login -->
+        <a href="/auth/html/login.html">Já tem uma conta? Entre aqui</a>
+      </form>
+    </div>
+  </div>
+
+  <!-- Importa o JavaScript -->
+  <script src="/auth/javascript/cadastro.js"></script>
+</body>
+</html>

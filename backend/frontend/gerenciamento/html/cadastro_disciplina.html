@@ -1,0 +1,90 @@
+<!-- Autora: Alycia-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Disciplina — NotaDez</title>
+
+  <!-- Fontes e ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/gerenciar/css/cadastro_disciplina.css" />
+</head>
+
+<body>
+  <div class="dashboard">
+
+    <!-- TOPBAR  -->
+    <nav class="topbar">
+      <h2>NotaDez</h2>
+
+      <ul class="menu-horizontal">
+        <li>
+          <a href="#" id="btnInstituicoes">
+            <i class="fa-solid fa-building-columns"></i> Instituições
+          </a>
+        </li>
+
+        <li>
+          <a href="/gerenciar/html/perfilProfessor.html" id="btnPerfil">
+            <i class="fa-solid fa-user"></i> Perfil
+          </a>
+        </li>
+
+        <li>
+          <a href="/auth/html/login.html">
+            <i class="fa-solid fa-right-from-bracket"></i> Sair
+          </a>
+        </li>
+      </ul>
+
+    </nav>
+
+
+    <!--CONTEÚDO-->
+    <main class="main-content">
+
+      <h1>Cadastro de Disciplina</h1>
+
+      <form id="formDisciplina" autocomplete="off" novalidate>
+
+        <label for="instituicao">Instituição:</label>
+        <select id="instituicao" required>
+          <option value="">Selecione uma instituição</option>
+        </select>
+
+        <label for="curso">Curso:</label>
+        <select id="curso" required>
+          <option value="">Selecione um curso</option>
+        </select>
+
+        <label for="nome">Nome da Disciplina:</label>
+        <input id="nome" placeholder="Ex: Banco de Dados I" required />
+
+        <label for="sigla">Sigla:</label>
+        <input id="sigla" placeholder="Ex: BDI" required />
+
+        <label for="codigo">Código:</label>
+        <input id="codigo" placeholder="Ex: ES123" required />
+
+        <label for="periodo">Período:</label>
+        <input id="periodo" placeholder="Ex: 3º semestre" required />
+
+        <div class="botoes">
+          <button type="button" class="btn-cancelar" id="btnCancelar">Cancelar</button>
+          <button type="submit" class="btn-salvar">Salvar</button>
+        </div>
+
+      </form>
+
+    </main>
+
+  </div>
+
+  <script src="/gerenciar/javascript/cadastro_disciplina.js"></script>
+</body>
+</html>

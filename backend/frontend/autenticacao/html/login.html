@@ -1,0 +1,61 @@
+<!-- Autoria: Livia -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" /> <!-- Define a codificação -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Para responsividade -->
+  <title>Login - NotaDez</title>
+
+  <!-- Importa o CSS da página -->
+  <link rel="stylesheet" href="/auth/css/login.css">
+</head>
+<body>
+
+  <!-- Fundo verde atrás do formulário -->
+  <div class="background-box">
+    
+    <!-- Caixa branca do formulário -->
+    <div class="login-container">
+
+      <!-- Bandeirinhas decorativas -->
+      <div class="bandeirinhas">
+        <div class="flamula">N</div>
+        <div class="flamula">O</div>
+        <div class="flamula">T</div>
+        <div class="flamula">A</div>
+        <div class="flamula">D</div>
+        <div class="flamula">E</div>
+        <div class="flamula">Z</div>
+      </div>
+
+      <!-- Título principal -->
+      <h1>Login</h1>
+
+      <!-- Formulário de login -->
+      <form id="formLogin">
+
+        <!-- Campo de email -->
+        <input type="email" placeholder="E-mail" required />
+
+        <!-- Campo de senha + olhinho -->
+        <div class="password-wrapper">
+          <input type="password" id="senha" placeholder="Senha" required />
+          <span class="toggle-password" id="togglePassword"></span>
+        </div>
+
+        <!-- Botão de enviar -->
+        <button type="submit">Entrar</button>
+
+        <!-- Links de navegação -->
+        <a href="/auth/html/EsqueceuSenha.html">Esqueci minha senha</a>
+        <a href="/auth/html/cadastro.html">Não possui cadastro? Cadastre-se aqui</a>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Script com a lógica do login -->
+  <script src="/auth/javascript/login.js"></script>
+</body>
+</html>

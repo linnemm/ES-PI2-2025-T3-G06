@@ -1,0 +1,120 @@
+/* Alycia */
+
+/* Estilos Gerais */
+* { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+
+body { background-color:#f4f6f5; color:#333; }
+
+/* Topbar */
+.topbar{
+  width:100%;
+  background:linear-gradient(to right,#6ca98c,#5c8c75);
+  color:#fff;
+  padding:15px 40px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:10;
+  box-shadow:0 2px 8px rgb(236,232,232);
+}
+.topbar h2{ font-size:22px; font-weight:700; }
+.menu-horizontal{ list-style:none; display:flex; gap:25px; flex-wrap:wrap; margin:0; padding:0; }
+.menu-horizontal li a{
+  color:#fff; text-decoration:none; font-size:16px; display:flex; align-items:center; gap:8px;
+  padding:8px 12px; border-radius:6px; transition:background-color .3s, box-shadow .2s; background:transparent;
+}
+.menu-horizontal li a:hover,
+.menu-horizontal li a:focus{ background-color:rgba(255,255,255,.2); box-shadow:0 4px 10px rgba(0,0,0,.2); }
+.menu-horizontal li a.ativo{ background-color:transparent; box-shadow:none; }
+
+/* Main */
+.main-content{
+  display:flex; flex-direction:column; align-items:center;
+  background-color:#f4f6f5; min-height:100vh; padding:60px 24px 40px;
+}
+h1{ color:#5c8c75; margin-bottom:26px; }
+
+/* Card base */
+.card{
+  background:#fff; width:900px; max-width:calc(100vw - 100px);
+  box-shadow:0 2px 8px rgba(0,0,0,.1); border-radius:15px; padding:22px; margin-bottom:18px;
+}
+h3{ margin:6px 0 10px; color:#5c8c75; }
+
+/* Perfil topo */
+.perfil-card{ display:grid; grid-template-columns:96px 1fr; gap:16px; align-items:center; }
+.avatar{
+  width:96px; height:96px; border-radius:50%;
+  background:linear-gradient(135deg,#6ca98c,#5c8c75); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:28px;
+}
+.info h2{ margin:0 0 4px; }
+.email-atual{ margin:0; color:#555; }
+
+/* Form padrão */
+label{ display:block; margin-top:12px; font-weight:600; }
+input,select{
+  width:100%; padding:10px; margin-top:5px; border:1px solid #ccc;
+  border-radius:8px; font-size:15px; box-sizing:border-box; height:42px; background:#fff;
+}
+input:focus,select:focus{ outline:none; border-color:#6ca98c; box-shadow:0 0 5px rgba(108,169,140,.6); transition:.2s ease-in-out; }
+
+/* OLHO NAS SENHAS */
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  opacity: 0.7;
+  background: url("https://cdn-icons-png.flaticon.com/512/709/709612.png") no-repeat center;
+  background-size: contain;
+  transition: 0.2s;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+
+.toggle-password.visible {
+  background: url("https://cdn-icons-png.flaticon.com/512/159/159604.png") no-repeat center;
+  background-size: contain;
+}
+
+/* Botões */
+.botoes{ display:flex; justify-content:space-between; gap:10px; margin-top:18px; }
+.btn-salvar,.btn-curso,.btn-cancelar{
+  padding:10px 20px; border:none; border-radius:10px; cursor:pointer; font-weight:bold;
+}
+.btn-salvar,.btn-curso{ background-color:#6ca98c; color:#fff; }
+.btn-salvar:hover,.btn-curso:hover{ background-color:#5c8c75; }
+.btn-cancelar{ background-color:#ccc; color:#000; }
+.btn-cancelar:hover{ background-color:#aaa; }
+
+/* Força da senha */
+.forca{ height:8px; border-radius:999px; background:#eee; margin-top:8px; overflow:hidden; }
+.forca span{ display:block; height:100%; width:0%; background:#b33a3a; transition:width .25s, background .25s; }
+
+/* Toast */
+.toast{
+  position:fixed; bottom:24px; right:24px; background:#333; color:#fff;
+  padding:12px 16px; border-radius:10px; opacity:0; pointer-events:none; transform:translateY(10px);
+  transition:opacity .25s, transform .25s;
+}
+.toast.show{ opacity:1; transform:translateY(0); }
+
+/* Responsivo */
+@media (max-width:720px){
+  .card{ width:100%; }
+  .main-content{ padding:90px 16px 24px; }
+}
+
+button.toggle,.toggle{
+  display:none !important; visibility:hidden !important; width:0 !important; height:0 !important; overflow:hidden !important; position:absolute !important;
+}

@@ -1,0 +1,126 @@
+<!-- Autoria: Alycia -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perfil do Professor — NotaDez</title>
+
+  <!-- Fontes e ícones -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="/gerenciar/css/perfilProfessor.css">
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+    <ul class="menu-horizontal">
+
+      <li><a href="#" id="btnInstituicoes">
+        <i class="fa-solid fa-building-columns"></i> Instituições
+      </a></li>
+
+      <li><a href="#" id="btnPerfil" class="ativo">
+        <i class="fa-solid fa-user"></i> Perfil
+      </a></li>
+
+      <li><a href="#" id="btnLogout">
+        <i class="fa-solid fa-right-from-bracket"></i> Sair
+      </a></li>
+
+    </ul>
+  </nav>
+
+  <!-- CONTEÚDO -->
+  <main class="main-content">
+
+    <h1>Perfil do Professor</h1>
+
+    <!-- CARD PERFIL -->
+    <section class="card perfil-card">
+      <div class="avatar"><span id="letrasAvatar">P</span></div>
+
+      <div class="info">
+        <h2 id="nomeProfessor">Carregando...</h2>
+        <p class="email-atual">
+          <strong>E-mail atual:</strong> <span id="emailProfessor">...</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- TROCA DE EMAIL -->
+    <form class="card" id="formEmail">
+      <h3>Trocar e-mail</h3>
+
+      <label for="novoEmail">Novo e-mail</label>
+      <input id="novoEmail" type="email" placeholder="nome@dominio.com">
+
+      <label for="senhaConfirmaEmail">Senha atual</label>
+      <div class="password-wrapper">
+        <input id="senhaConfirmaEmail" type="password">
+        <span class="toggle-password" data-target="senhaConfirmaEmail"></span>
+      </div>
+
+      <div class="botoes">
+        <button type="button" class="btn-cancelar" id="cancelarEmail">Cancelar</button>
+        <button type="submit" class="btn-salvar">Salvar e-mail</button>
+      </div>
+    </form>
+
+    <!-- TROCA DE SENHA -->
+    <form class="card" id="formSenha">
+      <h3>Trocar senha</h3>
+
+      <label for="senhaAtual">Senha atual</label>
+      <div class="password-wrapper">
+        <input id="senhaAtual" type="password">
+        <span class="toggle-password" data-target="senhaAtual"></span>
+      </div>
+
+      <label for="novaSenha">Nova senha</label>
+      <div class="password-wrapper">
+        <input id="novaSenha" type="password">
+        <span class="toggle-password" data-target="novaSenha"></span>
+      </div>
+      <div id="forcaSenha" class="forca"><span></span></div>
+
+      <label for="confirmaSenha">Confirmar senha</label>
+      <div class="password-wrapper">
+        <input id="confirmaSenha" type="password">
+        <span class="toggle-password" data-target="confirmaSenha"></span>
+      </div>
+
+      <div class="botoes">
+        <button type="button" class="btn-cancelar" id="cancelarSenha">Cancelar</button>
+        <button type="submit" class="btn-salvar">Salvar senha</button>
+      </div>
+    </form>
+
+    <div id="toast" class="toast"></div>
+
+  </main>
+
+  <!-- JS -->
+  <script src="/gerenciar/javascript/perfilProfessor.js"></script>
+
+  <!-- SCRIPT DO OLHINHO -->
+  <script>
+    document.querySelectorAll(".toggle-password").forEach(icon => {
+      icon.addEventListener("click", () => {
+        const id = icon.getAttribute("data-target");
+        const input = document.getElementById(id);
+
+        const estaOculta = input.type === "password";
+        input.type = estaOculta ? "text" : "password";
+
+        icon.classList.toggle("visible", estaOculta);
+      });
+    });
+  </script>
+
+</body>
+</html>

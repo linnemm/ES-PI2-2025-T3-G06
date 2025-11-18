@@ -1,0 +1,103 @@
+<!-- Autoria: Miriã - Cadastro Turma HTML -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Configurações básicas da página -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Turmas — NotaDez</title>
+
+  <!-- Links Fontes e ícones -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  
+  <!-- Conexão com CSS -->
+  <link rel="stylesheet" href="/gerenciar/css/cadastro_turma.css" />
+</head>
+
+<body>
+  <div class="dashboard">
+
+    <!--TopBar-->
+    
+    <header class="topbar-notadez">
+      <h2 class="topbar-notadez__brand">NotaDez</h2>
+
+      <ul class="ndz-menu">
+        <li>
+          <!-- Link para instituições -->
+          <a href="/gerenciar/html/dashboard.html">
+            <i class="fa-solid fa-building-columns"></i> Instituições
+          </a>
+        </li>
+
+        <li>
+          <!-- Link para perfil -->
+          <a href="/gerenciar/html/perfilProfessor.html">
+            <i class="fa-solid fa-user"></i> Perfil
+          </a>
+        </li>
+
+        <li>
+          <!-- Logout -->
+          <a href="/auth/html/login.html">
+            <i class="fa-solid fa-right-from-bracket"></i> Sair
+          </a>
+        </li>
+      </ul>
+    </header>
+
+    <!-- Cadastrar Turma -->
+  
+    <main class="main-content">
+
+      <h1>Cadastro de Turmas</h1>
+
+      <form id="formTurma" autocomplete="off">
+
+        <label>Nome da Turma:</label>
+        <input id="nomeTurma" type="text" placeholder="Ex: Turma A" required>
+
+        <label>Instituição:</label>
+        <select id="instituicao" required>
+          <option value="">Selecione...</option>
+        </select>
+
+        <label>Curso:</label>
+        <select id="curso" required>
+          <option value="">Selecione...</option>
+        </select>
+
+        <label>Disciplina:</label>
+        <select id="disciplinaId" required>
+          <option value="">Selecione...</option>
+        </select>
+
+        <label>Dia da Semana:</label>
+        <input id="diaSemana" type="text" placeholder="Ex: Segunda-feira" required>
+
+        <label>Horário:</label>
+        <input id="horario" type="text" placeholder="Ex: 19:00 - 22:30" required>
+
+        <label>Local:</label>
+        <input id="localTurma" type="text" placeholder="Ex: Sala 301" required>
+
+        <div class="botoes">
+          <button type="submit" class="btn-salvar">Adicionar Turma</button>
+          <button type="reset" class="btn-cancelar" id="btnCancelar">Cancelar</button>
+        </div>
+
+      </form>
+
+    </main>
+
+  </div>
+
+  <!-- JavaScript -->
+  <script src="/gerenciar/javascript/cadastro_turma.js"></script>
+</body>
+</html>

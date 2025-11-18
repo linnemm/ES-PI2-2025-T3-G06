@@ -1,0 +1,72 @@
+<!-- Autoria: Alinne -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Instituição — NotaDez</title>
+
+  <!-- Fontes e ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/gerenciar/css/cadastro_instituicao.css" />
+</head>
+<body>
+  <div class="dashboard">
+
+    <!-- ===== TOPBAR ===== -->
+    <nav class="topbar">
+      <h2>NotaDez</h2>
+
+      <ul class="menu-horizontal" id="menuHorizontal">
+
+        <li>
+          <a href="#" id="btnInstituicoes">
+            <i class="fa-solid fa-building-columns"></i> Instituições
+          </a>
+        </li>
+
+        <li>
+          <a href="/gerenciar/html/perfilProfessor.html" id="btnPerfil">
+            <i class="fa-solid fa-user"></i> Perfil
+          </a>
+        </li>
+
+        <li>
+          <a href="/auth/html/login.html">
+            <i class="fa-solid fa-right-from-bracket"></i> Sair
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <!--  CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+      <h1>Cadastro de Instituição</h1>
+
+      <form id="formInstituicao" autocomplete="off" novalidate>
+
+        <label for="nome">Nome da Instituição:</label>
+        <input type="text" id="nome" name="nome" placeholder="Ex: Pontifícia Universidade Católica de Campinas" required>
+
+        <label for="sigla">Sigla:</label>
+        <input type="text" id="sigla" name="sigla" placeholder="Ex: PUCCAMP" required>
+
+        <div class="botoes">
+          <button type="submit" class="btn-salvar">Salvar</button>
+          <button type="reset" class="btn-cancelar" id="btnCancelar">Cancelar</button>
+        </div>
+
+      </form>
+    </main>
+
+  </div>
+
+  <script src="/gerenciar/javascript/cadastro_instituicao.js"></script>
+</body>
+</html>

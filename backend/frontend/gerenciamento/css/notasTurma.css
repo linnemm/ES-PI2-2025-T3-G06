@@ -1,0 +1,198 @@
+/* Autoria: Livia */
+
+/* Estilos Gerais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f5f6fa;
+  overflow-x: hidden;
+  color: #333;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Topbar */
+.topbar {
+  width: 100%;
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  color: white;
+  padding: 15px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgb(236, 232, 232);
+}
+
+.topbar h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.menu-horizontal {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.menu-horizontal li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.menu-horizontal li a:hover,
+.menu-horizontal li a.ativo {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Conteúdo Principal */
+main {
+  padding: 30px 10%;
+}
+
+.info-turma h1 {
+  color: #6ca98c;
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.info-turma p {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+/* Botões principais */
+.botoes-topo {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.botoes-topo button,
+.btn-salvar,
+.voltar {
+  background: linear-gradient(to right, #6ca98c, #5c8c75);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.botoes-topo button:hover,
+.btn-salvar:hover,
+.voltar:hover {
+  background: linear-gradient(to right, #5c8c75, #4f7862);
+}
+
+/* Controle de edição */
+.controle-edicao {
+  background: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 35px;
+  margin-bottom: 25px;
+}
+
+.controle-edicao .campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.controle-edicao select {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  min-width: 200px;
+}
+
+#chkEdicaoCompleta {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+/* Tabela de Notas */
+.tabela-notas {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #dfe8df;
+  padding: 10px;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+}
+
+td {
+  text-align: center;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.campo-nota {
+  width: 75px;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  text-align: center;
+}
+
+.campo-nota:disabled {
+  background: #ececec;
+  color: #666;
+}
+
+.nota-final {
+  font-weight: 600;
+  color: #3c5e4e;
+  font-size: 15px;
+}
+
+/* Botão Voltar */
+.voltar-container {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.voltar {
+  margin-top: 10px;
+}

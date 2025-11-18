@@ -1,0 +1,222 @@
+<!-- Autora: Alycia-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Disciplinas — NotaDez</title>
+
+  <link rel="stylesheet" href="/gerenciar/css/listaDisciplinas.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+<div class="dashboard">
+
+  <!-- TOPBAR  -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+
+    <ul class="menu-horizontal">
+
+      <li>
+        <a href="#" id="btnInstituicoes">
+          <i class="fa-solid fa-building-columns"></i> Instituições
+        </a>
+      </li>
+
+      <!-- link para o perfil do professor -->
+      <li>
+        <a href="/gerenciar/html/perfilProfessor.html">
+          <i class="fa-solid fa-user"></i> Perfil
+        </a>
+      </li>
+
+      <!-- logout-->
+      <li>
+        <a href="/auth/html/login.html">
+          <i class="fa-solid fa-right-from-bracket"></i> Sair
+        </a>
+      </li>
+
+    </ul>
+  </nav>
+
+
+  <!-- CONTEÚDO  -->
+  <main class="container">
+
+    <h1 class="titulo-verde">Disciplinas do Curso</h1>
+
+    <!-- Card de busca e ações da página -->
+    <form class="filtro-card" onsubmit="return false;">
+      <label for="fBuscaDisc">Busca</label>
+
+      <!-- linha com campo de busca -->
+      <div class="busca-linha">
+        <input id="fBuscaDisc" type="text" placeholder="Buscar por nome, código, período ou professor" />
+        <button class="btn-curso" id="btnBuscarDisc" type="button">
+          <i class="fa-solid fa-magnifying-glass"></i> Buscar
+        </button>
+      </div>
+
+      <!-- Botões de ações: nova disciplina, componente de nota, nova turma -->
+      <div class="botoes" style="display:flex; justify-content:space-between; margin-top:15px;">
+        <button class="btn-curso" id="btnNovaDisc" type="button">
+          + Nova Disciplina
+        </button>
+
+        <div style="display:flex; gap:10px;">
+          <button class="btn-curso" id="btnComponenteNota" type="button">
+            + Componente de Nota
+          </button>
+
+          <button class="btn-curso" id="btnNovaTurma" type="button">
+            + Nova Turma
+          </button>
+        </div>
+
+      </div>
+    </form>
+
+    <!-- Lista de disciplinas -->
+    <div class="lista-card">
+
+      <!-- Cabeçalho da tabela -->
+      <div class="tabela-head">
+        <span>Disciplina</span>
+        <span>Código</span>
+        <span>Período</span>
+        <span>Professor</span>
+        <span style="text-align:right;">Ações</span>
+      </div>
+
+      <!-- Corpo da lista preenchido dinamicamente via JS -->
+      <div id="corpoTabelaDisc"></div>
+
+      <!-- Mensagem quando não há disciplinas -->
+      <div id="vazioDisc" class="vazio">Nenhuma disciplina encontrada.</div>
+    </div>
+
+    <p class="nota">* Para excluir, a disciplina não pode ter turmas vinculadas.</p>
+
+  </main>
+</div>
+
+
+
+<!--  MODAL COMPONENTE  -->
+
+<div id="modalComponente" class="modal-overlay" aria-hidden="true">
+  <div class="modal">
+
+    <!-- Cabeçalho -->
+    <div class="modal-header">
+      <div class="modal-title">Cadastrar componente de nota</div>
+      <button class="modal-close" id="btnFecharModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Escolha do tipo de média (simples ou ponderada) -->
+      <div class="media-box">
+
+        <label class="radio-linha">
+          <input type="radio" name="tipoMedia" id="mediaSimples" value="simples" checked>
+          <div>
+            <strong>Média Simples</strong>
+            <span class="explica">Soma dos componentes ÷ quantidade de componentes.</span>
+          </div>
+        </label>
+
+        <label class="radio-linha">
+          <input type="radio" name="tipoMedia" id="mediaPonderada" value="ponderada">
+          <div>
+            <strong>Média Ponderada</strong>
+            <span class="explica">A soma dos pesos deve totalizar 100%.</span>
+          </div>
+        </label>
+
+      </div>
+
+      <!-- Campos do formulário do componente -->
+      <div class="form-grid">
+
+        <!-- disciplina relacionada -->
+        <div class="field col-2">
+          <label class="required">Disciplina</label>
+          <select id="cmpDisc">
+            <option value="">Selecione...</option>
+          </select>
+        </div>
+
+        <div class="field col-2">
+          <label class="required">Nome do componente</label>
+          <input id="cmpNome" placeholder="Ex.: Prova 1">
+        </div>
+
+        <div class="field">
+          <label class="required">Sigla</label>
+          <input id="cmpSigla" placeholder="Ex.: P1">
+        </div>
+
+        <!-- Campo visível somente no modo médio ponderada -->
+        <div class="field" id="campoPeso" style="display:none;">
+          <label>Peso (%)</label>
+          <input id="cmpPeso" type="number" min="0" max="100" placeholder="Ex.: 30">
+        </div>
+
+        <div class="field col-2">
+          <label>Descrição</label>
+          <textarea id="cmpDesc" placeholder="Ex.: Prova escrita"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="modal-footer">
+
+      <!-- Botão abre submodal com componentes cadastrados -->
+      <button class="btn btn-ghost" id="btnVerComponentes">
+        <i class="fa-solid fa-list"></i> Componentes cadastrados
+      </button>
+
+      <button class="btn btn-ghost" id="btnFechar">Fechar</button>
+
+      <!-- Salvar componente -->
+      <button class="btn btn-primary" id="btnSalvarComponente">
+        <i class="fa-solid fa-floppy-disk"></i> Salvar
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- SUBMODAL LISTA COMPONENTES EXISTENTES-->
+
+<div id="modalListaComponentes" class="modal-overlay">
+  <div class="modal modal-small">
+
+    <div class="modal-header">
+      <div class="modal-title">Componentes cadastrados</div>
+      <button class="modal-close" id="btnFecharListaComp"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Tabela preenchida via JS -->
+      <div id="listaComponentesContainer"></div>
+    </div>
+
+  </div>
+</div>
+
+
+<script src="/gerenciar/javascript/listaDisciplinas.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!-- Autoria: Livia -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - NotaDez</title>
+
+  <!-- Fontes e ícones -->
+  <link rel="stylesheet" href="/gerenciar/css/dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+<div class="dashboard">
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+
+    <ul class="menu-horizontal" id="menuHorizontal">
+
+      <li>
+        <a href="#" id="btnInstituicoes">
+          <i class="fa-solid fa-building-columns"></i> Instituições
+        </a>
+      </li>
+
+      <li>
+        <a href="/gerenciar/html/perfilProfessor.html" id="btnPerfil">
+          <i class="fa-solid fa-user"></i> Perfil
+        </a>
+      </li>
+
+      <li>
+        <a href="#" id="btnLogout">
+          <i class="fa-solid fa-right-from-bracket"></i> Sair
+        </a>
+      </li>
+
+    </ul>
+  </nav>
+
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="container">
+    <h1 class="titulo-verde">Instituições Cadastradas</h1>
+
+    <!-- Barra de busca -->
+    <form class="filtro-card" onsubmit="return false;">
+      <label for="buscaInstituicao">Busca</label>
+
+      <div class="busca-linha">
+        <input id="buscaInstituicao"
+               type="text"
+               placeholder="Buscar por nome ou sigla da instituição" />
+
+        <button class="btn-curso" id="btnBuscarInstituicao" type="button">
+          <i class="fa-solid fa-magnifying-glass"></i> Buscar
+        </button>
+      </div>
+
+      <button class="btn-curso" id="addInstituicao" type="button" style="margin-top:15px;">
+        + Nova Instituição
+      </button>
+    </form>
+
+    <!-- Lista dinâmica -->
+    <div class="cards" id="listaInstituicoes"></div>
+
+  </main>
+
+</div> <!-- dashboard -->
+
+<!-- JS -->
+<script src="/gerenciar/javascript/dashboard.js"></script>
+
+<script>
+  // Botão sair
+  document.getElementById("btnLogout").addEventListener("click", () => {
+    localStorage.clear();
+    window.location.href = "/auth/html/login.html";
+  });
+</script>
+
+</body>
+</html>

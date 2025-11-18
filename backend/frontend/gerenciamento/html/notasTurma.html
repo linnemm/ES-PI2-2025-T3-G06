@@ -1,0 +1,113 @@
+<!-- Autoria: Livia -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Configurações básicas da página -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notas da Turma — NotaDez</title>
+
+  <!-- Conexão CSS -->
+  <link rel="stylesheet" href="/gerenciar/css/notasTurma.css" />
+
+  <!-- Fontes e Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+<div class="dashboard">
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <h2>NotaDez</h2>
+    <ul class="menu-horizontal">
+      <li>
+         <!-- Voltar ao dashboard -->
+        <a href="/gerenciar/html/dashboard.html" id="btnInstituicoes">
+          <i class="fa-solid fa-building-columns"></i> Instituições
+        </a>
+      </li>
+      <li>
+         <!-- Perfil do professor -->
+        <a href="/gerenciar/html/perfilProfessor.html">
+          <i class="fa-solid fa-user"></i> Perfil
+        </a>
+      </li>
+      <li>
+        <!-- Logout -->
+        <a href="/auth/html/login.html">
+          <i class="fa-solid fa-right-from-bracket"></i> Sair
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="container">
+
+    <!-- INFORMAÇÕES DA TURMA -->
+    <section class="info-turma">
+      <h1 id="tituloTurma">Notas da Turma:</h1>
+      <p id="subTurma">Carregando informações...</p>
+
+      <!-- Exibição do tipo da média -->
+      <p id="tipoMediaTexto" style="color:#6ca98c; font-weight:600; margin-top:4px;"> </p>
+
+      <div class="botoes-topo">
+        <!-- Botão de exportar permanece -->
+        <button id="exportarNotas">
+          <i class="fa-solid fa-file-export"></i> Exportar Notas
+        </button>
+      </div>
+    </section>
+
+    <!-- CONTROLES DE EDIÇÃO -->
+    <section class="controle-edicao">
+
+      <div class="campo">
+        <label for="selComponente">Editar apenas um componente:</label>
+        <select id="selComponente">
+          <option value="">(Carregando...)</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>
+          <input type="checkbox" id="chkEdicaoCompleta">
+          Modo Edição Completa
+        </label>
+      </div>
+
+      <button id="btnSalvar" class="btn-salvar">
+        <i class="fa-solid fa-floppy-disk"></i> Salvar Notas
+      </button>
+
+    </section>
+
+    <!-- TABELA DE NOTAS -->
+    <section class="tabela-notas">
+      <h3>Notas dos Alunos</h3>
+
+      <table id="tabelaNotas">
+        <thead></thead>
+        <tbody id="tbodyNotas"></tbody>
+      </table>
+    </section>
+
+    <!-- BOTÃO VOLTAR -->
+    <div class="voltar-container">
+      <button id="btnVoltar" class="voltar">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </button>
+    </div>
+
+  </main>
+</div>
+
+<!-- JAVASCRIPT -->
+<script src="/gerenciar/javascript/notasTurma.js"></script>
+
+</body>
+</html>
