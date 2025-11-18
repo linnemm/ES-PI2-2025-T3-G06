@@ -1,12 +1,19 @@
+<!-- Autoria: Miriã - Lista Turmas HTML -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <!-- Configurações básicas -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
   <title>Turmas — NotaDez</title>
 
+  <!-- Fontes e ícones -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  
+  <!-- Conexão com CSS -->
   <link rel="stylesheet" href="/gerenciar/css/listaTurmas.css" />
 </head>
 
@@ -14,23 +21,26 @@
 
 <div class="dashboard">
 
-  <!-- ===================== TOPBAR SIMPLES ===================== -->
+  <!--TopBar-->
   <nav class="topbar">
     <h2>NotaDez</h2>
     <ul class="menu-horizontal">
       <li>
+        <!-- Voltar ao dashboard -->
         <a href="/gerenciar/html/dashboard.html" id="btnInstituicoes">
           <i class="fa-solid fa-building-columns"></i> Instituições
         </a>
       </li>
 
       <li>
+        <!-- Perfil do professor -->
         <a href="/gerenciar/html/perfilProfessor.html">
           <i class="fa-solid fa-user"></i> Perfil
         </a>
       </li>
 
       <li>
+        <!-- Logout -->
         <a href="/auth/html/login.html">
           <i class="fa-solid fa-right-from-bracket"></i> Sair
         </a>
@@ -38,29 +48,38 @@
     </ul>
   </nav>
 
-  <!-- ===================== CONTEÚDO ===================== -->
+  <!--CONTEÚDO PRINCIPAL-->
   <main class="main-content">
 
+     <!-- Título da página -->
     <h1 class="titulo-verde">Turmas Cadastradas</h1>
 
+    <!-- Formulário de busca -->
     <form class="filtro-card" onsubmit="return false;">
       <label for="fBusca">Busca</label>
 
+      <!-- Campo de busca -->
       <div class="busca-linha">
         <input id="fBusca" type="text" placeholder="Buscar por turma, código ou disciplina" />
+        
+        <!-- Botão de buscar -->
         <button id="btnBuscar" class="btn-curso buscar" type="button">
           <i class="fa-solid fa-magnifying-glass"></i> Buscar
         </button>
       </div>
 
+      <!-- Botões de ações principais -->
       <div class="botoes-acao">
         <button id="btnNovaTurma" class="btn-curso" type="button">+ Nova Turma</button>
         <button id="btnNovoAluno" class="btn-curso" type="button">+ Novo Aluno</button>
       </div>
     </form>
 
+
+    <!-- Card onde a tabela de turmas aparece -->
     <div class="lista-card">
 
+       <!-- Cabeçalho -->
       <div class="tabela-head">
         <span>Turma</span>
         <span>Código</span>
@@ -71,8 +90,11 @@
         <span style="text-align:right;">Ações</span>
       </div>
 
+      
+      <!-- Onde o JS insere as turmas -->
       <div id="corpoTabela" class="tabela-corpo"></div>
 
+      <!-- Mensagem quando não há resultados -->
       <div id="vazio" class="vazio">Nenhuma turma encontrada.</div>
 
     </div>
@@ -80,6 +102,7 @@
   </main>
 </div>
 
+<!-- JavaScript -->
 <script src="/gerenciar/javascript/listaTurmas.js"></script>
 
 </body>

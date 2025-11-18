@@ -1,6 +1,6 @@
-/* =========================================================
-   BASE
-========================================================= */
+/* Autoria: Miriã  */
+
+/*Base */
 * {
   margin: 0;
   padding: 0;
@@ -14,9 +14,7 @@ body {
   overflow-y: auto;
 }
 
-/* =========================================================
-   TOPBAR
-========================================================= */
+/*TopBar*/
 .topbar {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
@@ -66,9 +64,7 @@ body {
   box-shadow:none;
 }
 
-/* =========================================================
-   CONTAINER PRINCIPAL
-========================================================= */
+/*Container principal */
 .container {
   width: 90%;
   max-width: 1000px;
@@ -98,9 +94,7 @@ body {
   margin-top: 5px;
 }
 
-/* =========================================================
-   BOTÕES SUPERIORES
-========================================================= */
+/*Botões superiores*/
 .turma-acoes {
   display: flex;
   flex-wrap: wrap;
@@ -128,9 +122,7 @@ body {
   transform: scale(1.03);
 }
 
-/* =========================================================
-   TABELA
-========================================================= */
+/*Tabela*/
 .tabela-notas {
   background: #fff;
   border-radius: 12px;
@@ -165,9 +157,7 @@ tr:hover {
   background: #f2f7f4;
 }
 
-/* =========================================================
-   COLUNA AÇÕES
-========================================================= */
+/*Coluna Ações */
 td .acoes {
   display: flex;
   justify-content: flex-end;
@@ -203,9 +193,7 @@ td .acoes {
   filter: brightness(0.9);
 }
 
-/* =========================================================
-   BOTÕES INFERIORES
-========================================================= */
+/*Botões inferiores*/
 .footer-acoes {
   display: flex;
   justify-content: space-between;
@@ -233,9 +221,7 @@ td .acoes {
   transform: scale(1.03);
 }
 
-/* =========================================================
-   MODAL (EDIÇÃO DE ALUNO)
-========================================================= */
+/* Edição de Alunos */
 
 .modal-overlay {
   position: fixed;
@@ -325,9 +311,7 @@ td .acoes {
   background: #5c8c75;
 }
 
-/* =========================================================
-   RESPONSIVO
-========================================================= */
+/*Responsivos*/
 @media (max-width: 768px) {
   .topbar {
     flex-direction: column;

@@ -1,14 +1,11 @@
-// =============================================
-//  LISTA DE CURSOS — NotaDez (VERSÃO FINAL)
-// =============================================
+// Autora: Alinne
 
-// Helper
 const $ = (id) => document.getElementById(id);
 
 // ID do usuário logado
 const usuarioId = localStorage.getItem("usuarioId");
 
-// Segurança
+// Apenas para usuarios logados
 if (!usuarioId) {
   alert("Erro: usuário não identificado.");
   window.location.href = "/auth/html/login.html";
@@ -27,13 +24,10 @@ if (!instituicaoId) {
 const lista = $("corpoTabela");
 const vazio = $("vazio");
 
-// Variável para armazenar curso selecionado
+// Armazena ID do curso clicado (para nova disciplina)
 let cursoSelecionado = null;
 
-
-// =============================================
 //  CARREGAR CURSOS DO BANCO
-// =============================================
 async function carregarCursos(filtro = "") {
   lista.innerHTML = "<p>Carregando...</p>";
 
@@ -46,13 +40,14 @@ async function carregarCursos(filtro = "") {
       return;
     }
 
-    // FILTRO
+    // FILTRO (cursos por nome, sigla ou coordenador)
     const filtrados = dados.filter((curso) =>
       curso.NOME.toLowerCase().includes(filtro.toLowerCase()) ||
       curso.SIGLA.toLowerCase().includes(filtro.toLowerCase()) ||
       curso.COORDENADOR.toLowerCase().includes(filtro.toLowerCase())
     );
 
+    // Nenhum curso encontrado
     if (filtrados.length === 0) {
       lista.innerHTML = "";
       vazio.style.display = "block";
@@ -62,6 +57,7 @@ async function carregarCursos(filtro = "") {
     vazio.style.display = "none";
     lista.innerHTML = "";
 
+    // renderiza cada curso na tabela
     filtrados.forEach((curso) => {
       const row = document.createElement("div");
       row.classList.add("tabela-row");
@@ -92,15 +88,15 @@ async function carregarCursos(filtro = "") {
         }
       });
 
-      // EDITAR
+      // EDITAR CURSO
       row.querySelector(".btn-editar").addEventListener("click", (e) => {
-        e.stopPropagation();
+        e.stopPropagation(); // impede abrir lista de disciplinas
         editarCurso(curso);
       });
 
-      // EXCLUIR
+      // EXCLUIR CURSO
       row.querySelector(".btn-excluir").addEventListener("click", (e) => {
-        e.stopPropagation();
+        e.stopPropagation(); 
         removerCurso(curso.ID);
       });
 
@@ -116,9 +112,7 @@ async function carregarCursos(filtro = "") {
 carregarCursos();
 
 
-// =============================================
-//  BUSCA
-// =============================================
+//  BUSCA DE CURSO
 $("btnBuscar").addEventListener("click", () => {
   carregarCursos($("fBusca").value.trim());
 });
@@ -128,36 +122,32 @@ $("fBusca").addEventListener("keyup", () => {
 });
 
 
-// =============================================
-//  NOVO CURSO
-// =============================================
+
+//  CADASTRO NOVO CURSO
 $("btnNovo").addEventListener("click", () => {
   window.location.href = "/gerenciar/html/cadastro_curso.html?inst=" + instituicaoId;
 });
 
 
-// =============================================
-//  NOVA DISCIPLINA — CORRIGIDO FINAL
-// =============================================
+
+//  NOVA DISCIPLINA
 $("btnNovaDisciplina").addEventListener("click", () => {
 
-  // 1) Se o usuário já clicou em um curso → enviamos inst + curso
+  // Se o usuário já clicou em um curso → enviamos o ID do curso
   if (cursoSelecionado) {
     window.location.href =
       `/gerenciar/html/cadastro_disciplina.html?inst=${instituicaoId}&curso=${cursoSelecionado}`;
     return;
   }
 
-  // 2) Se não clicou em nada, mas há pelo menos 1 curso na lista,
-  //    abrimos a página e o usuário escolhe o curso normalmente.
+  // Se não clicou em nada, mas há pelo menos 1 curso na lista, abre a página e o usuário escolhe o curso normalmente.
   window.location.href =
     `/gerenciar/html/cadastro_disciplina.html?inst=${instituicaoId}`;
 });
 
 
-// =============================================
+
 //  EDITAR CURSO
-// =============================================
 async function editarCurso(curso) {
   const nome = prompt("Novo nome:", curso.NOME);
   if (!nome) return;
@@ -192,13 +182,12 @@ async function editarCurso(curso) {
 }
 
 
-// =============================================
-//  REMOVER CURSO (com bloqueio correto!)
-// =============================================
+//  REMOVER CURSO 
 async function removerCurso(id) {
   if (!confirm("Deseja realmente remover este curso?")) return;
 
   try {
+    // Verifica se o curso tem disciplinas vinculadas
     const respCheck = await fetch(`/api/cursos/quantidade/${id}`);
     const dadosCheck = await respCheck.json();
 
@@ -207,6 +196,7 @@ async function removerCurso(id) {
       return;
     }
 
+    // Se não tem disciplinas, remove
     const resp = await fetch(`/api/cursos/remover/${id}`, {
       method: "DELETE"
     });
@@ -227,10 +217,7 @@ async function removerCurso(id) {
   }
 }
 
-
-// =============================================
 //  MENU SUPERIOR — INSTITUIÇÕES
-// =============================================
 $("btnInstituicoes").addEventListener("click", () => {
   window.location.href = "/gerenciar/html/dashboard.html";
 });

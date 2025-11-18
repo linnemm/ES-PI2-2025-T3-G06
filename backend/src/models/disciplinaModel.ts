@@ -1,7 +1,9 @@
+// Autora: Alycia
+
 import oracledb from "oracledb";
 import { dbConfig } from "../config/database";
 
-// Tipo opcional para facilitar retornos
+// tipo que representa uma disciplina vinda do banco de dados
 export interface Disciplina {
   ID: number;
   NOME: string;
@@ -15,9 +17,7 @@ export interface Disciplina {
   CRIADO_EM?: Date;
 }
 
-// ======================================================
-// 1️⃣ CRIAR DISCIPLINA
-// ======================================================
+// CRIAR DISCIPLINA
 export async function criarDisciplina(
   nome: string,
   sigla: string,
@@ -29,6 +29,7 @@ export async function criarDisciplina(
 ) {
   const conn = await oracledb.getConnection(dbConfig);
 
+  // insere a disciplina no banco
   await conn.execute(
     `
       INSERT INTO disciplinas (
@@ -47,12 +48,12 @@ export async function criarDisciplina(
 
 
 
-// ======================================================
-// 2️⃣ BUSCAR DISCIPLINAS POR CURSO (COM NOME DO PROFESSOR)
-// ======================================================
+
+// BUSCAR DISCIPLINAS POR CURSO (COM NOME DO PROFESSOR)
 export async function buscarDisciplinasPorCurso(cursoId: number) {
   const conn = await oracledb.getConnection(dbConfig);
 
+  // LEFT JOIN para trazer o nome do professor (usuário)
   const result = await conn.execute(
     `
       SELECT
@@ -82,9 +83,8 @@ export async function buscarDisciplinasPorCurso(cursoId: number) {
 
 
 
-// ======================================================
-// 3️⃣ BUSCAR DISCIPLINA POR ID
-// ======================================================
+
+// BUSCAR DISCIPLINA POR ID
 export async function buscarDisciplinaPorId(id: number) {
   const conn = await oracledb.getConnection(dbConfig);
 
@@ -111,14 +111,13 @@ export async function buscarDisciplinaPorId(id: number) {
   );
 
   await conn.close();
+  // Retorna apenas uma disciplina ou null caso não exista
   return (result.rows as Disciplina[])[0] || null;
 }
 
 
 
-// ======================================================
-// 4️⃣ ATUALIZAR DISCIPLINA
-// ======================================================
+// ATUALIZAR DISCIPLINA
 export async function atualizarDisciplina(
   id: number,
   nome: string,
@@ -143,9 +142,8 @@ export async function atualizarDisciplina(
 
 
 
-// ======================================================
-// 5️⃣ EXCLUIR DISCIPLINA
-// ======================================================
+
+// EXCLUIR DISCIPLINA
 export async function excluirDisciplina(id: number) {
   const conn = await oracledb.getConnection(dbConfig);
 
@@ -163,9 +161,8 @@ export async function excluirDisciplina(id: number) {
 
 
 
-// ======================================================
-// 6️⃣ CONTAR DISCIPLINAS POR CURSO (para excluir curso)
-// ======================================================
+
+// CONTAR DISCIPLINAS POR CURSO (para excluir curso)
 export async function contarDisciplinasPorCurso(
   cursoId: number
 ): Promise<number> {
@@ -183,14 +180,13 @@ export async function contarDisciplinasPorCurso(
 
   await conn.close();
 
+  // retorna somente o numero
   return Number((result.rows as any)[0].TOTAL);
 }
 
 
 
-// ======================================================
-// 7️⃣ VERIFICAR CÓDIGO REPETIDO NO MESMO CURSO
-// ======================================================
+// VERIFICAR CÓDIGO REPETIDO NO MESMO CURSO
 export async function verificarCodigoRepetido(cursoId: number, codigo: string) {
   const conn = await oracledb.getConnection(dbConfig);
 
@@ -210,11 +206,7 @@ export async function verificarCodigoRepetido(cursoId: number, codigo: string) {
   return Number((result.rows as any)[0].TOTAL) > 0;
 }
 
-
-
-// ======================================================
-// 8️⃣ VERIFICAR SE A DISCIPLINA TEM TURMAS
-// ======================================================
+// VERIFICAR SE A DISCIPLINA TEM TURMAS
 export async function verificarDisciplinaTemTurmas(disciplinaId: number) {
   const conn = await oracledb.getConnection(dbConfig);
 

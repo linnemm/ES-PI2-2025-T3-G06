@@ -1,6 +1,6 @@
 /* Autoria: Miriã  */
 
-/* ===== Base ===== */
+/*Base*/
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
@@ -9,7 +9,7 @@ body {
   color: #333;
 }
 
-/* ===== Layout ===== */
+/*Layout*/
 .dashboard { 
   display: flex; 
   flex-direction: column; 
@@ -30,7 +30,7 @@ h1 {
   margin-bottom: 30px; 
 }
 
-/* ===== TOPBAR ===== */
+/*TopBar*/
 .topbar-notadez {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
@@ -84,7 +84,7 @@ h1 {
 }
 
 
-/* ===== FORM ===== */
+/*Form*/
 form {
   background-color: white;
   padding: 30px;
@@ -128,7 +128,7 @@ input:focus, select:focus {
   box-shadow: 0 0 5px rgba(108,169,140,.6); 
 }
 
-/* ===== BOTÕES ===== */
+/*Botões*/
 .botoes { 
   display: flex; 
   justify-content: space-between; 
@@ -158,7 +158,7 @@ input:focus, select:focus {
 
 .btn-cancelar:hover { background-color: #aaa; }
 
-/* ===== Responsivo ===== */
+/*Responsivos*/
 @media (max-width: 768px) {
   .topbar-notadez { 
     flex-direction: column; 

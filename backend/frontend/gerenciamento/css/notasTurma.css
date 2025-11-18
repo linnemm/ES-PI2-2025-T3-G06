@@ -1,6 +1,6 @@
-/* ==========================
-   Estilos Gerais
-========================== */
+/* Autoria: Miriã  */
+
+/*Estilos Gerais*/
 * {
   margin: 0;
   padding: 0;
@@ -20,9 +20,7 @@ body {
   min-height: 100vh;
 }
 
-/* ==========================
-   Topbar
-========================== */
+/*Topbar*/
 .topbar {
   width: 100%;
   background: linear-gradient(to right, #6ca98c, #5c8c75);
@@ -65,9 +63,7 @@ body {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* ==========================
-   Conteúdo Principal
-========================== */
+/*Conteúdo Principal*/
 main {
   padding: 30px 10%;
 }
@@ -83,9 +79,7 @@ main {
   margin-bottom: 15px;
 }
 
-/* ==========================
-   Botões principais
-========================== */
+/*Botões principais*/
 .botoes-topo {
   display: flex;
   gap: 15px;
@@ -116,9 +110,7 @@ main {
   background: linear-gradient(to right, #5c8c75, #4f7862);
 }
 
-/* ==========================
-   Controle de edição
-========================== */
+/*Controle de edição*/
 .controle-edicao {
   background: white;
   padding: 15px 20px;
@@ -149,9 +141,7 @@ main {
   cursor: pointer;
 }
 
-/* ==========================
-   Tabela de Notas
-========================== */
+/*Tabela de Notas*/
 .tabela-notas {
   background-color: white;
   padding: 20px;
@@ -197,9 +187,7 @@ td {
   font-size: 15px;
 }
 
-/* ==========================
-   Botão Voltar
-========================== */
+/*Botão de voltar*/
 .voltar-container {
   margin-top: 25px;
   text-align: center;

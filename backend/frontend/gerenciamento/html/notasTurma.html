@@ -1,11 +1,14 @@
+<!-- Autoria: Miriã - Notas Turmas HTML -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <!-- Configurações básicas da página -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notas da Turma — NotaDez</title>
 
-  <!-- CSS -->
+  <!-- Conexão CSS -->
   <link rel="stylesheet" href="/gerenciar/css/notasTurma.css" />
 
   <!-- Fontes e Ícones -->
@@ -16,23 +19,24 @@
 <body>
 <div class="dashboard">
 
-  <!-- ========================================================= -->
-  <!-- TOPBAR — APENAS O NECESSÁRIO                              -->
-  <!-- ========================================================= -->
+  <!--TOPBAR-->
   <nav class="topbar">
     <h2>NotaDez</h2>
     <ul class="menu-horizontal">
       <li>
+         <!-- Voltar ao dashboard -->
         <a href="/gerenciar/html/dashboard.html" id="btnInstituicoes">
           <i class="fa-solid fa-building-columns"></i> Instituições
         </a>
       </li>
       <li>
+         <!-- Perfil do professor -->
         <a href="/gerenciar/html/perfilProfessor.html">
           <i class="fa-solid fa-user"></i> Perfil
         </a>
       </li>
       <li>
+        <!-- Logout -->
         <a href="/auth/html/login.html">
           <i class="fa-solid fa-right-from-bracket"></i> Sair
         </a>
@@ -40,9 +44,7 @@
     </ul>
   </nav>
 
-  <!-- ========================================================= -->
-  <!-- CONTEÚDO PRINCIPAL                                        -->
-  <!-- ========================================================= -->
+  <!-- CONTEÚDO PRINCIPAL -->
   <main class="container">
 
     <!-- INFORMAÇÕES DA TURMA -->
@@ -61,9 +63,7 @@
       </div>
     </section>
 
-    <!-- ========================================================= -->
-    <!-- CONTROLES DE EDIÇÃO                                      -->
-    <!-- ========================================================= -->
+    <!-- CONTROLES DE EDIÇÃO -->
     <section class="controle-edicao">
 
       <div class="campo">
@@ -86,9 +86,7 @@
 
     </section>
 
-    <!-- ========================================================= -->
-    <!-- TABELA DE NOTAS                                           -->
-    <!-- ========================================================= -->
+    <!--TABELA DE NOTAS -->
     <section class="tabela-notas">
       <h3>Notas dos Alunos</h3>
 
@@ -108,9 +106,7 @@
   </main>
 </div>
 
-<!-- ========================================================= -->
-<!-- JAVASCRIPT — CAMINHO CORRETO                              -->
-<!-- ========================================================= -->
+<!-- JAVASCRIPT -->
 <script src="/gerenciar/javascript/notasTurma.js"></script>
 
 </body>
