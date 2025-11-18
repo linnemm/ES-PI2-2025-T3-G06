@@ -1,11 +1,9 @@
-// ======================================================
-//  CADASTRO DE DISCIPLINA — NotaDez (CORRIGIDO COMPLETO)
-// ======================================================
+//  autoria por alycia bond
 
-// Helper
+
 const $ = (id) => document.getElementById(id);
 
-// Usuário logado
+// usuário logado
 const userId = localStorage.getItem("usuarioId");
 
 if (!userId) {
@@ -13,9 +11,7 @@ if (!userId) {
   window.location.href = "/auth/html/login.html";
 }
 
-// ======================================================
-// PEGAR DADOS DA URL
-// ======================================================
+// pegar parâmetros da URL (instituição e curso)
 const params = new URLSearchParams(window.location.search);
 
 let instituicaoId = params.get("inst");
@@ -27,9 +23,7 @@ if (!instituicaoId) {
   window.location.href = "/gerenciar/html/dashboard.html";
 }
 
-// ======================================================
-// 1️⃣ CARREGAR INSTITUIÇÕES → DEPOIS OS CURSOS
-// ======================================================
+// carregar instituições e cursos
 async function carregarInstituicoes() {
   try {
     const resp = await fetch(`/api/instituicoes/listar/${userId}`);
@@ -88,9 +82,7 @@ $("curso").addEventListener("change", () => {
   cursoId = $("curso").value;
 });
 
-// ======================================================
-// 2️⃣ SALVAR DISCIPLINA (COM VERIFICAÇÃO DE CÓDIGO DUPLICADO)
-// ======================================================
+// salvar disciplina
 $("formDisciplina").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -108,9 +100,7 @@ $("formDisciplina").addEventListener("submit", async (e) => {
     return alert("Preencha todos os campos!");
   }
 
-  // ======================================================
-  // 🔍 VERIFICAR SE O CÓDIGO JÁ EXISTE NO CURSO
-  // ======================================================
+  // verificar se já existe disciplina com mesmo código
   try {
     const respCheck = await fetch(`/api/disciplinas/curso/${cursoId}`);
     const disciplinas = await respCheck.json();
@@ -127,9 +117,7 @@ $("formDisciplina").addEventListener("submit", async (e) => {
     console.error("Erro ao verificar código:", erro);
   }
 
-  // ======================================================
-  // ENVIAR PARA O BACK-END
-  // ======================================================
+  // enviar para o backend
   try {
     const resp = await fetch("/api/disciplinas", {
       method: "POST",
@@ -160,14 +148,10 @@ $("formDisciplina").addEventListener("submit", async (e) => {
   }
 });
 
-// ======================================================
-// 3️⃣ CANCELAR
-// ======================================================
+// cancelar e voltar
 $("btnCancelar").addEventListener("click", () => history.back());
 
-// ======================================================
-// 4️⃣ ENTER para navegar pelos campos e enviar
-// ======================================================
+// entrar com Enter nos campos
 const inputs = document.querySelectorAll("#formDisciplina input, #formDisciplina select");
 
 inputs.forEach((input, i) => {
@@ -181,7 +165,5 @@ inputs.forEach((input, i) => {
   });
 });
 
-// ======================================================
-// INICIAR
-// ======================================================
+// inicialização
 carregarInstituicoes();

@@ -65,7 +65,6 @@ body {
 }
 
 /* Conteúdo principal*/
-
 .container {
   width: 90%;
   max-width: 1000px;
@@ -222,8 +221,8 @@ form.filtro-card input:focus {
   color: #6b7b87;
 }
 
-/* MODAL*/
 
+/* MODAL*/
 .modal-overlay {
   display: none;   /* só aparece quando ativo */
   position: fixed;
@@ -280,6 +279,7 @@ form.filtro-card input:focus {
 .modal-body {
   padding: 22px;
 }
+
 
 /* ÁREA DA MÉDIA*/
 .media-box {

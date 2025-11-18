@@ -1,6 +1,4 @@
-// ===========================================================
-// CADASTRO DE INSTITUIÇÃO — JS DEFINITIVO
-// ===========================================================
+// Autora: Alinne
 
 // Usuário logado
 const usuarioId = localStorage.getItem("usuarioId");
@@ -10,10 +8,7 @@ if (!usuarioId) {
   alert("Erro: usuário não identificado.");
   window.location.href = "/auth/html/login.html";
 }
-
-// ===========================================================
-// BLOQUEAR MENUS BASEADO NO BACKEND (SEM localStorage)
-// ===========================================================
+// BLOQUEAR MENU
 async function bloquearMenusBackend() {
   const btnInst = document.getElementById("btnInstituicoes");
   const btnPerfil = document.getElementById("btnPerfil");
@@ -22,10 +17,11 @@ async function bloquearMenusBackend() {
     const resp = await fetch(`/api/instituicoes/listar/${usuarioId}`);
     const lista = await resp.json();
 
+    // Se não existir nenhuma instituição, desabilita menus
     if (!lista || lista.length === 0) {
       if (btnInst) btnInst.classList.add("desabilitado");
       if (btnPerfil) btnPerfil.classList.add("desabilitado");
-    } else {
+    } else { // Se existir pelo menos 1, habilita menus
       if (btnInst) btnInst.classList.remove("desabilitado");
       if (btnPerfil) btnPerfil.classList.remove("desabilitado");
     }
@@ -38,28 +34,25 @@ async function bloquearMenusBackend() {
 // executar bloqueio ao carregar a página
 bloquearMenusBackend();
 
-// ===========================================================
 // REDIRECIONAR MENU → INSTITUIÇÕES → DASHBOARD
-// ===========================================================
 const btnInst = document.getElementById("btnInstituicoes");
-if (btnInst) {
+if (btnInst) { 
   btnInst.addEventListener("click", (e) => {
+    // Se estiver desabilitado, não faz nada
     if (btnInst.classList.contains("desabilitado")) return;
     e.preventDefault();
     window.location.href = "/gerenciar/html/dashboard.html";
   });
 }
 
-// ===========================================================
+
 // FORMULÁRIO E INPUTS
-// ===========================================================
 const form = document.getElementById("formInstituicao");
 const nomeInput = document.getElementById("nome");
 const siglaInput = document.getElementById("sigla");
 
-// ===========================================================
+
 // VERIFICAR SE SIGLA JÁ EXISTE
-// ===========================================================
 async function siglaJaExiste(sigla) {
   try {
     const resp = await fetch(`/api/instituicoes/listar/${usuarioId}`);
@@ -74,22 +67,24 @@ async function siglaJaExiste(sigla) {
   }
 }
 
-// ===========================================================
-// SUBMIT DO FORMULÁRIO
-// ===========================================================
+
+// ENVIO DO FORMULÁRIO
 form.addEventListener("submit", async e => {
   e.preventDefault();
 
   const nome = nomeInput.value.trim();
   const sigla = siglaInput.value.trim();
 
+  // validação simples
   if (!nome || !sigla) return alert("Preencha todos os campos!");
 
+  // evitar sigla duplicada
   if (await siglaJaExiste(sigla)) {
     return alert("⚠ Já existe uma instituição com essa sigla.");
   }
 
   try {
+    // faz requisição ao back
     const resp = await fetch("/api/instituicoes", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
@@ -109,6 +104,7 @@ form.addEventListener("submit", async e => {
 
     alert("Instituição cadastrada!");
 
+    // Após cadastrar, segue fluxo correto
     await verificarProximoPasso();
 
   } catch (erro) {
@@ -117,42 +113,46 @@ form.addEventListener("submit", async e => {
   }
 });
 
-// ===========================================================
+
 // ENTER para mudar de campo
-// ===========================================================
 const inputs = document.querySelectorAll("#formInstituicao input");
 inputs.forEach((input, i) => {
   input.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       e.preventDefault();
+      // Se for o último campo, envia o formulário
       if (i === inputs.length - 1) form.requestSubmit();
       else inputs[i + 1].focus();
     }
   });
 });
 
-// ===========================================================
+
 // DEFINIR PROXIMA TELA
-// ===========================================================
 async function verificarProximoPasso() {
   try {
     const respInst = await fetch(`/api/instituicoes/listar/${usuarioId}`);
     const instituicoes = await respInst.json();
 
+    // Última instituição cadastrada
     const inst = instituicoes[instituicoes.length - 1];
+
+    // Guarda para as próximas telas
     localStorage.setItem("instituicaoId", inst.ID);
 
     // desbloquear menus imediatamente
     await bloquearMenusBackend();
 
+    // Verifica se o curso já existe
     const respCurso = await fetch(`/api/cursos/listar/${inst.ID}`);
     const cursos = await respCurso.json();
 
+    // Se não existe curso, leva para página de cadastrar curso
     if (cursos.length === 0) {
       window.location.href = "/gerenciar/html/cadastro_curso.html";
       return;
     }
-
+    // Se já tem curso, vai ao dashboard
     window.location.href = "/gerenciar/html/dashboard.html";
 
   } catch (err) {

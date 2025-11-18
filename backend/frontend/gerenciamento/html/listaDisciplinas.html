@@ -1,3 +1,5 @@
+<!-- Autora: Alycia-->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,7 +15,7 @@
 <body>
 <div class="dashboard">
 
-  <!-- ================= TOPBAR ================= -->
+  <!-- TOPBAR  -->
   <nav class="topbar">
     <h2>NotaDez</h2>
 
@@ -25,12 +27,14 @@
         </a>
       </li>
 
+      <!-- link para o perfil do professor -->
       <li>
         <a href="/gerenciar/html/perfilProfessor.html">
           <i class="fa-solid fa-user"></i> Perfil
         </a>
       </li>
 
+      <!-- logout-->
       <li>
         <a href="/auth/html/login.html">
           <i class="fa-solid fa-right-from-bracket"></i> Sair
@@ -41,14 +45,16 @@
   </nav>
 
 
-  <!-- ================= CONTEÚDO ================= -->
+  <!-- CONTEÚDO  -->
   <main class="container">
 
     <h1 class="titulo-verde">Disciplinas do Curso</h1>
 
+    <!-- Card de busca e ações da página -->
     <form class="filtro-card" onsubmit="return false;">
       <label for="fBuscaDisc">Busca</label>
 
+      <!-- linha com campo de busca -->
       <div class="busca-linha">
         <input id="fBuscaDisc" type="text" placeholder="Buscar por nome, código, período ou professor" />
         <button class="btn-curso" id="btnBuscarDisc" type="button">
@@ -56,6 +62,7 @@
         </button>
       </div>
 
+      <!-- Botões de ações: nova disciplina, componente de nota, nova turma -->
       <div class="botoes" style="display:flex; justify-content:space-between; margin-top:15px;">
         <button class="btn-curso" id="btnNovaDisc" type="button">
           + Nova Disciplina
@@ -74,8 +81,10 @@
       </div>
     </form>
 
+    <!-- Lista de disciplinas -->
     <div class="lista-card">
 
+      <!-- Cabeçalho da tabela -->
       <div class="tabela-head">
         <span>Disciplina</span>
         <span>Código</span>
@@ -84,8 +93,10 @@
         <span style="text-align:right;">Ações</span>
       </div>
 
+      <!-- Corpo da lista preenchido dinamicamente via JS -->
       <div id="corpoTabelaDisc"></div>
 
+      <!-- Mensagem quando não há disciplinas -->
       <div id="vazioDisc" class="vazio">Nenhuma disciplina encontrada.</div>
     </div>
 
@@ -96,11 +107,12 @@
 
 
 
-<!-- ================= MODAL COMPONENTE ================= -->
+<!--  MODAL COMPONENTE  -->
 
 <div id="modalComponente" class="modal-overlay" aria-hidden="true">
   <div class="modal">
 
+    <!-- Cabeçalho -->
     <div class="modal-header">
       <div class="modal-title">Cadastrar componente de nota</div>
       <button class="modal-close" id="btnFecharModal"><i class="fa-solid fa-xmark"></i></button>
@@ -108,6 +120,7 @@
 
     <div class="modal-body">
 
+      <!-- Escolha do tipo de média (simples ou ponderada) -->
       <div class="media-box">
 
         <label class="radio-linha">
@@ -128,9 +141,10 @@
 
       </div>
 
+      <!-- Campos do formulário do componente -->
       <div class="form-grid">
 
-        <!-- AGORA SOMENTE DISCIPLINA -->
+        <!-- disciplina relacionada -->
         <div class="field col-2">
           <label class="required">Disciplina</label>
           <select id="cmpDisc">
@@ -148,6 +162,7 @@
           <input id="cmpSigla" placeholder="Ex.: P1">
         </div>
 
+        <!-- Campo visível somente no modo médio ponderada -->
         <div class="field" id="campoPeso" style="display:none;">
           <label>Peso (%)</label>
           <input id="cmpPeso" type="number" min="0" max="100" placeholder="Ex.: 30">
@@ -163,12 +178,14 @@
 
     <div class="modal-footer">
 
+      <!-- Botão abre submodal com componentes cadastrados -->
       <button class="btn btn-ghost" id="btnVerComponentes">
         <i class="fa-solid fa-list"></i> Componentes cadastrados
       </button>
 
       <button class="btn btn-ghost" id="btnFechar">Fechar</button>
 
+      <!-- Salvar componente -->
       <button class="btn btn-primary" id="btnSalvarComponente">
         <i class="fa-solid fa-floppy-disk"></i> Salvar
       </button>
@@ -180,7 +197,7 @@
 
 
 
-<!-- ================= SUBMODAL LISTA COMPONENTES ================= -->
+<!-- SUBMODAL LISTA COMPONENTES EXISTENTES-->
 
 <div id="modalListaComponentes" class="modal-overlay">
   <div class="modal modal-small">
@@ -191,6 +208,7 @@
     </div>
 
     <div class="modal-body">
+      <!-- Tabela preenchida via JS -->
       <div id="listaComponentesContainer"></div>
     </div>
 

@@ -94,9 +94,7 @@ input:focus, select:focus {
   .menu-horizontal { justify-content: center; gap: 15px; }
 }
 
-/* ================================
-   MENU BLOQUEADO (Primeiro Acesso)
-================================ */
+/* MENU BLOQUEADO (Primeiro Acesso) */
 
 .desabilitado {
   pointer-events: none !important;

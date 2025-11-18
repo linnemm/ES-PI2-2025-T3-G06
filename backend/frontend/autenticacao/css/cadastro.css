@@ -1,6 +1,6 @@
 /* Código feito por: Alinne */
 
-/* ===== CONFIGURAÇÕES GERAIS DO BODY ===== */
+/* CONFIGURAÇÕES GERAIS DO BODY  */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@ body {
   min-height: 100vh;
 }
 
-/* ===== RETÂNGULO VERDE DE FUNDO (BOX MAIOR) ===== */
+/*  RETÂNGULO VERDE DE FUNDO (BOX MAIOR)  */
 .background-box {
   position: absolute;
   width: 560px;                  /* largura fixa */
@@ -31,7 +31,7 @@ body {
   align-items: center;
 }
 
-/* ===== TARJA VERDE ESCURA SUPERIOR ===== */
+/* TARJA VERDE ESCURA SUPERIOR  */
 .tarja-verde {
   background: linear-gradient(to right, #6ca98c, #5c8c75); /* verde escuro */
   color: #ffffff;
@@ -44,7 +44,7 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
-/* ===== QUADRADO BRANCO DO FORMULÁRIO ===== */
+/*  QUADRADO BRANCO DO FORMULÁRIO  */
 .cadastro-container {
   position: relative;
   background: white;
@@ -62,7 +62,7 @@ body {
   margin-bottom: 25px;
 }
 
-/* ===== INPUTS GERAIS ===== */
+/*  INPUTS GERAIS  */
 .cadastro-container input {
   width: 100%;
   padding: 12px;
@@ -78,7 +78,7 @@ body {
   box-shadow: 0 0 6px #a7d5bb;
 }
 
-/* ===== BOTÃO DO SUBMIT ===== */
+/*  BOTÃO DO SUBMIT  */
 .cadastro-container button {
   background: linear-gradient(to right, #6ca98c, #5c8c75);
   color: #fff;
@@ -95,7 +95,7 @@ body {
   background: linear-gradient(to right, #a7d5bb, #9dccb2);
 }
 
-/* ===== LINK PARA LOGIN ===== */
+/*  LINK PARA LOGIN  */
 .cadastro-container a {
   display: block;
   margin-top: 15px;
@@ -108,13 +108,13 @@ body {
   text-decoration: underline;
 }
 
-/* ===== CONTAINER DA SENHA COM ÍCONE ===== */
+/*  CONTAINER DA SENHA COM ÍCONE  */
 .password-container {
   position: relative;
   width: 100%;
 }
 
-/* ===== ÍCONE DO OLHO ===== */
+/* ÍCONE DO OLHO */
 .toggle-password {
   position: absolute;
   right: 12px;              /* encosta no lado direito */
@@ -139,7 +139,7 @@ body {
   background-size: contain;
 }
 
-/* ===== TEXTO "* CAMPO OBRIGATÓRIO" ===== */
+/*  TEXTO "* CAMPO OBRIGATÓRIO" */
 .aviso-obrigatorio {
   color: red;
   font-size: 14px;
@@ -149,13 +149,13 @@ body {
   margin-top: -10px;
 }
 
-/* ===== WRAPPER DOS INPUTS OBRIGATÓRIOS ===== */
+/* WRAPPER DOS INPUTS OBRIGATÓRIOS  */
 .input-wrapper {
   position: relative;
   width: 100%;
 }
 
-/* ===== COLOCA O ASTERISCO (*) DENTRO DO CAMPO ===== */
+/* COLOCA O ASTERISCO (*) DENTRO DO CAMPO  */
 .input-wrapper:not(.password-container)::after {
   content: "*";
   color: red;
@@ -167,7 +167,7 @@ body {
   pointer-events: none;
 }
 
-/* ===== Asterisco especial no campo de senha ===== */
+/* Asterisco especial no campo de senha */
 .password-container::after {
   content: "*";
   color: red;
@@ -180,7 +180,7 @@ body {
   z-index: 5;
 }
 
-/* ===== MENSAGEM DE ERRO (oculta por padrão) ===== */
+/* MENSAGEM DE ERRO (oculta por padrão)  */
 .error-message {
   color: red;
   font-size: 14px;
@@ -190,7 +190,7 @@ body {
   display: none;
 }
 
-/* ===== BANDEIRINHAS SUPERIORES ===== */
+/*  BANDEIRINHAS SUPERIORES  */
 .bandeirinhas {
   position: absolute;
   top: 20px;
@@ -376,13 +376,13 @@ body {
   }
 }
 
-/* ===== AVISO FIXO DA SENHA ===== */
+/* AVISO FIXO DA SENHA  */
 .aviso-senha {
   color: red;
   font-size: 12px;
   font-weight: 500;
-  margin-top: 8px;     /* afasta do campo Telefone */
-  margin-bottom: -4px; /* aproxima do input de Senha */
+  margin-top: 8px;     
+  margin-bottom: -4px; 
   text-align: left;
   padding-left: 4px;
 }

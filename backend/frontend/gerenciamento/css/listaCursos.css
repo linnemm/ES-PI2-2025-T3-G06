@@ -1,4 +1,4 @@
-/* ===== autoria: NotaDez ===== */
+/*  Autoria: Alinne */
 * {
   margin: 0;
   padding: 0;
@@ -61,7 +61,7 @@ body {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* ==================== CONTEÚDO PRINCIPAL ==================== */
+/* CONTEÚDO PRINCIPAL */
 .container {
   width: 90%;
   max-width: 1000px;
@@ -79,7 +79,7 @@ body {
   margin-bottom: 30px;
 }
 
-/* ==================== BARRA DE BUSCA ==================== */
+/* BARRA DE BUSCA  */
 form.filtro-card {
   background-color: #fff;
   padding: 25px;
@@ -123,7 +123,7 @@ form.filtro-card label {
   box-shadow: 0 0 5px rgba(108,169,140,0.5);
 }
 
-/* ==================== LINHA DOS BOTÕES ==================== */
+/* LINHA DOS BOTÕES  */
 .linha-botoes {
   width: 100%;
   display: flex;
@@ -161,7 +161,7 @@ form.filtro-card label {
   background-color: #5c8c75;
 }
 
-/* ==================== LISTA (TABELA) ==================== */
+/*  LISTA (TABELA) */
 .lista-card {
   margin-top: 18px;
   background: #fff;
@@ -203,7 +203,7 @@ form.filtro-card label {
   background: #f5fbf8;
 }
 
-/* ==================== AÇÕES ==================== */
+/* AÇÕES */
 .acoes {
   display: flex;
   gap: 10px;
