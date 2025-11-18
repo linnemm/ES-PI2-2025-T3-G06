@@ -2,16 +2,13 @@
 
 const $ = (id) => document.getElementById(id);
 
-
 // pegar parâmetros da URL e dados do localstorage
-
 const params = new URLSearchParams(window.location.search);
 const instituicaoId = params.get("inst");
 const cursoId = params.get("curso");
 const usuarioId = localStorage.getItem("usuarioId");
 
-// validações 
-
+// validações
 if (!usuarioId) {
   alert("⚠ Erro: usuário não identificado.");
   window.location.href = "/auth/html/login.html";
@@ -31,10 +28,7 @@ if (!cursoId) {
 const lista = $("corpoTabelaDisc");
 const vazio = $("vazioDisc");
 
-
-// =========================================
 // carregar disciplinas de um curso
-
 async function carregarDisciplinas(filtro = "") {
   lista.innerHTML = "<p>Carregando...</p>";
 
@@ -106,7 +100,6 @@ async function carregarDisciplinas(filtro = "") {
 
 carregarDisciplinas();
 
-
 // editar disciplina
 async function editarDisciplina(disc) {
   const nome = prompt("Novo nome:", disc.NOME);
@@ -127,7 +120,7 @@ async function editarDisciplina(disc) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         nome,
-        sigla,     // ⭐ OBRIGATÓRIO PARA O BACKEND
+        sigla,
         codigo,
         periodo
       })
@@ -146,7 +139,6 @@ async function editarDisciplina(disc) {
   }
 }
 
-
 // busca de disciplinas
 $("btnBuscarDisc").addEventListener("click", () =>
   carregarDisciplinas($("fBuscaDisc").value.trim())
@@ -156,9 +148,7 @@ $("fBuscaDisc").addEventListener("keyup", () =>
   carregarDisciplinas($("fBuscaDisc").value.trim())
 );
 
-
 // remover disciplina
-
 async function removerDisciplina(id) {
   if (!confirm("Tem certeza que deseja excluir?")) return;
 
@@ -188,35 +178,25 @@ async function removerDisciplina(id) {
   }
 }
 
-
-
 // nova disciplina
-
 $("btnNovaDisc").addEventListener("click", () => {
   window.location.href =
     `/gerenciar/html/cadastro_disciplina.html?inst=${instituicaoId}&curso=${cursoId}`;
 });
 
-
-
 // nova turma
-
 $("btnNovaTurma").addEventListener("click", () => {
   window.location.href =
     `/gerenciar/html/cadastro_turma.html?inst=${instituicaoId}&curso=${cursoId}`;
 });
 
-
-
 // botão voltar para dashboard
-
 $("btnInstituicoes").addEventListener("click", () => {
   window.location.href = "/gerenciar/html/dashboard.html";
 });
 
 
-
-// mo
+// MODAL COMPONENTE DE NOTA
 
 const modal = $("modalComponente");
 const btnAbrir = $("btnComponenteNota");
@@ -228,6 +208,7 @@ const btnVerLista = $("btnVerComponentes");
 btnAbrir.addEventListener("click", () => {
   modal.style.display = "flex";
   carregarDisciplinasParaSelect();
+  atualizarCampoPeso(); // garantir estado correto ao abrir
 });
 
 btnFecharX.onclick = btnFechar.onclick = () => modal.style.display = "none";
@@ -236,10 +217,24 @@ modal.addEventListener("click", (e) => {
   if (e.target === modal) modal.style.display = "none";
 });
 
+// ATIVAÇÃO DO CAMPO PESO 
 
+const campoPeso = $("campoPeso");
+const radioSimples = $("mediaSimples");
+const radioPonderada = $("mediaPonderada");
+
+function atualizarCampoPeso() {
+  if (radioPonderada.checked) {
+    campoPeso.style.display = "block";
+  } else {
+    campoPeso.style.display = "none";
+  }
+}
+
+radioSimples.addEventListener("change", atualizarCampoPeso);
+radioPonderada.addEventListener("change", atualizarCampoPeso);
 
 // carregar disciplinas no select
-
 async function carregarDisciplinasParaSelect() {
   const cmpDisc = $("cmpDisc");
   cmpDisc.innerHTML = `<option value="">Carregando...</option>`;
@@ -262,10 +257,8 @@ async function carregarDisciplinasParaSelect() {
   }
 }
 
-
 // salvar componente
 btnSalvar.addEventListener("click", async () => {
-
   const disciplinaId = $("cmpDisc").value;
   const nome = $("cmpNome").value.trim();
   const sigla = $("cmpSigla").value.trim();
@@ -308,7 +301,6 @@ btnSalvar.addEventListener("click", async () => {
   }
 });
 
-
 // lista de componentes
 const subModal = $("modalListaComponentes");
 const btnFecharLista = $("btnFecharListaComp");
@@ -326,8 +318,7 @@ subModal.addEventListener("click", (e) => {
   if (e.target === subModal) subModal.style.display = "none";
 });
 
-
-// carregar componentes da disciplina selecionada
+// carregar componentes existentes
 async function carregarComponentes() {
   const container = $("listaComponentesContainer");
   const disciplinaId = $("cmpDisc").value;
@@ -361,7 +352,7 @@ async function carregarComponentes() {
 
       item.innerHTML = `
         <div>
-          <strong>${c.NOME}</strong> (${c.SIGLA})</strong>
+          <strong>${c.NOME}</strong> (${c.SIGLA})
           <br>
           Tipo: <b>${c.TIPO_MEDIA}</b>
           ${c.PESO !== null ? ` — Peso: ${c.PESO}%` : ""}
@@ -384,9 +375,7 @@ async function carregarComponentes() {
   }
 }
 
-
 // remover componente
-
 async function removerComponente(id) {
   if (!confirm("Deseja realmente excluir este componente?")) return;
 
