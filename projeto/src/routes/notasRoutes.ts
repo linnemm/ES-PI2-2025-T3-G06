@@ -1,16 +1,16 @@
-// Autoria: Livia
-
 import { Router } from "express";
-import { listarNotas, salvarNotas } from "../controllers/notasController";
+import { listarNotas, salvarNotas, excluirNota } from "../controllers/notasController";
 
 // Criando uma instância do roteador do Express
 const router = Router();
 
-// ROTA: GET /:turmaId/:disciplinaId
+// Rota para listar as notas de uma turma e disciplina
 router.get("/:turmaId/:disciplinaId", listarNotas);
 
-// ROTA: POST /
+// Rota para salvar ou atualizar notas
 router.post("/", salvarNotas);
 
-// Exporta o roteador para ser usado no arquivo principal de rotas
+// Rota para excluir uma nota de um aluno
+router.delete("/excluir/:alunoId/:componenteId", excluirNota);
+
 export default router;

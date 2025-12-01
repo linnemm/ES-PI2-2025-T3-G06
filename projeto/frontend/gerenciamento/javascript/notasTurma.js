@@ -1,11 +1,6 @@
-// Autoria: Livia
-
-// NOTAS DA TURMA
-
 (function initNotasTurma() {
 
   // PEGAR SOMENTE TURMA ID
-
   const qs = new URLSearchParams(location.search);
   const turmaId = Number(qs.get("turmaId"));
 
@@ -15,14 +10,14 @@
   }
 
   //ELEMENTOS HTML
-  const tituloTurma      = document.getElementById("tituloTurma");
-  const subTurma         = document.getElementById("subTurma");
-  const tipoMediaTexto   = document.getElementById("tipoMediaTexto");
-  const selComponente    = document.getElementById("selComponente");
-  const chkEdicaoCompleta= document.getElementById("chkEdicaoCompleta");
-  const btnSalvar        = document.getElementById("btnSalvar");
-  const btnVoltar        = document.getElementById("btnVoltar");
-  const btnExportar      = document.getElementById("exportarNotas");
+  const tituloTurma = document.getElementById("tituloTurma");
+  const subTurma = document.getElementById("subTurma");
+  const tipoMediaTexto = document.getElementById("tipoMediaTexto");
+  const selComponente = document.getElementById("selComponente");
+  const chkEdicaoCompleta = document.getElementById("chkEdicaoCompleta");
+  const btnSalvar = document.getElementById("btnSalvar");
+  const btnVoltar = document.getElementById("btnVoltar");
+  const btnExportar = document.getElementById("exportarNotas");
 
   const thead = document.querySelector("#tabelaNotas thead");
   const tbody = document.getElementById("tbodyNotas");
@@ -42,7 +37,7 @@
   function getNota(alunoId, compId) {
     const k = keyNota(alunoId, compId);
     if (notasAlteradas.has(k)) return notasAlteradas.get(k);
-    if (mapaNotas.has(k))      return mapaNotas.get(k);
+    if (mapaNotas.has(k)) return mapaNotas.get(k);
     return "";
   }
 
@@ -55,7 +50,7 @@
   }
 
   // CÁLCULO DA NOTA FINAL
-  
+
   function calcularNotaFinal(alunoId) {
     if (!componentes.length) return "-";
 
@@ -70,7 +65,7 @@
 
       componentes.forEach(c => {
         soma += Number(getNota(alunoId, c.ID)) * (c.PESO / 100);
-        tot  += c.PESO;
+        tot += c.PESO;
       });
 
       if (tot !== 100) soma *= (100 / tot);
@@ -85,7 +80,7 @@
   }
 
   // CABEÇALHO DA TABELA
-  
+
   function montarCabecalho() {
     let html = `<th>Matrícula</th><th>Aluno</th>`;
 
@@ -99,8 +94,7 @@
     thead.innerHTML = `<tr>${html}</tr>`;
   }
 
-  // LINHAS
-
+  // Função para montar as linhas da tabela de notas
   function montarLinhas() {
     tbody.innerHTML = alunos.map(aluno => {
       let html = `
@@ -121,6 +115,10 @@
               value="${v}"
               disabled
             >
+            <!-- Botão para excluir a nota -->
+            <button class="excluir-nota" data-aluno="${aluno.ID}" data-comp="${c.ID}">
+              Excluir
+            </button>
           </td>
         `;
       });
@@ -129,10 +127,12 @@
 
       return `<tr>${html}</tr>`;
     }).join("");
+
+    // Após gerar as linhas, ligar o evento para excluir
+    ligarEventosExcluir();
   }
 
   // MODO DE EDIÇÃO
- 
   function aplicarModoEdicao() {
     const campos = document.querySelectorAll(".campo-nota");
     const compSel = Number(selComponente.value || 0);
@@ -144,15 +144,35 @@
     });
   }
 
+  // Permitir a edição da nota ao clicar diretamente na célula
+  function permitirEdicaoClick() {
+    const camposNota = document.querySelectorAll(".campo-nota");
+
+    camposNota.forEach(campo => {
+      campo.addEventListener("click", (e) => {
+        // Tornar o campo editável ao clicar
+        if (campo.disabled) {
+          campo.disabled = false;
+          campo.focus();  // Focar no campo para edição
+        } else {
+          campo.disabled = true;  // Se já estiver habilitado, desabilitar
+        }
+      });
+    });
+  }
+
+  // Chamar a função de permitir edição ao clicar
+  permitirEdicaoClick();
+
   // ENTER PARA IR DESCENDO
-  
+
   function ligarEventosEntrada() {
     const campos = [...document.querySelectorAll(".campo-nota")];
 
     campos.forEach((inp, i) => {
       inp.addEventListener("input", () => {
         const alunoId = Number(inp.dataset.aluno);
-        const compId  = Number(inp.dataset.comp);
+        const compId = Number(inp.dataset.comp);
         setNota(alunoId, compId, inp.value);
         document.querySelector(`.nota-final[data-aluno="${alunoId}"]`)
           .textContent = calcularNotaFinal(alunoId);
@@ -173,7 +193,6 @@
   }
 
   // SALVAR NOTAS
-
   async function salvarNotas() {
     if (!notasAlteradas.size) {
       alert("Nenhuma nota alterada!");
@@ -291,6 +310,37 @@
       alert("Erro ao carregar dados da turma.");
     }
   }
+
+  // Ligar evento de clique para excluir nota
+  function ligarEventosExcluir() {
+    const botoesExcluir = document.querySelectorAll(".excluir-nota");
+
+    botoesExcluir.forEach(botao => {
+      botao.addEventListener("click", async (e) => {
+        const alunoId = e.target.dataset.aluno;  // ID do aluno
+        const componenteId = e.target.dataset.comp;  // ID do componente (nota)
+
+        // Chama a API para excluir a nota
+        const response = await fetch(`/api/notas/excluir/${alunoId}/${componenteId}`, {
+          method: "DELETE"
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert(data.message);  // Nota excluída com sucesso
+          // Atualizar a interface, removendo o valor da nota excluída
+          e.target.previousElementSibling.value = "";  // Limpa o campo da nota
+          e.target.closest("tr").querySelector(".nota-final").textContent = calcularNotaFinal(alunoId);  // Recalcula a nota final
+        } else {
+          alert(data.message);  // Exibir erro
+        }
+      });
+    });
+  }
+
+  // Chamar essa função após montar as linhas da tabela
+  ligarEventosExcluir();
 
   //EVENTOS
   selComponente.addEventListener("change", aplicarModoEdicao);

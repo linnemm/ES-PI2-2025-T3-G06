@@ -196,3 +196,28 @@ td {
 .voltar {
   margin-top: 10px;
 }
+
+/* Garantir que o botão de Excluir sempre seja visível */
+.excluir-nota {
+  background-color: #b33a3a;  /* Cor de fundo vermelha */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-flex;  /* Usar flexbox para o alinhamento */
+  align-items: center;   /* Alinhar o ícone e o texto */
+  gap: 6px;              /* Espaçamento entre o ícone e o texto */
+  visibility: visible;   /* Garantir que o botão seja visível */
+  opacity: 1;            /* Garantir que a opacidade não seja 0 */
+}
+
+.excluir-nota:hover {
+  background-color: #9f2f2f;  /* Cor vermelha mais escura ao passar o mouse */
+}
+
+/* Ajustar o tamanho do ícone se necessário */
+.excluir-nota i {
+  font-size: 18px;  /* Ajuste o tamanho conforme necessário */
+}

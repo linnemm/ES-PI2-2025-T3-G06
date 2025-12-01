@@ -107,3 +107,24 @@ export async function salvarNotasBD(lista: any[]) {
     await conn.close();
   }
 }
+
+// Excluir nota do banco de dados
+export async function excluirNotaBD(alunoId: number, componenteId: number): Promise<number> {
+  const conn = await openConnection(); // Abrindo a conexão com o banco
+
+  try {
+    // Consulta SQL para excluir a nota
+    const sql = `
+      DELETE FROM NOTAS
+      WHERE ALUNO_ID = :alunoId
+        AND COMPONENTE_ID = :componenteId
+    `;
+
+    const result = await conn.execute(sql, { alunoId, componenteId }, { autoCommit: true });
+
+    // Verificar se a exclusão foi bem-sucedida
+    return result.rowsAffected || 0; // Retorna o número de linhas afetadas
+  } finally {
+    await conn.close(); // Fechar a conexão com o banco
+  }
+}
