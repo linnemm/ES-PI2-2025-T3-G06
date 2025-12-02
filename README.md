@@ -33,7 +33,7 @@ cd ES-PI2-2025-T3-G06
 
 2. Instale as dependências
 ```
-cd backend
+cd projeto
 npm install
 ```
 3. Configure o Banco de Dados
@@ -43,7 +43,7 @@ npm install
 
 - Ajuste as credenciais em ```/src/config/database.ts```
 
-4. Inicie o servidor ```npm run dev```
+4. Inicie o servidor ```npx ts-node-dev src/index.ts```
 
 5. Acesse no navegador ```http://localhost:3000```
 
